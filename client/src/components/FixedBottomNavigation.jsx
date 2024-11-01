@@ -1,0 +1,122 @@
+import CssBaseline from "@mui/material/CssBaseline";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Paper from "@mui/material/Paper";
+import { useEffect, useState } from "react";
+
+import HomePage from "./Home.responsive";
+import Profile from "./Profile.resposive";
+import Highlight from "./Highlight.responsive";
+import News from "./News.repsonsive";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import Classify from "./Classify";
+import Cart from "./Cart";
+export default function FixedBottomNavigation() {
+  
+  const messageExamples = [
+    {
+      page: <HomePage  /> ,
+    },   
+    {
+      page: <Classify  />,
+    },
+    {
+      page: <Cart  />,
+    },
+    {
+      page: <Highlight  />,
+    },
+   
+  
+  ];
+  if(!localStorage.getItem("page")) {
+    localStorage.setItem("page", 2)
+  }
+  const page = localStorage.getItem("page");
+  const [value, setValue] = useState(Number(page));
+  const [activeComponent, setActiveComponent] = useState(
+    messageExamples[2].page
+  );
+  useEffect(() => {
+    setActiveComponent(messageExamples[value].page);
+  }, [value]);
+  return (
+    <div
+      className="xl:w-full w-full" 
+    >
+      <CssBaseline />
+      {activeComponent}
+      <Paper
+        sx={{
+          position: "fixed",
+          overflow : "hidden",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          boxShadow : "none",
+          "&:focus" : {
+            color : "#ff9e66"
+          },
+          opacity : .8,
+        }}
+        elevation={3}
+        
+      >
+        <BottomNavigation
+          showLabels
+          className="flex lg:w-[30%] mx-auto bg-black focus:bg-[#ff9e66]"
+          value={value}
+          onChange={(event, newValue) => {
+            localStorage.setItem("page", newValue);
+            setValue(newValue);
+          }}
+        >
+          <BottomNavigationAction
+            label={<span className="custom-label"  style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Trang chủ</span>}
+            sx={{
+              fontWeight: 600,
+          
+            }}
+            icon={<HomeOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
+              color : "#ff9e66"
+            } }} />}
+          />
+           <BottomNavigationAction
+            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Phân loại</span>}
+            sx={{
+              fontWeight: 600,
+            
+            }}
+            icon={<CategoryOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
+              color : "#ff9e66"
+            } }} />}
+          />
+          <BottomNavigationAction
+            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Giỏ hàng</span>}
+            sx={{
+              fontWeight: 600,
+              
+            }}
+            icon={<ShoppingCartOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
+              color : "#ff9e66"
+            } }} />}
+          />
+          <BottomNavigationAction
+            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Của tôi</span>}
+            sx={{
+                fontWeight: 600,
+               
+            }}
+            icon={<PersonOutlineOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
+              color : "#ff9e66"
+            } }} />}
+          />
+         
+        </BottomNavigation>
+      </Paper>
+    </div>
+  );
+}
