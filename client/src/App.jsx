@@ -6,6 +6,7 @@ import FixedBottomNavigation from "./components/FixedBottomNavigation";
 import { useMediaQuery } from "@mui/material";
 import PublicResponsive from "./pages/Pubic.responsive";
 import Search from "./pages/Search";
+import Detail_product from "./pages/Detail_product";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<FixedBottomNavigation />} />
             <Route path={path.SEARCH} element={<Search />} />
+            <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
+
           </Route>
         )}
       </Routes>
