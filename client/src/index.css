@@ -56,9 +56,7 @@
     --chart-5: 340 75% 55%
   }
 }
-.bg-muted  {
-  background-color:transparent;
-}
+
 
 @layer base {
   * {
@@ -80,4 +78,11 @@
 
 .custom-label:focus  {
   color: #ff9e66; /* Màu khi được focus */
+}
+@media (max-width: 768px) {
+  .responsive-icon {
+    width: 35px !important;
+    height: 35px !important;
+    padding: 5px !important;
+  }
 }

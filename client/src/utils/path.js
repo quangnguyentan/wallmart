@@ -1,8 +1,6 @@
 const path = {
   PUBLIC: "/",
   HOME: "",
-  MATCH: "match",
-  CALENDAR: "calendar",
-  DOWNLOAD: "download",
+  SEARCH: "search",
 };
 export default path;

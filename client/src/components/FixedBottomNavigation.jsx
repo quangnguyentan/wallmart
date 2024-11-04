@@ -6,34 +6,30 @@ import { useEffect, useState } from "react";
 
 import HomePage from "./Home.responsive";
 import Profile from "./Profile.resposive";
-import Highlight from "./Highlight.responsive";
-import News from "./News.repsonsive";
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import Classify from "./Classify";
 import Cart from "./Cart";
 export default function FixedBottomNavigation() {
-  
   const messageExamples = [
     {
-      page: <HomePage  /> ,
-    },   
-    {
-      page: <Classify  />,
+      page: <HomePage />,
     },
     {
-      page: <Cart  />,
+      page: <Classify />,
     },
     {
-      page: <Highlight  />,
+      page: <Cart />,
     },
-   
-  
+    {
+      page: <Profile />,
+    },
   ];
-  if(!localStorage.getItem("page")) {
-    localStorage.setItem("page", 2)
+  if (!localStorage.getItem("page")) {
+    localStorage.setItem("page", 2);
   }
   const page = localStorage.getItem("page");
   const [value, setValue] = useState(Number(page));
@@ -44,26 +40,23 @@ export default function FixedBottomNavigation() {
     setActiveComponent(messageExamples[value].page);
   }, [value]);
   return (
-    <div
-      className="xl:w-full w-full" 
-    >
+    <div className="xl:w-full w-full">
       <CssBaseline />
       {activeComponent}
       <Paper
         sx={{
           position: "fixed",
-          overflow : "hidden",
+          overflow: "hidden",
           bottom: 0,
           left: 0,
           right: 0,
-          boxShadow : "none",
-          "&:focus" : {
-            color : "#ff9e66"
+          boxShadow: "none",
+          "&:focus": {
+            color: "#ff9e66",
           },
-          opacity : .8,
+          opacity: 0.8,
         }}
         elevation={3}
-        
       >
         <BottomNavigation
           showLabels
@@ -75,46 +68,110 @@ export default function FixedBottomNavigation() {
           }}
         >
           <BottomNavigationAction
-            label={<span className="custom-label"  style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Trang chủ</span>}
+            label={
+              <span
+                className="custom-label"
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "10px",
+                  color: "black",
+                }}
+              >
+                Trang chủ
+              </span>
+            }
             sx={{
               fontWeight: 600,
-          
             }}
-            icon={<HomeOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
-              color : "#ff9e66"
-            } }} />}
-          />
-           <BottomNavigationAction
-            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Phân loại</span>}
-            sx={{
-              fontWeight: 600,
-            
-            }}
-            icon={<CategoryOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
-              color : "#ff9e66"
-            } }} />}
+            icon={
+              <HomeOutlinedIcon
+                sx={{
+                  fontSize: 30,
+                  "&:focus": {
+                    color: "#ff9e66",
+                  },
+                }}
+              />
+            }
           />
           <BottomNavigationAction
-            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Giỏ hàng</span>}
+            label={
+              <span
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "10px",
+                  color: "black",
+                }}
+              >
+                Phân loại
+              </span>
+            }
             sx={{
               fontWeight: 600,
-              
             }}
-            icon={<ShoppingCartOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
-              color : "#ff9e66"
-            } }} />}
+            icon={
+              <CategoryOutlinedIcon
+                sx={{
+                  fontSize: 30,
+                  "&:focus": {
+                    color: "#ff9e66",
+                  },
+                }}
+              />
+            }
           />
           <BottomNavigationAction
-            label={<span style={{ fontFamily: 'Arial, sans-serif', fontSize: '10px', color : "black" }}>Của tôi</span>}
+            label={
+              <span
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "10px",
+                  color: "black",
+                }}
+              >
+                Giỏ hàng
+              </span>
+            }
             sx={{
-                fontWeight: 600,
-               
+              fontWeight: 600,
             }}
-            icon={<PersonOutlineOutlinedIcon  sx={{ fontSize: 30, "&:focus" : {
-              color : "#ff9e66"
-            } }} />}
+            icon={
+              <ShoppingCartOutlinedIcon
+                sx={{
+                  fontSize: 30,
+                  "&:focus": {
+                    color: "#ff9e66",
+                  },
+                }}
+              />
+            }
           />
-         
+          <BottomNavigationAction
+            label={
+              <span
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "10px",
+                  color: "black",
+                }}
+              >
+                Của tôi
+              </span>
+            }
+            sx={{
+              fontWeight: 600,
+            }}
+            icon={
+              <PersonOutlineOutlinedIcon
+                sx={{
+                  fontSize: 30,
+                  "&:focus": {
+                    color: "#ff9e66",
+                  },
+                }}
+              />
+            }
+          />
         </BottomNavigation>
       </Paper>
     </div>
