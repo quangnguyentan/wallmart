@@ -8,6 +8,7 @@ import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import TranslateOutlinedIcon from "@mui/icons-material/TranslateOutlined";
 import banner_classify from "@/assets/banner_classify.jpg";
+import product_demo from "@/assets/product_demo.jpg";
 
 var settings = {
   dots: false,
@@ -18,7 +19,7 @@ var settings = {
   autoplay: true,
   autoplaySpeed: 3000,
 };
-const SlickSlider = ({ home }) => {
+const SlickSlider = ({ home, detail }) => {
   return (
     <div>
       {home ? (
@@ -85,7 +86,32 @@ const SlickSlider = ({ home }) => {
           </Slider>
         </div>
       ) : (
-        <div className="slider-container">
+       <>
+       {detail ?  <div className="slider-container">
+          <Slider {...settings} className="w-full ">
+            <div className="w-full h-[560px]">
+              <img
+                src={product_demo}
+                alt="banner"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="w-full h-[560px]">
+              <img
+                src={product_demo}
+                alt="banner"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <div className="w-full h-[560px]">
+              <img
+                src={product_demo}
+                alt="banner"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </Slider>
+        </div> :  <div className="slider-container">
           <Slider {...settings} className="w-full p-2 ">
             <div className="w-full ">
               <img
@@ -109,8 +135,10 @@ const SlickSlider = ({ home }) => {
               />
             </div>
           </Slider>
-        </div>
+        </div>}
+       </>
       )}
+      
     </div>
   );
 };

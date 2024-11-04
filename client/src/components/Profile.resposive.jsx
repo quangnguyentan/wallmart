@@ -14,8 +14,6 @@ import icon_myWaitDeliver from "@/assets/icon-myWaitDeliver.png";
 import icon_myWaitComent from "@/assets/icon-myWaitComment.png";
 import icon_myWaitReturn from "@/assets/icon-myWaitReturn.png";
 import icon_myTakeGoods from "@/assets/icon-myTakeGoods.png";
-import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Card_Product from "./Card_Product";
