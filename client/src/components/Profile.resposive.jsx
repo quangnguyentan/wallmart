@@ -18,14 +18,23 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Card_Product from "./Card_Product";
 import { Link } from "react-router-dom";
+import icon_newsWhite from "@/assets/icon-newsWhite.png"
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 const Profile = () => {
   return (
     <div className="w-full bg-gray-50 h-screen">
-      <Link to="/login">
-      <div className="bg-blue-600 opacity-80 w-full h-56 flex items-center gap-2 px-2 hover:text-gray-200  cursor-pointer">
-        <AccountCircleIcon sx={{ fontSize: 80 }} className="text-gray-300 " />
-        <span className="text-2xl">Đăng nhập/Đăng kí</span>
-      </div></Link>
+      <div className="bg-blue-600 opacity-80 w-full h-56 flex items-center gap-2 px-2 justify-between   ">
+        <div>
+          <AccountCircleIcon sx={{ fontSize: 80 }} className="text-gray-300 cursor-pointer" />
+      <Link to="/login" >
+          <span className="text-2xl cursor-pointer hover:text-gray-200">Đăng nhập/Đăng kí</span>
+        </Link>
+        </div>
+        <div className="flex items-center justify-center gap-4">
+          <img src={icon_newsWhite} className="h-8 w-8 cursor-pointer" alt="icon_newsWhite" />
+          <SettingsOutlinedIcon sx={{ fontSize : "32px", color : "white", cursor : "pointer" }}/>
+        </div>
+      </div>
       <div className="px-4">
         <div className="px-2 bg-white rounded-2xl py-8 flex flex-col gap-8">
           <div className=" flex flex-col">

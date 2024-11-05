@@ -8,7 +8,7 @@ import PublicResponsive from "./pages/Pubic.responsive";
 import Search from "./pages/Search";
 import Detail_product from "./pages/Detail_product";
 import List_product from "./pages/List_product";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   return (

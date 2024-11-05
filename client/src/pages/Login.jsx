@@ -17,13 +17,13 @@ const Login = () => {
   return (
     <>
         {isLogin ? <div className="flex flex-col gap-12  w-full h-screen px-4">
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full gap-32">
         <KeyboardArrowLeftIcon
-             sx={{ fontSize  : `${isMobile ? "20px" : "30px"}`}}
+             sx={{ fontSize  : `${isMobile ? "40px" : "40px"}`}}
             className="text-gray-400 cursor-pointer"
             onClick={() => window.history.back()}
           />
-          <h3 className="text-gray-500 text-center flex items-center justify-center w-full max-sm:text-lg text-lg">Đăng nhập</h3>     
+          <h3 className="text-gray-500 text-center flex items-center justify-start w-full max-sm:text-lg text-lg">Đăng nhập</h3>     
         </div>
         <img src={logo_login} alt="logo_login" className="w-[73px] h-[73px]" />
         <div className="flex flex-col gap-4">
@@ -47,7 +47,9 @@ const Login = () => {
             Tôi đã đọc và đồng ý .Chính sách bảo mật người dùng
             </span>
         </div>
+        <div className="px-8 w-full">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl">Đăng nhập</button>
+        </div>
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-lg hover:text-red-500" onClick={() => setIsLogin(!isLogin)}>Đăng kí người dùng mới</h3>
        </div>
       </TabsContent>
@@ -63,7 +65,9 @@ const Login = () => {
             Tôi đã đọc và đồng ý .Chính sách bảo mật người dùng
             </span>
         </div>
+        <div className="px-8 w-full">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl">Đăng nhập</button>
+        </div>
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-lg hover:text-red-500" onClick={() => setIsLogin(!isLogin)}>Đăng kí người dùng mới</h3>
        </div>
       </TabsContent>
@@ -99,7 +103,9 @@ const Login = () => {
             Tôi đã đọc và đồng ý .Chính sách bảo mật người dùng
             </span>
         </div>
-        <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl">Đăng ký ngay</button>
+        <div className="px-8 w-full">
+         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl">Đăng ký ngay</button>\
+        </div>
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-lg hover:text-red-500" onClick={() => setIsLogin(!isLogin)}>Đăng nhập ngay</h3>
        </div>
       </TabsContent>
@@ -115,7 +121,9 @@ const Login = () => {
             Tôi đã đọc và đồng ý .Chính sách bảo mật người dùng
             </span>
         </div>
+        <div className="px-8 w-full">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl">Đăng ký ngay</button>
+        </div>
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-lg hover:text-red-500" onClick={() => setIsLogin(!isLogin)}>Đăng nhập ngay</h3>
        </div>
       </TabsContent>
