@@ -19,6 +19,21 @@
   box-shadow: none !important;
   font-size: 14px;
 }
+#custom-button {
+  background: linear-gradient(90deg,#ff8864,#ff2121) !important;
+  
+}
+.background-custom {
+  background-color: transparent !important;
+  color : red !important;
+  box-shadow: none !important;
+
+}
+.custom-switch {
+  background-color: transparent !important;
+  color : red !important;
+  box-shadow: none !important;
+}
 @media (max-width: 768px) {
   .responsive-icon {
     width: 35px !important;
