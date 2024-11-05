@@ -9,6 +9,7 @@ import SmsOutlinedIcon from "@mui/icons-material/SmsOutlined";
 import TranslateOutlinedIcon from "@mui/icons-material/TranslateOutlined";
 import banner_classify from "@/assets/banner_classify.jpg";
 import product_demo from "@/assets/product_demo.jpg";
+import { useMediaQuery } from "@mui/material";
 
 var settings = {
   dots: false,
@@ -20,6 +21,8 @@ var settings = {
   autoplaySpeed: 3000,
 };
 const SlickSlider = ({ home, detail }) => {
+  const isMobile = useMediaQuery("(max-width:600px)");
+
   return (
     <div>
       {home ? (
@@ -38,24 +41,28 @@ const SlickSlider = ({ home, detail }) => {
                 />
                 <input
                   type="text"
-                  className="w-full h-11 rounded-lg pl-11 text-lg outline-none placeholder:text-orange-600 placeholder:font-medium "
+                  className="w-full h-11 max-sm:h-8 rounded-lg pl-11 text-lg outline-none placeholder:text-orange-600 placeholder:font-medium max-sm:text-xs"
                   placeholder="Vui lòng nhập từ khóa sản phẩm"
                 />
               </div>
             </Link>
             <div className="w-[30%] flex items-center gap-4">
-              <Link>
+              <Link reloadDocument={true} to="/" tabIndex={0} onClick={() => {
+                localStorage.setItem("page", 2)
+              }}>
                 <ShoppingCartOutlinedIcon
-                  fontSize="large"
-                  sx={{ color: "white" }}
+                  fontSize={`${isMobile ? "medium" : "large"}`}
+                  sx={{ color: "white",  }}
+                  
+                  
                 />
               </Link>
               <Link>
-                <SmsOutlinedIcon fontSize="large" sx={{ color: "white" }} />
+                <SmsOutlinedIcon fontSize={`${isMobile ? "medium" : "large"}`} sx={{ color: "white" }} />
               </Link>
               <Link>
                 <TranslateOutlinedIcon
-                  fontSize="large"
+                 fontSize={`${isMobile ? "medium" : "large"}`}
                   sx={{ color: "white" }}
                 />
               </Link>

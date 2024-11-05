@@ -35,10 +35,10 @@ const HomePage = () => {
   return (
     <div className="w-full flex flex-col gap-4 max-sm:gap-2 relative">
       <SlickSlider home />
-      <div className="flex w-full items-center max-sm:gap-2 gap-6 justify-center">
+      <div className="flex w-full items-center max-sm:gap-4 gap-6  justify-center">
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
           <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
-            <img src={shop} alt="shop" className="w-12 h-12" />
+            <img src={shop} alt="shop" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
             Bắt đầu bán
@@ -46,31 +46,31 @@ const HomePage = () => {
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
           <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
-            <img src={discount} alt="discount" className="w-12 h-12" />
+            <img src={discount} alt="discount" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
             Khuyến mãi
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 h-16 border flex items-center justify-center rounded-2xl">
-            <img src={register} alt="register" className="w-12 h-12" />
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+            <img src={register} alt="register" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
             Đăng kí
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 h-16 border flex items-center justify-center rounded-2xl">
-            <img src={score} alt="score" className="w-12 h-12" />
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+            <img src={score} alt="score" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
             Điểm tích lũy
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 h-16 border flex items-center justify-center rounded-2xl">
-            <img src={cskh} alt="cskh" className="w-12 h-12" />
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+            <img src={cskh} alt="cskh" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">CSKH</span>
         </div>

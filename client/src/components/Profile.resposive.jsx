@@ -17,13 +17,15 @@ import icon_myTakeGoods from "@/assets/icon-myTakeGoods.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Card_Product from "./Card_Product";
+import { Link } from "react-router-dom";
 const Profile = () => {
   return (
     <div className="w-full bg-gray-50 h-screen">
-      <div className="bg-blue-600 opacity-80 w-full h-56 flex items-center gap-2 px-2">
+      <Link to="/login">
+      <div className="bg-blue-600 opacity-80 w-full h-56 flex items-center gap-2 px-2 hover:text-gray-200  cursor-pointer">
         <AccountCircleIcon sx={{ fontSize: 80 }} className="text-gray-300 " />
         <span className="text-2xl">Đăng nhập/Đăng kí</span>
-      </div>
+      </div></Link>
       <div className="px-4">
         <div className="px-2 bg-white rounded-2xl py-8 flex flex-col gap-8">
           <div className=" flex flex-col">
