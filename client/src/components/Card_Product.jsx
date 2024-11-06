@@ -21,13 +21,13 @@ const Card_Product = ({ profile, hidden }) => {
       {!hidden && <div
         className={
           profile
-            ? "flex items-center gap-2 px-6 py-2 justify-center pt-8"
+            ? "flex items-center gap-2 px-6 py-2 justify-center pt-8 "
             : "flex items-center gap-2 px-6 py-2"
         }
       >
-        <h3 className="text-2xl font-semibold">Đoán là anh thích</h3>
+        <h3 className="text-2xl font-semibold max-sm:text-lg">Đoán là anh thích</h3>
         <div className="w-20 h-6 rounded-bl-lg rounded-tr-lg bg-red-500">
-          <span className="text-[11px] px-1 text-white">Chọn hàng tốt</span>
+          <span className="text-[11px] px-1 text-white ">Chọn hàng tốt</span>
         </div>
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4 ">
@@ -42,7 +42,7 @@ const Card_Product = ({ profile, hidden }) => {
             <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
               Grocery & Gourmet Food
             </span>
-            <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-lg max-sm:font-semibold">
+            <span className="text-[#ed5435] font-semibold text-2xl  max-sm:text-base max-sm:font-semibold">
               $41.89
             </span>
           </div>
@@ -63,7 +63,7 @@ const Card_Product = ({ profile, hidden }) => {
               Massage Chair Pad, Adjustable Compression Seat Massager for Full
               Body Relaxation, Gifts for Women Men,Dark Gray
             </span>
-            <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-lg max-sm:font-semibold">
+            <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base max-sm:font-semibold">
               $190.32
             </span>
           </div>

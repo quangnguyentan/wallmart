@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import TopBar from '../components/TopBar'
-import BottomBar from '@/components/BottomBar'
+
 import { useEffect } from 'react'
 
 const PublicResponsive = () => {

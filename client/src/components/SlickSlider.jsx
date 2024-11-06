@@ -33,7 +33,7 @@ const SlickSlider = ({ home, detail }) => {
                 <SearchOutlinedIcon
                   className="absolute"
                   sx={{
-                    fontSize: "30px",
+                    fontSize: `${isMobile ? "18px" : "30px"}`,
                     color: "gray",
                     marginLeft: "7px",
                     cursor: "pointer",
@@ -41,7 +41,7 @@ const SlickSlider = ({ home, detail }) => {
                 />
                 <input
                   type="text"
-                  className="w-full h-11 max-sm:h-8 rounded-xl pl-11 text-lg outline-none placeholder:text-orange-600 placeholder:font-medium max-sm:text-xs"
+                  className="w-full h-11 max-sm:h-8 max-sm:pl-7 rounded-xl pl-11 text-lg outline-none placeholder:text-orange-600 placeholder:font-medium max-sm:text-xs"
                   placeholder="Vui lòng nhập từ khóa sản phẩm"
                 />
               </div>

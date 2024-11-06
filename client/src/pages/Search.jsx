@@ -4,10 +4,11 @@ import { useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 const Search = () => {
   const [dropDown, setDropDown] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
-
+  const navigate = useNavigate()
   return (
     <div className="w-full h-screen text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-8 ">
       <div className="flex items-center ">
@@ -15,6 +16,7 @@ const Search = () => {
           <KeyboardArrowLeftIcon
             sx={{ fontSize: `${isMobile ? "30px" : "50px"}`, }}
             onClick={() => window.history.back()}
+            
           />
           <span className="text-blue-600 max-sm:text-sm">Hàng hóa</span>
           <div className="relative">
@@ -27,10 +29,10 @@ const Search = () => {
             />
             {dropDown && (
               <div className="absolute w-24 h-40 max-sm:h-24 max-sm:py-4 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
-                <div className="h-[50%]  w-full border-b">
+                <div className="h-[50%] w-full cursor-pointer border-b">
                   <p className="text-xl text-center text-blue-500  max-sm:text-xs">Hàng hóa</p>
                 </div>
-                <div className="h-[50%] w-full ">
+                <div className="h-[50%] w-full cursor-pointer " onClick={() => navigate("/store")}>
                   <p className="text-xl text-center text-blue-500  max-sm:text-xs">Cửa hàng</p>
                 </div>
               </div>

@@ -8,7 +8,7 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import Card_Product from "@/components/Card_Product";
-const List_product = () => {
+const Store_detail = () => {
     const [activeTab, setActiveTab] = useState('all');
 
     const isMobile = useMediaQuery("(max-width:600px)");
@@ -45,7 +45,7 @@ const List_product = () => {
             onClick={() => window.history.back()}
           />       
       </div>
-        <div className="flex items-center relative w-[90%] px-2">
+        {/* <div className="flex items-center relative w-[90%] px-2">
             <SearchOutlinedIcon
                   className="absolute"
                   sx={{
@@ -60,7 +60,7 @@ const List_product = () => {
                   className="w-full h-11 max-sm:h-8 max-sm:pl-7 rounded-full bg-gray-100  pl-11 text-lg outline-none placeholder:text-orange-600 placeholder:font-medium max-sm:text-xs"
                   placeholder="Tìm kiếm sản phẩm"
             />
-        </div>
+        </div> */}
         </div>
        <div className="w-full overflow-x-hidden border-none ">
     <Tabs defaultValue="all" className="w-full h-full ">
@@ -166,8 +166,7 @@ const List_product = () => {
         
     </Tabs>
   </div></div>
-  
   )
 }
 
-export default List_product
+export default Store_detail

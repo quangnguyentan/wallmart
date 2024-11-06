@@ -18,7 +18,7 @@ const TabsVerticel = () => {
            {listLeftCategories?.map((category) => (
              <TabsTrigger 
               key={category.id}
-              className={`text-xs font-semibold  ${activeTab === category.id  ? 'custom-hover' : 'text-gray-500'}`} 
+              className={`text-xs font-semibold  max-sm:text-[10px] ${activeTab === category.id  ? 'custom-hover' : 'text-gray-500'}`} 
               value={category.id}
               onClick={() => setActiveTab(category.id)}
           >
