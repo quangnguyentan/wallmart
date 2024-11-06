@@ -28,9 +28,10 @@ import {
 const Detail_product = () => {
   const [dropDown, setDropDown] = useState(false);
   const [drawerBottom, setDrawerBottom] = useState(false)
+  const [isSelected, setIsSelected] = useState([])
   const isMobile = useMediaQuery("(max-width:600px)");
 
-
+  
   return (
     <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
       <div className="flex items-center">
@@ -50,7 +51,7 @@ const Detail_product = () => {
               onClick={() => setDropDown(!dropDown)}
             />
             {dropDown && (
-              <div className="absolute w-24 h-40 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
+              <div className="absolute z-50 w-24 h-40 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
                 <div className="h-[50%] w-full border-b">
                   <p className="text-xl text-center text-blue-500 max-sm:text-base">Hàng hóa</p>
                 </div>
