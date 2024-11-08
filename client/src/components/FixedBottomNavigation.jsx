@@ -13,7 +13,10 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import Classify from "./Classify";
 import Cart from "./Cart";
+import { useMediaQuery } from "@mui/material";
 export default function FixedBottomNavigation() {
+  const isMobile = useMediaQuery("(max-width:600px)");
+
   const messageExamples = [
     {
       page: <HomePage />,
@@ -86,7 +89,7 @@ export default function FixedBottomNavigation() {
             icon={
               <HomeOutlinedIcon
                 sx={{
-                  fontSize: 30,
+                  fontSize: `${isMobile ? "20px" : "30px"}`,
                   "&:focus": {
                     color: "#ff9e66",
                   },
@@ -112,7 +115,7 @@ export default function FixedBottomNavigation() {
             icon={
               <CategoryOutlinedIcon
                 sx={{
-                  fontSize: 30,
+                  fontSize: `${isMobile ? "20px" : "30px"}`,
                   "&:focus": {
                     color: "#ff9e66",
                   },
@@ -138,7 +141,7 @@ export default function FixedBottomNavigation() {
             icon={
               <ShoppingCartOutlinedIcon
                 sx={{
-                  fontSize: 30,
+                  fontSize: `${isMobile ? "20px" : "30px"}`,
                   "&:focus": {
                     color: "#ff9e66",
                   },
@@ -164,7 +167,7 @@ export default function FixedBottomNavigation() {
             icon={
               <PersonOutlineOutlinedIcon
                 sx={{
-                  fontSize: 30,
+                  fontSize: `${isMobile ? "20px" : "30px"}`,
                   "&:focus": {
                     color: "#ff9e66",
                   },

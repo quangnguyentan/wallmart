@@ -68,7 +68,7 @@ const List_product = () => {
         <TabsList className="w-full flex justify-between px-8 overflow-x-scroll scrollbar-hide ">
         <TabsTrigger 
                  value="all" 
-                 className={`max-sm:text-xs text-2xl ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
+                 className={`max-sm:text-xs text-xl ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
                  onClick={() => setActiveTab("all")}
             >
                <div className="flex items-center justify-center gap-1">
@@ -77,14 +77,14 @@ const List_product = () => {
                </div>
             </TabsTrigger>
         <TabsTrigger 
-                className={`max-sm:text-xs text-2xl ${activeTab === 'sell' ? ` background-custom ` : 'text-gray-500'}`} 
+                className={`max-sm:text-xs text-xl ${activeTab === 'sell' ? ` background-custom ` : 'text-gray-500'}`} 
                 value="sell" 
                 onClick={() => setActiveTab("sell")}
             >
                 Bán hàng
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs text-2xl cursor-default ${activeTab === 'price' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs text-xl cursor-default ${activeTab === 'price' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="price"
                 onClick={() => setActiveTab("price")}
             >

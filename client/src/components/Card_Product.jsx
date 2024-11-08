@@ -3,6 +3,7 @@ import product_test1 from "@/assets/product_test1.jpg";
 import loading from "@/assets/loading.gif";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { list_product } from "@/lib/helper";
 
 const Card_Product = ({ profile, hidden }) => {
   const scrollToTop = () => {
@@ -31,24 +32,26 @@ const Card_Product = ({ profile, hidden }) => {
         </div>
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4 ">
-        <Link to="/detail-product">
-        <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
-          <img
-            src={product_test}
-            alt="product_test"
-            className="h-[256px] max-sm:h-[180px] w-full object-cover"
-          />
-          <div className="flex flex-col gap-2 px-2">
-            <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
-              Grocery & Gourmet Food
-            </span>
-            <span className="text-[#ed5435] font-semibold text-2xl  max-sm:text-base max-sm:font-semibold">
-              $41.89
-            </span>
-          </div>
-        </div>
-        </Link>
-        <Link to="/detail-product">
+       {list_product.map((product) => (
+         <Link to="/detail-product" key={product.id}>
+         <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
+           <img
+             src={product.image}
+             alt="product_test"
+             className="h-[256px] max-sm:h-[180px] w-full object-cover"
+           />
+           <div className="flex flex-col gap-2 px-2">
+             <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
+               {product.title}
+             </span>
+             <span className="text-[#ed5435] font-semibold text-2xl  max-sm:text-base max-sm:font-semibold">
+                {product.price}
+             </span>
+           </div>
+         </div>
+         </Link>
+       ))}
+        {/* <Link to="/detail-product">
         <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2">
           <img
             src={product_test1}
@@ -68,7 +71,7 @@ const Card_Product = ({ profile, hidden }) => {
             </span>
           </div>
         </div>
-        </Link>
+        </Link> */}
         
        
       </div>

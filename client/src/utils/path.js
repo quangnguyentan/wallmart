@@ -8,7 +8,6 @@ const path = {
   SETTING: "setting",
   STORE: "STORE",
   DETAIL_STORE: "detail-store",
-
-  
+  ORDER: "order",
 };
 export default path;

@@ -56,7 +56,7 @@ const Login = () => {
       <TabsContent value="email" className="w-[450px] max-sm:w-[350px]">
       <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập số điện thoại" />
+       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập email" />
        <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập mật khẩu" />
        </div>
         <div className="flex gap-2 items-center max-sm:text-xs max-sm:gap-1">
@@ -88,8 +88,8 @@ const Login = () => {
         </div>
         <Tabs defaultValue="phone" className="w-[450px] max-sm:w-[350px]">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="phone"  className={`text-lg max-sm:text-base ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => setActiveTab("phone")}>Đăng nhập di động</TabsTrigger>
-        <TabsTrigger value="email" className={`text-lg max-sm:text-base ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => setActiveTab("email")}>Đăng nhập hộp thư</TabsTrigger>
+        <TabsTrigger value="phone"  className={`text-lg max-sm:text-base ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => setActiveTab("phone")}>Đăng ký di động</TabsTrigger>
+        <TabsTrigger value="email" className={`text-lg max-sm:text-base ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => setActiveTab("email")}>Đăng ký hộp thư</TabsTrigger>
       </TabsList>
       <TabsContent value="phone" className="w-[450px] max-sm:w-[350px]">
        <div className="flex flex-col gap-10 py-8">
@@ -112,7 +112,7 @@ const Login = () => {
       <TabsContent value="email" className="w-[450px] max-sm:w-[350px]">
       <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-       <input type="text" className="h-12 max-sm:placeholder:text-xs px-4 shadow-sm outline-none font-medium placeholder:text-gray-white" placeholder="Vui lòng nhập số điện thoại" />
+       <input type="text" className="h-12 max-sm:placeholder:text-xs px-4 shadow-sm outline-none font-medium placeholder:text-gray-white" placeholder="Vui lòng nhập email" />
        <input type="text" className="h-12 max-sm:placeholder:text-xs px-4 shadow-sm outline-none font-medium placeholder:text-gray-white" placeholder="Vui lòng nhập mật khẩu" />
        </div>
         <div className="flex gap-2 items-center max-sm:text-xs">

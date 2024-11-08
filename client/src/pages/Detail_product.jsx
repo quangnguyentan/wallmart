@@ -269,7 +269,7 @@ const Detail_product = () => {
                   </div>
                   </div>
                 :   <div className="flex items-center gap-2">
-                <img src={product_demo} alt="product_demo" className="w-36 h-36" />
+                <img src={product_demo} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
                 <div className="flex flex-col items-start w-full py-4 px-2 gap-2 bg-white rounded-xl">
                     <div className="flex items-center gap-4 ">
                         <span className="text-3xl text-[#fe5000] max-sm:text-base">$27.99</span>
@@ -292,10 +292,10 @@ const Detail_product = () => {
                  
               </div>
               
-              <div className="grid grid-cols-3 gap-4 max-sm:text-xs">
+              <div className="grid grid-cols-3 gap-2 max-sm:text-xs">
                 {productColor.map((product) => (
                      <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 cursor-pointer" key={product.id} onClick={() => onSelectProduct(product)}>
-                     <img src={product.img} alt="demo_product_img" className="w-7 h-7 mix-blend-darken" />
+                     <img src={product.img} alt="demo_product_img" className="w-7 h-7 max-sm:h-4 max-sm:w-4 mix-blend-darken" />
                      <span className="font-semibold line-clamp-1">{product.name}</span>
                     </div>
                 ))}
@@ -304,7 +304,7 @@ const Detail_product = () => {
                  
               </div>
           </div>
-          <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl border-b">
+          <div className="flex flex-col w-full pb-4 px-2 gap-2 bg-white rounded-xl border-b">
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
                   <span className="text-xl font-semibold  max-sm:text-sm">Sizes</span>
                  
@@ -345,7 +345,7 @@ const Detail_product = () => {
                  
               </div>
           </div>
-          <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl border-b">
+          <div className="flex flex-col w-full pb-4 px-2 gap-2 bg-white rounded-xl border-b">
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
                   <span className="text-xl font-semibold max-sm:text-sm">Quantity</span>
                   <div className="flex items-center gap-2 border rounded-[4px]">
