@@ -27,36 +27,44 @@ const getCurrent = async (req, res) => {
     });
   }
 };
-const addToCart = async (req, res) => {
-  const { id } = req.currentUser
-  console.log(id)
-  const { product, quantity, color, size } = req.body
-  if(!id) res.status(400).json({
-    err: 1,
-    msg: "missing input",
-  });
+const addToCart = async (req, res, next) => {
+  const { id } = req.currentUser;
+  console.log(id);
+  const { product, quantity, color, size } = req.body;
+  if (!id)
+    res.status(400).json({
+      err: 1,
+      msg: "missing input",
+    });
   try {
-    const findUser = await users.findById(id)
-    console.log(findUser)
-    if(findUser?.cart.length > 0) {
-
-    }else {
-      const user = await users.findByIdAndUpdate({
-        findUser,
-        $push : {
-          cart : [{ quantity : quantity, product: product, color, size }],
-        }
+    const findUser = await users.findById(id);
+    console.log(findUser);
+    if (!findUser) {
+      return res.status(404).json({
+        err: 1,
+        msg: "User not found",
       });
-  
-      const savedData = await user.save();
     }
-    
-
-    res.json(savedData);
+    let cartUpdated = false;
+    findUser.cart.forEach((cartItem) => {
+      if (
+        cartItem.product.toString() === product &&
+        cartItem.color === color &&
+        cartItem.size === size
+      ) {
+        cartItem.quantity += Number(quantity);
+        cartUpdated = true;
+      }
+    });
+    if (!cartUpdated) {
+      findUser.cart.push({ product, quantity, color, size });
+    }
+    const updatedUser = await findUser.save();
+    res.json(updatedUser);
   } catch (e) {
     next(e);
   }
-}
+};
 const getAllUsers = async (req, res) => {
   try {
     const user = await users.find();
@@ -295,5 +303,5 @@ module.exports = {
   getDeleteUserById,
   getGetUserById,
   DepositUser,
-  addToCart
+  addToCart,
 };
