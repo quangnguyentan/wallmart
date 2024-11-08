@@ -32,12 +32,12 @@ export default function FixedBottomNavigation() {
     },
   ];
   if (!localStorage.getItem("page")) {
-    localStorage.setItem("page", 2);
+    localStorage.setItem("page", 0);
   }
   const page = localStorage.getItem("page");
   const [value, setValue] = useState(Number(page));
   const [activeComponent, setActiveComponent] = useState(
-    messageExamples[2].page
+    messageExamples[0].page
   );
   useEffect(() => {
     setActiveComponent(messageExamples[value].page);

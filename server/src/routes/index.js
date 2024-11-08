@@ -1,14 +1,16 @@
 const authRouter = require("./auth");
-const collectionRouter = require("./match");
+// const collectionRouter = require("./match");
 const userRouter = require("./user");
-const evaluateRouter = require("./evaluate");
-const withDrawAndDepositRouter = require("./withDrawAndDeposit");
+const storeRouter = require("./store");
+const productRouter = require("./product");
+
 
 const initRoutes = (app) => {
   app.use("/api/auth", authRouter);
-  app.use("/api/match", collectionRouter);
+  // app.use("/api/match", collectionRouter);
   app.use("/api/users", userRouter);
-  app.use("/api/evaluate", evaluateRouter);
-  app.use("/api/transform", withDrawAndDepositRouter);
+  app.use("/api/store", storeRouter);
+  app.use("/api/product", productRouter);
+
 };
 module.exports = initRoutes;

@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 const userSchema = new mongoose.Schema(
   {
     username: String,
@@ -21,8 +23,20 @@ const userSchema = new mongoose.Schema(
     creditCartOfBank: {
       type: String,
     },
-    result: Array,
-    periodNumber: Array,
+    cart : [
+      {
+        product: { type: Schema.Types.ObjectId, ref: 'store' },
+        quantity : Number,
+        color : String,
+        size: String,
+      }
+      
+    ],
+    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'store' }],
+    isBlocked: {
+        type: Boolean,
+        default: false
+    },
     createdAt: Array,
     deposit: {
       type: Number,
@@ -36,7 +50,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
+      enum: ["user", "admin", "agent"],
       default: "user",
     },
     password: String,

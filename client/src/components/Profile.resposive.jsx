@@ -48,44 +48,44 @@ const Profile = () => {
               </Link>
             </div>
           </div>
-          <div className="flex items-center justify-between px-2 gap-4 max-sm:text-xs">
-            <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
+            <div className="flex flex-col items-center gap-1 ">
               <img
                 src={icon_myWaitPay}
                 alt="icon_myWaitPay"
-                className="w-10 h-10 max-sm:w-5 max-sm:h-5"
+                className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-              <span className="line-clamp-1">Đang chờ thanh toán</span>
+              <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1 ">
               <img
                 src={icon_myWaitDeliver}
                 alt="icon_myWaitDeliver"
-                className="w-10 h-10 max-sm:w-5 max-sm:h-5"
+                className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1 ">
               <img
                 src={icon_myTakeGoods}
                 alt="icon_myTakeGoods"
-                className="w-10 h-10 max-sm:w-5 max-sm:h-5"
+                className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
               <span className="line-clamp-1">Đang vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1 ">
               <img
                 src={icon_myWaitComent}
                 alt="icon_myWaitComent"
-                className="w-10 h-10 max-sm:w-5 max-sm:h-5"
+                className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
               <span className="line-clamp-1">Đơn hoàn thành</span>
             </div>
-            <div className="flex flex-col items-center gap-1">
+            <div className="flex flex-col items-center gap-1 ">
               <img
                 src={icon_myWaitReturn}
                 alt="icon_myWaitReturn"
-                className="w-10 h-10 max-sm:w-5 max-sm:h-5"
+                className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
               <span className="line-clamp-1">Sau bán hàng</span>
             </div>

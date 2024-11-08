@@ -1,8 +1,6 @@
 const users = require("../models/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const withDraw = require("../models/withDraw");
-const timeEnd = require("../models/timeEnd");
 
 require("dotenv").config();
 const hashPassword = (password) =>
@@ -29,6 +27,36 @@ const getCurrent = async (req, res) => {
     });
   }
 };
+const addToCart = async (req, res) => {
+  const { id } = req.currentUser
+  console.log(id)
+  const { product, quantity, color, size } = req.body
+  if(!id) res.status(400).json({
+    err: 1,
+    msg: "missing input",
+  });
+  try {
+    const findUser = await users.findById(id)
+    console.log(findUser)
+    if(findUser?.cart.length > 0) {
+
+    }else {
+      const user = await users.findByIdAndUpdate({
+        findUser,
+        $push : {
+          cart : [{ quantity : quantity, product: product, color, size }],
+        }
+      });
+  
+      const savedData = await user.save();
+    }
+    
+
+    res.json(savedData);
+  } catch (e) {
+    next(e);
+  }
+}
 const getAllUsers = async (req, res) => {
   try {
     const user = await users.find();
@@ -267,4 +295,5 @@ module.exports = {
   getDeleteUserById,
   getGetUserById,
   DepositUser,
+  addToCart
 };

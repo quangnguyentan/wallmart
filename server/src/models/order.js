@@ -11,10 +11,10 @@ const OrderSchema = new Schema({
     type: String,
     required: true,
   },
-  items: [
+  shop: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'product',
+      ref: 'store',
     },
   ],
   createdAt: {
