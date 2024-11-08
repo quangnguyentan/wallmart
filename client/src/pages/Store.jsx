@@ -30,7 +30,7 @@ const Store = () => {
               onClick={() => setDropDown(!dropDown)}
             />
             {dropDown && (
-              <div className="absolute w-24 h-40 max-sm:h-24 max-sm:py-4 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
+              <div className="absolute z-50 w-24 h-40 max-sm:h-20 max-sm:py-4 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
                 <div className="h-[50%]  w-full border-b">
                   <p className="text-xl text-center text-blue-500  max-sm:text-xs">Hàng hóa</p>
                 </div>
@@ -62,10 +62,10 @@ const Store = () => {
         <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center gap-2">
-            <img src={logo_brand} alt="logo_brand" className="w-16 h-16 mix-blend-darken" />
-            <div className="flex flex-col ">
-               <span className="text-lg  max-sm:text-sm font-semibold text-black"> Tinnn STORE</span>
-               <span className="text-lg  max-sm:text-sm font-semibold text-black">20Người đã follow</span>
+            <img src={logo_brand} alt="logo_brand" className="w-16 h-16 max-sm:w-12 max-sm:h-12 mix-blend-darken" />
+            <div className="flex flex-col max-sm:gap-2">
+               <span className="text-lg  max-sm:text-xs font-semibold text-black"> Tinnn STORE</span>
+               <span className="text-lg  max-sm:text-xs font-semibold text-black">20Người đã follow</span>
 
             </div>
             </div>
@@ -75,21 +75,21 @@ const Store = () => {
         </div>
         <div className="grid grid-cols-3">
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={iphone} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={iphone} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={cloth} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={cloth} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={cloth} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={cloth} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             
@@ -98,10 +98,10 @@ const Store = () => {
         <div className="flex flex-col gap-2">
         <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center gap-2">
-            <img src={logo_brand} alt="logo_brand" className="w-16 h-16 mix-blend-darken" />
-            <div className="flex flex-col ">
-               <span className="text-lg  max-sm:text-sm font-semibold text-black"> Tinnn STORE</span>
-               <span className="text-lg  max-sm:text-sm font-semibold text-black">20Người đã follow</span>
+            <img src={logo_brand} alt="logo_brand" className="w-16 h-16  max-sm:w-12 max-sm:h-12 mix-blend-darken" />
+            <div className="flex flex-col max-sm:gap-2">
+               <span className="text-lg  max-sm:text-xs font-semibold text-black"> Tinnn STORE</span>
+               <span className="text-lg  max-sm:text-xs font-semibold text-black">20Người đã follow</span>
 
             </div>
             </div>
@@ -111,21 +111,21 @@ const Store = () => {
         </div>
         <div className="grid grid-cols-3">
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={iphone} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={iphone} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={cloth} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={cloth} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             <div className="flex flex-col gap-1 px-2 ">
-                <img src={cloth} alt="iphone" className="h-44 mix-blend-darken rounded-xl shadow-xl object-cover" />
-                <span className="line-clamp-1">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
-                <span className="line-clamp-1">$1119.30</span>
+                <img src={cloth} alt="iphone" className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover" />
+                <span className="line-clamp-1 max-sm:text-xs">Apple iPhone 16 Pro Max (1 TB) - White Titanium. Apple Intelligence.</span>
+                <span className="line-clamp-1 max-sm:text-xs">$1119.30</span>
 
             </div>
             

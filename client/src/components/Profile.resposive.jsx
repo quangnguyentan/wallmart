@@ -23,7 +23,7 @@ const Profile = () => {
   const navigate = useNavigate()
   return (
     <div className="w-full bg-gray-50 h-screen">
-      <div className="bg-blue-600 opacity-80 w-full h-56 flex items-center gap-2 px-2 justify-between   ">
+      <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
         <div>
           <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />
       <Link to="/login" >
@@ -40,10 +40,12 @@ const Profile = () => {
           <div className=" flex flex-col">
             <div className="flex items-center justify-between px-2">
               <span className="text-xl font-bold max-sm:text-sm">Đơn của tôi</span>
+              <Link to="/order">
               <div className="text-gray-500 flex items-center gap-2">
                 <span className=" max-sm:text-xs">Xem tất cả</span>
-                <ArrowForwardIosIcon sx={{ fontSize : `${isMobile ? "12px" : "20px"}` }} />
+                <ArrowForwardIosIcon sx={{ fontSize : `${isMobile ? "12px" : "20px"}`, cursor : "pointer" }} />
               </div>
+              </Link>
             </div>
           </div>
           <div className="flex items-center justify-between px-2 gap-4 max-sm:text-xs">

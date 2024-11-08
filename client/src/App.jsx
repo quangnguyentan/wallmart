@@ -13,6 +13,7 @@ import { Toaster } from "react-hot-toast";
 import Setting from "./pages/Setting";
 import Store from "./pages/Store";
 import Store_detail from "./pages/Store_detail";
+import Order from "./pages/Order";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   return (
@@ -30,6 +31,8 @@ function App() {
             <Route path={path.SETTING} element={<Setting />} />
             <Route path={path.STORE} element={<Store />} />
             <Route path={path.DETAIL_STORE} element={<Store_detail />} />
+            <Route path={path.ORDER} element={<Order />} />
+
 
           </Route>
         ) : (
@@ -42,12 +45,7 @@ function App() {
             <Route path={path.SETTING} element={<Setting />} />
             <Route path={path.STORE} element={<Store />} />
             <Route path={path.DETAIL_STORE} element={<Store_detail />} />
-
-
-
-
-
-
+            <Route path={path.ORDER} element={<Order />} />
           </Route>
         )}
       </Routes>

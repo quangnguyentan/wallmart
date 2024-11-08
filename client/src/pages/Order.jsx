@@ -5,18 +5,14 @@ import { useMediaQuery } from "@mui/material";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
-import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
-import Card_Product from "@/components/Card_Product";
-import GridViewIcon from '@mui/icons-material/GridView';
-import logo_brand from "@/assets/logo_brand.jpg"
-import { useNavigate } from "react-router-dom";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-const Store_detail = () => {
+import Card_Order from "@/components/Card_Order";
+import EmptyOrder from "@/components/EmptyOrder";
+const Order = () => {
     const [activeTab, setActiveTab] = useState('all');
 
     const isMobile = useMediaQuery("(max-width:600px)");
     const [visible, setVisible] = useState(false);
-    const navigate = useNavigate()
+    console.log(window.pageYOffset);
     const toggleVisibility = () => {
       if (window.pageYOffset >= 120) {
         setVisible(true);
@@ -40,16 +36,15 @@ const Store_detail = () => {
     }, []);
   return (
     <div className="bg-[#f5f5f5] h-screen overflow-x-scroll scrollbar-hide">
-        <div className="w-full flex items-center bg-white py-2 justify-between px-2">
-      <div className="">
+        <div className="w-full flex items-center bg-white py-2">
+      <div className="w-[10%]">
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "35px" : "50px"}`}}
             className="text-gray-400 cursor-pointer"
             onClick={() => window.history.back()}
-          />   
+          />       
       </div>
-      <h3 className="text-gray-500 font-semibold text-xl max-sm:text-base">Tinnn STORE</h3>    
-      <GridViewIcon sx={{ fontSize : `${isMobile ? "20px" : "30px"}`, color : "gray" }}/>
+      <h3 className="text-gray-600 font-semibold text-center w-full max-sm:text-sm">Đặt hàng</h3>
         {/* <div className="flex items-center relative w-[90%] px-2">
             <SearchOutlinedIcon
                   className="absolute"
@@ -67,71 +62,67 @@ const Store_detail = () => {
             />
         </div> */}
         </div>
-        <div className="px-2 py-2">
-          <div className="py-8 bg-white px-2 rounded-xl flex items-center justify-between">
-          <img src={logo_brand} className="w-[73px] h-[73px] max-sm:w-18 max-sm:h-18 mix-blend-darken " alt="logo_brand" />
-            <div className="flex flex-col gap-2 ">
-            <span className="text-gray-500 text-xl font-semibold max-sm:text-xs">Tinnn STORE</span>
-            <div className="w-48 max-sm:h-9 max-sm:w-32 h-18 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" onClick={() => navigate("/detail-store")}>
-                <span className="text-[#f90] max-sm:text-xs max-sm:text-center" >Thương hiệu Trực Doanh</span>
-            </div>
-            </div>
-            <div className="flex flex-col items-center text-gray-500 max-sm:text-xs">
-              <span>Người theo dõi:</span>
-              <span>20</span>
-            </div>
-            <div className="flex flex-col items-center text-gray-500 max-sm:text-xs">
-              <FavoriteBorderIcon sx={{ color : "orange" }}/>
-              <span>Theo dõi</span>
-            </div>
-          </div>
-          
-        </div>
        <div className="w-full overflow-x-hidden border-none ">
     <Tabs defaultValue="all" className="w-full h-full ">
-      <div className="w-full flex flex-col z-40 px-2 bg-white outline-none overflow-hidden ">
-        <TabsList className="w-full flex justify-between px-8 overflow-x-scroll scrollbar-hide ">
+      <div className="w-full flex flex-col z-40 px-2 bg-white outline-none overflow-hidden whitespace-nowrap ">
+        <TabsList className="w-full flex justify-between px-4  overflow-x-scroll scrollbar-hide ">
         <TabsTrigger 
                  value="all" 
-                 className={`max-sm:text-xs text-lg ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
+                 className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
                  onClick={() => setActiveTab("all")}
             >
-               <div className="flex items-center justify-center gap-1">
-                    <span className="font-bold ">Sắp xếp</span>
-                    {/* <HomeIcon fontSize="small"/> */}
+               <div className="flex items-center gap-1">
+                    <span className="font-bold ">Tất cả</span>
                </div>
             </TabsTrigger>
         <TabsTrigger 
-                className={`max-sm:text-xs text-lg ${activeTab === 'sell' ? ` background-custom ` : 'text-gray-500'}`} 
-                value="sell" 
-                onClick={() => setActiveTab("sell")}
+                className={`max-sm:text-xs  h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 ${activeTab === 'waitPayment' ? ` background-custom ` : 'text-gray-500'}`} 
+                value="waitPayment" 
+                onClick={() => setActiveTab("waitPayment")}
             >
-                Ưu tiên
+                Đang chờ thanh toán
             </TabsTrigger>
-        
             <TabsTrigger 
-                className={`max-sm:text-xs text-lg cursor-default ${activeTab === 'price' ? 'background-custom  ' : 'text-gray-500'}`} 
-                value="price"
-                onClick={() => setActiveTab("price")}
+                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
+                value="waitDelivery"
+                onClick={() => setActiveTab("waitDelivery")}
             >
-               <div className="flex items-center justify-center gap-2">
-                 <span className="cursor-pointer">Giá cả</span>
-               <SwapVertOutlinedIcon sx={{ fontSize : `${isMobile && "18px"}` }} className="cursor-pointer"/>
+               <div className="flex items-center gap-2">
+                 <span className="cursor-pointer">Vận chuyển</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs text-lg ${activeTab === 'product' ? ` background-custom ` : 'text-gray-500'}`} 
-                value="product" 
-                onClick={() => setActiveTab("product")}
+                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Delivering' ? 'background-custom  ' : 'text-gray-500'}`} 
+                value="Delivering"
+                onClick={() => setActiveTab("Delivering")}
             >
-                Sản phẩm
-        </TabsTrigger>
-      
+               <div className="flex items-center  gap-2">
+                 <span className="cursor-pointer">Đang vận chuyển</span>
+               </div>
+            </TabsTrigger>
+            <TabsTrigger 
+                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Successful' ? 'background-custom  ' : 'text-gray-500'}`} 
+                value="Successful"
+                onClick={() => setActiveTab("Successful")}
+            >
+               <div className="flex items-center  gap-2">
+                 <span className="cursor-pointer">Đơn hoàn thành</span>
+               </div>
+            </TabsTrigger>
+            <TabsTrigger 
+                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Cancel' ? 'background-custom  ' : 'text-gray-500'}`} 
+                value="Cancel"
+                onClick={() => setActiveTab("Cancel")}
+            >
+               <div className="flex items-center  gap-2">
+                 <span className="cursor-pointer">Đã hủy</span>
+               </div>
+            </TabsTrigger>
         </TabsList>
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Product hidden/>
+        <Card_Order hidden/>
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -152,8 +143,8 @@ const Store_detail = () => {
       </div>
       </TabsContent>
       </div>
-      <TabsContent value="sell">
-      <Card_Product hidden/>
+      <TabsContent value="waitPayment">
+      <EmptyOrder hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -174,8 +165,9 @@ const Store_detail = () => {
       </div>
       </TabsContent>
       
-      <TabsContent value="price"> 
-      <Card_Product hidden/>
+      <TabsContent value="waitDelivery"> 
+      <EmptyOrder hidden/>
+
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -195,8 +187,53 @@ const Store_detail = () => {
         )}
       </div>
       </TabsContent>
-      <TabsContent value="product"> 
-      <Card_Product hidden/>
+      <TabsContent value="Delivering"> 
+      <EmptyOrder hidden/>
+
+      <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
+        {visible && (
+          <ArrowUpwardOutlinedIcon
+            fontSize="large"
+            onClick={scrollToTop}
+            className="responsive-icon"
+            style={{
+              width: "60px",
+              height: "60px",
+              background: "lightgray",
+              border: "none",
+              borderRadius: "100%",
+              padding: "10px",
+              cursor: "pointer",
+            }}
+          />
+        )}
+      </div>
+      </TabsContent>
+      <TabsContent value="Successful"> 
+      <EmptyOrder hidden/>
+
+      <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
+        {visible && (
+          <ArrowUpwardOutlinedIcon
+            fontSize="large"
+            onClick={scrollToTop}
+            className="responsive-icon"
+            style={{
+              width: "60px",
+              height: "60px",
+              background: "lightgray",
+              border: "none",
+              borderRadius: "100%",
+              padding: "10px",
+              cursor: "pointer",
+            }}
+          />
+        )}
+      </div>
+      </TabsContent>
+      <TabsContent value="Cancel"> 
+      <EmptyOrder hidden/>
+
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -218,7 +255,8 @@ const Store_detail = () => {
       </TabsContent>
     </Tabs>
   </div></div>
+  
   )
 }
 
-export default Store_detail
+export default Order
