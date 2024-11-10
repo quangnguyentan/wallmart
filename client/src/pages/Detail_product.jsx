@@ -1,6 +1,6 @@
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -9,7 +9,7 @@ import SlickSlider from "@/components/SlickSlider";
 import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import product_demo from "@/assets/product_demo.jpg";
 import img_demo_grey from "@/assets/img_demo_grey.jpg";
@@ -29,6 +29,9 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import toast, { Toaster } from "react-hot-toast";
+import { apiGetProductById, apiGetProductByShop } from "@/services/productService";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrent } from "@/stores/actions/userAction";
 const productColor = [
   {
     id : 1,
@@ -62,13 +65,21 @@ const productColor = [
   },
 ]
 const Detail_product = () => {
+  const { id } = useParams()
   const [dropDown, setDropDown] = useState(false);
   const [drawerBottom, setDrawerBottom] = useState(false)
+  const [products, setProducts] = useState([])
+  const [store, setStore] = useState([])
   const [isSelected, setIsSelected] = useState([])
   const [quantity, setQuantity] = useState(1)
 
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
+  const fetchProductById = async(id) => {
+    const res = await apiGetProductByShop(id)
+    setProducts(res?.products)
+    setStore(res?.store[0])
+  }
   const onChangeQuantity = (type) => {
     if(type === "increment") {
       setQuantity(quantity + 1)
@@ -80,13 +91,17 @@ const Detail_product = () => {
   const onSelectProduct = (product) => {
     setIsSelected(product)
   }
+  useEffect(() => {
+    fetchProductById(id)
+  },[])
+ 
  
   return (
     <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
       <div className="flex items-center">
         <div className="flex items-center justify-between flex-4 ">
           <KeyboardArrowLeftIcon
-             sx={{ fontSize  :  `${isMobile ? "30px" : "50px"}`}}
+             sx={{ fontSize  :  `${isMobile ? "30px" : "50px"}`, cursor : "pointer"}}
             
             onClick={() => window.history.back()}
           />
@@ -96,7 +111,7 @@ const Detail_product = () => {
               fontSize={`${isMobile ? "small" : "large"}`}
               className={`${
                 dropDown ? "rotate-180 transform" : ""
-              } transition-transform duration-700 ease-in-out delay-150 text-blue-600`}
+              } transition-transform duration-700 ease-in-out delay-150 text-blue-600 cursor-pointer`}
               onClick={() => setDropDown(!dropDown)}
             />
             {dropDown && (
@@ -130,17 +145,17 @@ const Detail_product = () => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <SlickSlider detail/>
+        <SlickSlider detail products={products?.photos}/>
         <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl">
             <div className="flex items-center gap-4 ">
-                <span className="text-3xl max-sm:text-lg text-[#fe5000]">$27.99</span>
+                <span className="text-3xl max-sm:text-lg text-[#fe5000]">${products?.price}</span>
                <div className="">
                 <span className="max-sm:text-xs">Giá cả </span>
-                <span className="line-through max-sm:text-xs">$39.99</span>
+                <span className="line-through max-sm:text-xs">${products?.priceOld}</span>
                </div>
             </div>
             <span className="max-sm:text-xs">
-            TSIODFO Women's Sneakers Athletic Sport Running Tennis Walking Shoes
+              {products?.title}
             </span>
             <div className="w-32 max-sm:h-6 max-sm:w-28 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border">
                 <span className="text-[#f90] max-sm:text-xs">Tự kinh doanh</span>
@@ -154,7 +169,7 @@ const Detail_product = () => {
                     <span>0 đồng</span>
 
                 </div>
-                <span>Bán hàng: 8</span>
+                <span>Bán hàng: {products?.sold}</span>
             </div>
             
             <div className="flex items-center gap-4 justify-between max-sm:text-xs">
@@ -173,7 +188,7 @@ const Detail_product = () => {
                <div className="flex items-center gap-4 justify-center">
                 <AccountCircleIcon sx={{ fontSize  :  `${isMobile ? "40px" : "70px"}`}} className="text-gray-300"/>
                     <div className="flex flex-col gap-1 ">
-                        <span className="text-xl max-sm:text-sm font-medium text-black">Logistic</span>
+                        <span className="text-xl max-sm:text-sm font-medium text-black">{store?.inforByStore?.nameStore}</span>
                         <span className="text-lg max-sm:text-sm font-medium">ngành toàn diện</span>
 
                     </div>
@@ -209,11 +224,7 @@ const Detail_product = () => {
             <span className="text-xl font-medium text-black max-sm:text-base">Chi tiết</span>
             
           <div className="text-black px-2 w-full break-words max-sm:text-sm">
-            <li>Imported</li>
-            <li>MD+Air Cushion sole</li>
-            <li>COMFORTABLE AND BREATHABLE MATERIAL: Yhoon road running shoes' Upper with breathable lightweight air fly woven,it is excellent,flexible and comfortable.</li>
-            <li>SUITABLE FOR ALL OCCASION:Daily walking,casual running,nursing,working,tennis,shopping,traveling,long standing,outdoor sports,driving,yoga,pilates,dancing and indoor activities,etc.</li>
-            <li>ABOUT SIZE: Please refer to our size chart to choose size.if there's any question,please contact us.</li>
+            <li>{store?.inforByStore?.descriptionStore}</li>
           </div>
         </div>
       </div>

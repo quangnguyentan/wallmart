@@ -18,21 +18,37 @@ import { Link, useNavigate } from "react-router-dom";
 import icon_newsWhite from "@/assets/icon-newsWhite.png"
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useMediaQuery } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getCurrent } from "@/stores/actions/userAction";
 const Profile = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
+  const { currentData } = useSelector((state) => state.user);
   return (
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
-        <div>
+        <div className="flex items-center gap-2">
           <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />
       <Link to="/login" >
-          <span className="text-2xl cursor-pointer hover:text-gray-200 max-sm:text-base">Đăng nhập/Đăng kí</span>
+          {currentData && currentData?.role === "user" ? 
+            <div className="flex flex-col gap-2">
+              <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData?.fullName}</span>
+              <div className="w-40 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" >
+                <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span>
+            </div>
+            </div>
+          : <span className="text-2xl cursor-pointer hover:text-gray-200 max-sm:text-base">Đăng nhập/Đăng kí</span>}
+          
         </Link>
         </div>
         <div className="flex items-center justify-center gap-4">
           <img src={icon_newsWhite} className="h-8 w-8 cursor-pointer max-sm:w-4 max-sm:h-4" alt="icon_newsWhite" />
-          <SettingsOutlinedIcon onClick={() => navigate("/setting")} sx={{ fontSize : `${isMobile ? "20px" : "32px"}`, color : "white", cursor : "pointer" }}/>
+          <SettingsOutlinedIcon onClick={() => {
+            if(currentData) {
+              navigate("/setting")
+            }
+          }} sx={{ fontSize : `${isMobile ? "20px" : "32px"}`, color : "white", cursor : "pointer" }}/>
         </div>
       </div>
       <div className="px-4">

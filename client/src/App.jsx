@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import path from "./utils/path";
 import Public from "./pages/Public";
 import "./index.css";
@@ -14,15 +14,73 @@ import Setting from "./pages/Setting";
 import Store from "./pages/Store";
 import Store_detail from "./pages/Store_detail";
 import Order from "./pages/Order";
+import Portal from "./components/Portal";
+import Dashboard from "./components/Dashboard";
+import Userlist from "./components/Userlist";
+import UserCreate from "./components/UserCreate";
+import UserView from "./components/UserView";
+import UserEdit from "./components/UserEdit";
+import LoginAdmin from "./components/LoginAdmin";
+import { getCurrent } from "./stores/actions/userAction";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "./components/Loader";
+import ProductList from "./components/ProductList";
+import ProductCreate from "./components/ProductCreate";
+import ProductView from "./components/ProductView";
+import ProductEdit from "./components/ProductEdit";
+import StoreList from "./components/StoreList";
+import StoreCreate from "./components/StoreCreate";
+import StoreEdit from "./components/StoreEdit";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [loading, setLoading] = useState(false);
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { currentData } = useSelector((state) => state.user);
+   useEffect(() => {
+    if (isLoggedIn && token) {
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(getCurrent());
+        setLoading(false);
+      }, 500);
+    } 
+  }, [isLoggedIn, token]);
+
   return (
-    <div className="bg-white w-full">
+ <>
+    {loading ? <div className="flex w-full h-screen items-center justify-center">
+      <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif"  /> 
+    </div> : <div className="bg-white w-full">
       <Toaster />
 
       <Routes>
-        {isMobile ? (
-          <Route path={path.PUBLIC} element={<PublicResponsive />}>
+      {currentData && currentData?.role === "admin" ? <Route path='/' element={<Portal />}>
+                <Route path='/' element={<Dashboard />} />
+                <Route path='user-list' element={<Userlist />} />
+                <Route path='create-user' element={<UserCreate />} />
+                <Route path='user-view/:id/:userId' element={<UserView />} />
+                <Route path='user-edit/:id/:userId' element={<UserEdit />} />
+                <Route path='product-list' element={<ProductList />} />
+                <Route path='create-product/:userId' element={<ProductCreate />} />
+                <Route path='product-view/:id/:userId' element={<ProductView />} />
+                <Route path='product-edit/:id' element={<ProductEdit />} />
+                <Route path='store-list' element={<StoreList />} />
+                <Route path='create-store' element={<StoreCreate />} />
+                <Route path='store-view/:id/:userId' element={<StoreCreate />} />
+                <Route path='store-edit/:id/:userId' element={<StoreEdit />} />
+              </Route> : <> 
+            {currentData?.role === "agent" ? <Route path='/' element={<Portal />}>
+                <Route path='dashboard' element={<Dashboard />} />
+                <Route path='user-list' element={<Userlist />} />
+                <Route path='create-user' element={<UserCreate />} />
+                <Route path='user-view/:id' element={<UserView />} />
+                <Route path='user-edit/:id' element={<UserEdit />} />
+              </Route> : <>
+            
+            {isMobile ?   <Route path={path.PUBLIC} element={<PublicResponsive />}>
             <Route path={path.HOME} element={<FixedBottomNavigation />} />
             <Route path={path.SEARCH} element={<Search />} />
             <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
@@ -34,23 +92,27 @@ function App() {
             <Route path={path.ORDER} element={<Order />} />
 
 
-          </Route>
-        ) : (
-          <Route path={path.PUBLIC} element={<Public />}>
-            <Route path={path.HOME} element={<FixedBottomNavigation />} />
-            <Route path={path.SEARCH} element={<Search />} />
-            <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
-            <Route path={path.LIST_PRODUCT} element={<List_product />} />
-            <Route path={path.LOGIN} element={<Login />} />
-            <Route path={path.SETTING} element={<Setting />} />
-            <Route path={path.STORE} element={<Store />} />
-            <Route path={path.DETAIL_STORE} element={<Store_detail />} />
-            <Route path={path.ORDER} element={<Order />} />
-          </Route>
-        )}
-      </Routes>
+          </Route>  :   <Route path={path.PUBLIC} element={<Public />}>
+          <Route path={path.HOME} element={<FixedBottomNavigation />} />
+          <Route path={path.SEARCH} element={<Search />} />
+          <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
+          <Route path={path.LIST_PRODUCT} element={<List_product />} />
+          <Route path={path.LOGIN} element={<Login />} />
+          <Route path={path.SETTING} element={<Setting />} />
+          <Route path={path.STORE} element={<Store />} />
+          <Route path={path.DETAIL_STORE} element={<Store_detail />} />
+          <Route path={path.ORDER} element={<Order />} />
+        </Route>}
+            
+            </>}
+          
+         
+        
+              </> }
+      
+              </Routes>
 
-    </div>
+    </div>}</>
   );
 }
 

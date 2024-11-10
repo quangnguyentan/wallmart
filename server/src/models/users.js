@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
-    username: String,
+    email: String,
+    phone: String,
     avatar: {
       type: String,
       default: "",
@@ -23,19 +24,18 @@ const userSchema = new mongoose.Schema(
     creditCartOfBank: {
       type: String,
     },
-    cart : [
+    cart: [
       {
-        product: { type: Schema.Types.ObjectId, ref: 'store' },
-        quantity : Number,
-        color : String,
+        product: { type: Schema.Types.ObjectId, ref: "store" },
+        quantity: Number,
+        color: String,
         size: String,
-      }
-      
+      },
     ],
-    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'store' }],
+    wishlist: [{ type: mongoose.Types.ObjectId, ref: "store" }],
     isBlocked: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     createdAt: Array,
     deposit: {
