@@ -20,9 +20,8 @@ var settings = {
   autoplay: true,
   autoplaySpeed: 3000,
 };
-const SlickSlider = ({ home, detail }) => {
+const SlickSlider = ({ home, detail, products }) => {
   const isMobile = useMediaQuery("(max-width:600px)");
-
   return (
     <div>
       {home ? (
@@ -96,27 +95,16 @@ const SlickSlider = ({ home, detail }) => {
        <>
        {detail ?  <div className="slider-container bg-white ">
           <Slider {...settings} className="w-full ">
-            <div className="w-full">
+            {products?.map((photo, index) => (
+              <div className="w-full" key={index}>
               <img
-                src={product_demo}
+                src={`http://localhost:8080/images/${photo}`}
                 alt="banner"
                 className="w-full h-full object-contain"
               />
             </div>
-            <div className="w-full">
-              <img
-                src={product_demo}
-                alt="banner"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="w-full">
-              <img
-                src={product_demo}
-                alt="banner"
-                className="w-full h-full object-contain"
-              />
-            </div>
+            ))}
+            
           </Slider>
         </div> :  <div className="slider-container">
           <Slider {...settings} className="w-full p-2 ">

@@ -1,6 +1,7 @@
 const users = require("../models/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+var randomstring = require("randomstring");
 require("dotenv").config();
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(12));
@@ -19,25 +20,40 @@ const getAllUsers = async (req, res) => {
 };
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password)
-      throw new Error("Chưa điền tên đăng nhập hoặc mật khẩu");
-    const response = await users.findOne({ username });
-    const isCorrectPassword =
+    const { phone, password, email } = req.body;
+    console.log(phone, password, email);
+    const response = await users.findOne({ phone });
+    const findEmail = await users.findOne({ email });
+    const isCorrectPasswordByPhone =
       response && bcrypt.compareSync(password, response.password);
-
-    const accessToken =
-      isCorrectPassword &&
-      jwt.sign(
-        { id: response?._id, role: response?.role },
-        process.env.SECRET_KEY,
-        { expiresIn: "2d" }
-      );
+    const isCorrectPasswordByEmail =
+      findEmail && bcrypt.compareSync(password, findEmail.password);
+    let accessToken;
+    console.log(phone, email);
+    if (!!phone) {
+      accessToken =
+        isCorrectPasswordByPhone &&
+        jwt.sign(
+          { id: response?._id, role: response?.role },
+          process.env.SECRET_KEY
+          // { expiresIn: "2d" }
+        );
+    }
+    if (!!email) {
+      accessToken =
+        isCorrectPasswordByEmail &&
+        jwt.sign(
+          { id: findEmail?._id, role: findEmail?.role },
+          process.env.SECRET_KEY
+        );
+    }
 
     return res.status(200).json({
       success: accessToken
         ? 0
-        : isCorrectPassword
+        : isCorrectPasswordByEmail
+        ? isCorrectPasswordByEmail
+        : isCorrectPasswordByPhone
         ? `Đăng nhập thành công! Chào mừnng bạn quay trở lại ${response?.username}`
         : "Tên đăng nhập hoặc mật khẩu không đúng! Vui lòng kiểm tra lại.",
       accessToken: accessToken || null,
@@ -48,15 +64,21 @@ const login = async (req, res) => {
 };
 const register = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    console.log(username, password);
-    if (!username || !password)
-      throw new Error("Bạn chưa điền tên đăng nhập hoặc mật khẩu");
-    let user = await users.findOne({ username });
+    const { phone, password, email } = req.body;
 
-    if (user) throw new Error("Tên đăng nhập đã tồn tại");
+    if (!!email) {
+      let findEmail = await users.findOne({ email });
+      if (findEmail) throw new Error("Email đã tồn tại");
+    }
+    if (!!phone) {
+      let findPhone = await users.findOne({ phone });
+      if (findPhone) throw new Error("Số điện thoại đã tồn tại");
+    }
+    const generate = randomstring.generate({ length: 10 });
     const newUser = await users.create({
-      username: username,
+      phone: phone,
+      email: email,
+      fullName: generate,
       password: hashPassword(password),
     });
 

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { list_product } from "@/lib/helper";
 
-const Card_Product = ({ profile, hidden }) => {
+const Card_Product = ({ profile, hidden, products }) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -15,8 +15,6 @@ const Card_Product = ({ profile, hidden }) => {
   useEffect(() => {
     scrollToTop()
   }, [])
-  
-
   return (
     <div className="flex flex-col gap-2 bg-[#f5f5f5]">
       {!hidden && <div
@@ -32,46 +30,26 @@ const Card_Product = ({ profile, hidden }) => {
         </div>
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4 ">
-       {list_product.map((product) => (
-         <Link to="/detail-product" key={product.id}>
+       {products?.map((product) => (
+         <Link to={`/detail-product/${product?._id}`} key={product._id}>
          <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
            <img
-             src={product.image}
+             src={`http://localhost:8080/images/${product?.photos[0]}`}
              alt="product_test"
              className="h-[256px] max-sm:h-[180px] w-full object-cover"
            />
            <div className="flex flex-col gap-2 px-2">
              <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
-               {product.title}
+               {product?.title}
              </span>
              <span className="text-[#ed5435] font-semibold text-2xl  max-sm:text-base max-sm:font-semibold">
-                {product.price}
+                ${product?.price}
              </span>
            </div>
          </div>
          </Link>
        ))}
-        {/* <Link to="/detail-product">
-        <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2">
-          <img
-            src={product_test1}
-            alt="product_test1"
-            className="h-[256px] max-sm:h-[180px] w-full object-cover"
-          />
-
-          <div className="flex flex-col gap-2 px-2">
-            <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
-       
-              COMFIER Shiatsu Neck Back Massager with Heat, 2D ro 3D Kneading
-              Massage Chair Pad, Adjustable Compression Seat Massager for Full
-              Body Relaxation, Gifts for Women Men,Dark Gray
-            </span>
-            <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base max-sm:font-semibold">
-              $190.32
-            </span>
-          </div>
-        </div>
-        </Link> */}
+      
         
        
       </div>

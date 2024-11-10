@@ -8,9 +8,14 @@ import banner_home from "@/assets/banner_home.jpg";
 import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import Card_Product from "./Card_Product";
+import { apiGetProduct } from "@/services/productService";
 const HomePage = () => {
+  const [products, setProducts] = useState([])
   const [visible, setVisible] = useState(false);
-  console.log(window.pageYOffset);
+  const getProduct = async() => {
+    const res = await apiGetProduct()
+    setProducts(res)
+  }
   const toggleVisibility = () => {
     if (window.pageYOffset >= 120) {
       setVisible(true);
@@ -32,6 +37,9 @@ const HomePage = () => {
       window.removeEventListener("scroll", toggleVisibility);
     };
   }, []);
+  useEffect(() => {
+    getProduct()
+  }, [])
   return (
     <div className="w-full flex flex-col gap-4 max-sm:gap-2 relative">
       <SlickSlider home />
@@ -78,7 +86,7 @@ const HomePage = () => {
       <div>
         <img src={banner_home} alt="banner_home" />
       </div>
-      <Card_Product />
+      <Card_Product products={products}/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

@@ -19,16 +19,15 @@ const ProductSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    shop: 
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'store',
-      },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     inventory: Number,
     photos: [String],
     sold: Number,
-    color: [{ colorName: String, colorImage: String }],
-    size: [{ sizeName: String, sizeImage: String }],
+    color: [String],
+    size: [String],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -41,5 +40,4 @@ const ProductSchema = new Schema(
 
 const Product = mongoose.model("product", ProductSchema);
 
-module.exports = Product
-
+module.exports = Product;

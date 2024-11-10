@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 
-
 const Schema = mongoose.Schema;
 
 const StoreSchema = new Schema({
-  user: {
+  userId: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   follow: Number,
   industry: {
@@ -30,27 +29,24 @@ const StoreSchema = new Schema({
   emailYourself: {
     type: String,
   },
-  identification: 
-    {
-      front: String,
-      backside: String,
-      yourFace: String,
-    },
-  
-  inforByStore: 
-    {
-      nameStore: String,
-      descriptionStore: String,
-    },
-  
-  address: 
-    {
-      province: String,
-      city: String,
-      area: String,
-      street: String,
-    },
-  
+  identification: {
+    front: String,
+    backside: String,
+    yourFace: String,
+  },
+
+  inforByStore: {
+    nameStore: String,
+    descriptionStore: String,
+  },
+
+  address: {
+    province: String,
+    city: String,
+    area: String,
+    street: String,
+  },
+
   codeByFriend: String,
   businessLicense: String,
   createdAt: {
@@ -61,5 +57,4 @@ const StoreSchema = new Schema({
 
 const Store = mongoose.model("store", StoreSchema);
 
-module.exports = Store
-
+module.exports = Store;

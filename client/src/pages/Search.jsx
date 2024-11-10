@@ -40,7 +40,7 @@ const Search = () => {
        <div className="flex items-center">
         <div className="flex items-center justify-between flex-4 ">
           <KeyboardArrowLeftIcon
-             sx={{ fontSize  :  `${isMobile ? "30px" : "50px"}`}}
+             sx={{ fontSize  :  `${isMobile ? "30px" : "50px"}`, cursor : "pointer"}}
             
             onClick={() => window.history.back()}
           />
@@ -50,7 +50,7 @@ const Search = () => {
               fontSize={`${isMobile ? "small" : "large"}`}
               className={`${
                 dropDown ? "rotate-180 transform" : ""
-              } transition-transform duration-700 ease-in-out delay-150 text-blue-600`}
+              } transition-transform duration-700 ease-in-out delay-150 text-blue-600, cursor-pointer`}
               onClick={() => setDropDown(!dropDown)}
             />
             {dropDown && (
