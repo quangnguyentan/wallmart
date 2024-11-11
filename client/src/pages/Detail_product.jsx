@@ -32,6 +32,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { apiGetProductById, apiGetProductByShop } from "@/services/productService";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrent } from "@/stores/actions/userAction";
+import { pathImage } from "@/lib/helper";
+
+import { apiAddToCart } from "@/services/userService";
+
 const productColor = [
   {
     id : 1,
@@ -70,7 +74,8 @@ const Detail_product = () => {
   const [drawerBottom, setDrawerBottom] = useState(false)
   const [products, setProducts] = useState([])
   const [store, setStore] = useState([])
-  const [isSelected, setIsSelected] = useState([])
+  const [isSelectedSize, setIsSelectedSize] = useState([])
+  const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
 
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -80,6 +85,7 @@ const Detail_product = () => {
     setProducts(res?.products)
     setStore(res?.store[0])
   }
+
   const onChangeQuantity = (type) => {
     if(type === "increment") {
       setQuantity(quantity + 1)
@@ -88,8 +94,39 @@ const Detail_product = () => {
       setQuantity(quantity - 1)
     }
   }
-  const onSelectProduct = (product) => {
-    setIsSelected(product)
+  const onSelectColor = (color) => {
+    if(isSelectedColor?.includes(color) ){
+      setIsSelectedColor(isSelectedColor?.filter(item => item !== color));
+
+     }else{
+      setIsSelectedColor([ color])
+     }
+  }
+  const onSelectSize = (size) => {
+    if(isSelectedSize?.includes(size) ){
+      setIsSelectedSize(isSelectedSize?.filter(item => item !== size));
+     }else{
+      setIsSelectedSize([ size])
+     }
+  }
+
+  const addToCart = async() => {
+    const res = await apiAddToCart({
+      quantity,
+      color : isSelectedColor[0],
+      size : isSelectedSize[0],
+      product : products?._id,
+      store : store?._id
+    })
+    if(res?.success) {
+      setDrawerBottom(false)
+      setIsSelectedColor([])
+      setIsSelectedSize([])
+      setQuantity(1)
+      localStorage.setItem("page", 2)
+      navigate(`/`)
+      toast.success("Thêm giỏ hàng thành công")
+    }
   }
   useEffect(() => {
     fetchProductById(id)
@@ -251,7 +288,10 @@ const Detail_product = () => {
             <div className="flex items-center justify-center gap-2  text-white">
             <Drawer >
             <DrawerTrigger asChild value="addToCart">
-              <button className="p-2 bg-[#ffcc14] max-sm:text-xs" onClick={() => setDrawerBottom(!drawerBottom)}>Thêm vào giỏ hàng</button>
+              <button className="p-2 bg-[#ffcc14] max-sm:text-xs" onClick={() => {
+                setDrawerBottom(!drawerBottom)
+                setDropDown(false)
+              }}>Thêm vào giỏ hàng</button>
             </DrawerTrigger>
             <DrawerTrigger asChild value="buyNow">
            
@@ -260,36 +300,36 @@ const Detail_product = () => {
             <DrawerContent  className="bg-white h-[80%] lg:w-[30%] mx-auto">
               <DrawerHeader >
               <div className="flex flex-col gap-4 ">
-                 {Object.keys(isSelected)?.length > 0 ?
+                 {isSelectedColor?.length > 0 || isSelectedSize?.length > 0 ?
                   <div className="flex items-center gap-2">
-                  <img src={isSelected?.img} alt="product_demo" className="w-36 h-36 max-sm:w-20 max-sm:h-20" />
+                   <img src={`${products?.photos?.length > 0 && `${pathImage}/${products?.photos[0]}`}`} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
                   <div className="flex flex-col items-start w-full py-4 px-2 gap-2 bg-white rounded-xl">
                       <div className="flex items-center gap-4 ">
-                          <span className="text-3xl text-[#fe5000] max-sm:text-base">$27.99</span>
+                          <span className="text-3xl text-[#fe5000] max-sm:text-base">${products?.price}</span>
                         
                       </div>
             
                      
                     <span className="max-sm:text-xs text-gray-500 text-start">
-                        Hàng tồn kho : 854280Phần
+                        Hàng tồn kho : {products?.inventory}
                     </span>
                     <span className="max-sm:text-xs text-gray-700 text-lg text-start">
-                     Đã chọn màu: {isSelected?.name}; size
+                     Đã chọn màu: Màu {isSelectedColor};Size {isSelectedSize}
                     </span>
                         
                   </div>
                   </div>
                 :   <div className="flex items-center gap-2">
-                <img src={product_demo} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
+                <img src={`${products?.photos?.length > 0 && `${pathImage}/${products?.photos[0]}`}`} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
                 <div className="flex flex-col items-start w-full py-4 px-2 gap-2 bg-white rounded-xl">
                     <div className="flex items-center gap-4 ">
-                        <span className="text-3xl text-[#fe5000] max-sm:text-base">$27.99</span>
+                        <span className="text-3xl text-[#fe5000] max-sm:text-base">${products?.price}</span>
                       
                     </div>
           
                    
                   <span className="max-sm:text-xs text-gray-500">
-                      Hàng tồn kho : 854280Phần
+                      Hàng tồn kho : {products?.inventory}
                   </span>
                   <span className="max-sm:text-xs text-gray-700 text-lg ">
                   Vui lòng chọn màu sắc color;size
@@ -304,10 +344,10 @@ const Detail_product = () => {
               </div>
               
               <div className="grid grid-cols-3 gap-2 max-sm:text-xs">
-                {productColor.map((product) => (
-                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 cursor-pointer" key={product.id} onClick={() => onSelectProduct(product)}>
-                     <img src={product.img} alt="demo_product_img" className="w-7 h-7 max-sm:h-4 max-sm:w-4 mix-blend-darken" />
-                     <span className="font-semibold line-clamp-1">{product.name}</span>
+                {products?.color?.map((product,index) => (
+                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 cursor-pointer" key={index} onClick={() => onSelectColor(product)}>
+                     {product?.photos?.length > 0 && <img src={product?.img} alt="demo_product_img" className="w-7 h-7 mix-blend-darken" />}
+                     <span className={product?.photos?.length > 0 ? "font-semibold line-clamp-1" : `${isSelectedColor.length > 0 &&  isSelectedColor[0] === `${product}` ? "font-semibold line-clamp-1 w-full text-center text-red-500" : "font-semibold line-clamp-1 w-full text-center"}`}>{product}</span>
                     </div>
                 ))}
               
@@ -322,37 +362,12 @@ const Detail_product = () => {
               </div>
               
               <div className="grid grid-cols-10 gap-4 max-sm:text-xs">
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    6
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    6.5
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    7
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    7.5
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    8
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    9
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    10
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    11
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    12
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    13
-                 </div>
-                 
+              {products?.size?.map((product) => (
+                  <div className={`${isSelectedSize.length > 0 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={product?._id} onClick={() => onSelectSize(product)}>
+                      {product}            
+                  </div>
+
+              ))}
                  
               </div>
           </div>
@@ -360,13 +375,13 @@ const Detail_product = () => {
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
                   <span className="text-xl font-semibold max-sm:text-sm">Quantity</span>
                   <div className="flex items-center gap-2 border rounded-[4px]">
-                   <div className="px-3 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer">
+                   <div className="px-3 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => onChangeQuantity("decrement")}>
                     <RemoveOutlinedIcon sx={{ fontSize : "15px" }} />
                    </div>
                     <div className="px-2">
-                    <span>1</span>
+                    <span>{quantity}</span>
                     </div>
-                    <div className="px-3 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer">
+                    <div className="px-3 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer" onClick={() => onChangeQuantity("increment")}>
                     <AddOutlinedIcon sx={{ fontSize : "15px" }} />
                    </div>
                   </div>
@@ -376,9 +391,12 @@ const Detail_product = () => {
           </div>
           <div className="px-8 w-full py-4 max-sm:py-2">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" onClick={() => {
-          if(!isSelected?.name) {
-            toast.error("Vui long chon mau sac")
+          if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
+            toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
           }
+         if(isSelectedColor.length > 0 && isSelectedSize.length > 0) {
+          addToCart()
+         }
         }}>Thêm vào giỏ hàng</button>
         </div>
          
@@ -394,94 +412,93 @@ const Detail_product = () => {
            
             <DrawerTrigger asChild value="buyNow">
            
-              <button id="custom-button" className="p-2  max-sm:text-xs" onClick={() => setDrawerBottom(!drawerBottom)}>Mua ngay</button>
+              <button id="custom-button" className="p-2  max-sm:text-xs" onClick={() => {
+                setDrawerBottom(!drawerBottom)
+                setDropDown(false)
+              }}>Mua ngay</button>
 
             </DrawerTrigger>
             
             <DrawerContent  className="bg-white h-[80%] lg:w-[30%] mx-auto ">
               <DrawerHeader>
-                <div className="flex flex-col gap-4 ">
+              <div className="flex flex-col gap-4 ">
+                 {isSelectedColor?.length > 0 || isSelectedSize?.length > 0 ?
                   <div className="flex items-center gap-2">
-                  <img src={product_demo} alt="product_demo" className="w-36 h-36  max-sm:w-20 max-sm:h-20" />
+                   <img src={`${products?.photos?.length > 0 && `${pathImage}/${products?.photos[0]}`}`} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
                   <div className="flex flex-col items-start w-full py-4 px-2 gap-2 bg-white rounded-xl">
                       <div className="flex items-center gap-4 ">
-                          <span className="text-3xl text-[#fe5000] max-sm:text-base">$27.99</span>
+                          <span className="text-3xl text-[#fe5000] max-sm:text-base">${products?.price}</span>
                         
                       </div>
             
                      
-                    <span className="max-sm:text-xs text-gray-500">
-                        Hàng tồn kho : 854280Phần
+                    <span className="max-sm:text-xs text-gray-500 text-start">
+                        Hàng tồn kho : {products?.inventory}
                     </span>
-                    <span className="max-sm:text-xs text-gray-700 text-lg">
-                    Vui lòng chọn màu sắc color;size
+                    <span className="max-sm:text-xs text-gray-700 text-lg text-start">
+                     Đã chọn màu: Màu {isSelectedColor};Size {isSelectedSize}
                     </span>
                         
                   </div>
                   </div>
+                :   <div className="flex items-center gap-2">
+                <img src={`${products?.photos?.length > 0 && `${pathImage}/${products?.photos[0]}`}`} alt="product_demo" className=" w-36 h-36  max-sm:w-20 max-sm:h-20" />
+                <div className="flex flex-col items-start w-full py-4 px-2 gap-2 bg-white rounded-xl">
+                    <div className="flex items-center gap-4 ">
+                        <span className="text-3xl text-[#fe5000] max-sm:text-base">${products?.price}</span>
+                      
+                    </div>
+          
+                   
+                  <span className="max-sm:text-xs text-gray-500">
+                      Hàng tồn kho : {products?.inventory}
+                  </span>
+                  <span className="max-sm:text-xs text-gray-700 text-lg ">
+                  Vui lòng chọn màu sắc color;size
+                  </span>
+                      
+                </div>
+                </div>}
           <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl border-b">
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
-                  <span className="text-xl font-semibold max-sm:text-sm">Color</span>
+                  <span className="text-xl font-semibold  max-sm:text-sm">Color</span>
                  
               </div>
               
-              <div className="grid grid-cols-3 gap-4 max-sm:text-xs">
-              {productColor.map((product) => (
-                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 cursor-pointer" key={product.id}>
-                     <img src={product.img} alt="demo_product_img" className="w-7 h-7 mix-blend-darken" />
-                     <span className="font-semibold line-clamp-1">{product.name}</span>
+              <div className="grid grid-cols-3 gap-2 max-sm:text-xs">
+                {products?.color?.map((product,index) => (
+                     <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 cursor-pointer" key={index} onClick={() => onSelectColor(product)}>
+                     {product?.photos?.length > 0 && <img src={product?.img} alt="demo_product_img" className="w-7 h-7 mix-blend-darken" />}
+                     <span className={product?.photos?.length > 0 ? "font-semibold line-clamp-1" : `${isSelectedColor[0] === `${product}` ? "font-semibold line-clamp-1 w-full text-center text-red-500" : "font-semibold line-clamp-1 w-full text-center"}`}>{product}</span>
                     </div>
                 ))}
+              
+                 
                  
               </div>
           </div>
-          <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl border-b">
+          <div className="flex flex-col w-full pb-4 px-2 gap-2 bg-white rounded-xl border-b">
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
-                  <span className="text-xl font-semibold max-sm:text-sm">Sizes</span>
+                  <span className="text-xl font-semibold  max-sm:text-sm">Sizes</span>
                  
               </div>
               
               <div className="grid grid-cols-10 gap-4 max-sm:text-xs">
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    6
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    6.5
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    7
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    7.5
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    8
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    9
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    10
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    11
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    12
-                 </div>
-                 <div className="flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100">
-                    13
-                 </div>
-                 
+              {products?.size?.map((product) => (
+                  <div className={`${isSelectedSize.length > 1 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={product?._id} onClick={() => onSelectSize(product)}>
+                      {product}            
+                  </div>
+
+              ))}
                  
               </div>
           </div>
-          <div className="flex flex-col w-full py-4 px-2 gap-2 bg-white rounded-xl border-b">
+          <div className="flex flex-col w-full pb-4 px-2 gap-2 bg-white rounded-xl border-b">
               <div className="flex items-center justify-between gap-4 max-sm:text-xs">
                   <span className="text-xl font-semibold max-sm:text-sm">Quantity</span>
                   <div className="flex items-center gap-2 border rounded-[4px]">
-                   <div className="px-3 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer">
-                    <RemoveOutlinedIcon sx={{ fontSize : "15px" }}  onClick={() => onChangeQuantity("decrement")}/>
+                   <div className="px-3 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => onChangeQuantity("decrement")}>
+                    <RemoveOutlinedIcon sx={{ fontSize : "15px" }} />
                    </div>
                     <div className="px-2">
                     <span>{quantity}</span>
@@ -495,11 +512,11 @@ const Detail_product = () => {
             
           </div>
           <div className="px-8 w-full py-4 max-sm:py-2">
-        <button className="w-full py-4 px-4 max-sm:py-2 max-sm:text-sm bg-red-500 rounded-full text-white text-xl" onClick={() => {
-          if(!isSelected?.name) {
-            toast.error("Vui long chon mau sac")
+        <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" onClick={() => {
+          if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
+            toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
           }
-        }}>Mua hàng</button>
+        }}>Thêm vào giỏ hàng</button>
         </div>
          
                 </div>

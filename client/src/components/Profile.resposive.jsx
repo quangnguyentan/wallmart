@@ -21,10 +21,19 @@ import { useMediaQuery } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCurrent } from "@/stores/actions/userAction";
+import { apiGetProduct } from "@/services/productService";
 const Profile = () => {
+  const [products, setProducts] = useState([])
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
+  const getProduct = async() => {
+    const res = await apiGetProduct()
+    setProducts(res)
+  }
+  useEffect(() => {
+    getProduct()
+  },[])
   return (
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
@@ -65,7 +74,9 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 " onClick={() => {
+              navigate("/order")
+            }}>
               <img
                 src={icon_myWaitPay}
                 alt="icon_myWaitPay"
@@ -73,7 +84,9 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 " onClick={() => {
+              navigate("/order")
+            }}>
               <img
                 src={icon_myWaitDeliver}
                 alt="icon_myWaitDeliver"
@@ -81,7 +94,9 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 " onClick={() => {
+              navigate("/order")
+            }}>
               <img
                 src={icon_myTakeGoods}
                 alt="icon_myTakeGoods"
@@ -89,7 +104,9 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Đang vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 " onClick={() => {
+              navigate("/order")
+            }}>
               <img
                 src={icon_myWaitComent}
                 alt="icon_myWaitComent"
@@ -97,7 +114,9 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Đơn hoàn thành</span>
             </div>
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 " onClick={() => {
+              navigate("/order")
+            }}>
               <img
                 src={icon_myWaitReturn}
                 alt="icon_myWaitReturn"
@@ -147,7 +166,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Card_Product profile />
+      <Card_Product profile products={products}/>
     </div>
   );
 };

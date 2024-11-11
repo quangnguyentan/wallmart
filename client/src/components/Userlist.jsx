@@ -4,22 +4,22 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
+import { apiGetProduct } from "@/services/productService";
+import { useSelector } from "react-redux";
+import { apiGetAllUser } from "@/services/userService";
 
 function Userlist() {
-  const [userList, setUserList] = useState([]);
+  const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
-
+  const { currentData } = useSelector((state) => state.user); 
   useEffect(() => {
     getUsers();
-    console.log("welcome");
   }, []);
 
   let getUsers = async () => {
     try {
-      const users = await axios.get(
-        "https://63a9bccb7d7edb3ae616b639.mockapi.io/users"
-      );
-      setUserList(users.data);
+      const user = await apiGetAllUser()
+      setproductList(user?.user);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -47,7 +47,7 @@ function Userlist() {
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
         <Link
-          to="/create-user"
+          to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
@@ -72,41 +72,41 @@ function Userlist() {
               >
                 <thead>
                   <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>E-Mail</th>
-                    <th>City</th>
-                    <th>State</th>
-                    <th>Country</th>
-                    <th>Action</th>
+                    <th>Tên người dùng</th>
+                    <th>Số điện thoại đăng nhập</th>
+                    <th>Email đăng nhập </th>
+                    <th>Vai trò</th>
+                    <th>Giới tính</th>
+                    
+
                   </tr>
                 </thead>
                 
                 <tbody>
-                  {userList.map((user) => {
+                  {productList?.map((product) => {
                     return (
-                      <tr key={user.id}>
-                        <td>{user.id}</td>
-                        <td>{user.username}</td>
-                        <td>{user.email}</td>
-                        <td>{user.city}</td>
-                        <td>{user.state}</td>
-                        <td>{user.country}</td>
-                        <th>
+                      <tr key={product?.id}>
+                        <td>{product?.username}</td>
+                        <td>{product?.phone}</td>
+                        <td>{product?.email}</td>
+                        <td>{product?.role}</td>
+                        <td>{product?.gender}</td>
+                        
+                        <th className="flex flex-col gap-2">
                           <Link
-                            to={`/user-view/${user.id}`}
+                            to={`/user-view/${product?._id}/${currentData?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             View
                           </Link>
                           <Link
-                            to={`/user-edit/${user.id}`}
+                            to={`/user-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
                             Edit
                           </Link>
                           <button
-                            onClick={() => handleDelete(user.id)}
+                            onClick={() => handleDelete(product?._id)}
                             className="btn btn-danger btn-sm mr-1"
                           >
                             Delete

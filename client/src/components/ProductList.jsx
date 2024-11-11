@@ -51,7 +51,7 @@ function ProductList() {
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
-          Create User
+          Create Product
         </Link>
       </div>
       {/* <!-- DataTables --> */}
@@ -90,12 +90,12 @@ function ProductList() {
                       <tr key={product?.id}>
                         <td>{product?.title}</td>
                         <td>{product?.description}</td>
-                        <td>{product?.price}$</td>
-                        <td>{product?.priceOld}$</td>
+                        <td>${product?.price}</td>
+                        <td>${product?.priceOld}</td>
                         <td>{product?.inventory} sản phẩm</td>
                         <td>{product?.size?.join(",")}</td>
                         <td>{product?.color?.join(",")}</td>
-                        <th>
+                        <th className="flex flex-col gap-2">
                           <Link
                             to={`/product-view/${product?._id}/${currentData?._id}`}
                             className="btn btn-primary btn-sm mr-1"

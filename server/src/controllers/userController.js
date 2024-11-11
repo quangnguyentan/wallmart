@@ -15,7 +15,13 @@ const getCurrent = async (req, res) => {
         msg: "missing input",
       });
     }
-    const response = await users.findById(id);
+    const response = await users.findById(id).populate({
+      path: "cart",
+      populate: [
+        { path: "product", select: "title price photos" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "store", select: "inforByStore" }, // Lấy thông tin tên và ảnh cửa hàng
+      ],
+    });
     return res.status(200).json({
       success: response ? true : false,
       response,
@@ -30,15 +36,20 @@ const getCurrent = async (req, res) => {
 const addToCart = async (req, res, next) => {
   const { id } = req.currentUser;
   console.log(id);
-  const { product, quantity, color, size } = req.body;
+  const { product, quantity, color, size, store } = req.body;
   if (!id)
     res.status(400).json({
       err: 1,
       msg: "missing input",
     });
   try {
-    const findUser = await users.findById(id);
-    console.log(findUser);
+    const findUser = await users.findById(id).populate({
+      path: "cart",
+      populate: [
+        { path: "product", select: "title price" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "store", select: "inforByStore" }, // Lấy thông tin tên và ảnh cửa hàng
+      ],
+    });
     if (!findUser) {
       return res.status(404).json({
         err: 1,
@@ -48,7 +59,65 @@ const addToCart = async (req, res, next) => {
     let cartUpdated = false;
     findUser.cart.forEach((cartItem) => {
       if (
-        cartItem.product.toString() === product &&
+        cartItem.product._id.toString() === product &&
+        cartItem.color === color &&
+        cartItem.size === size
+      ) {
+        console.log("abc");
+        cartItem.quantity += Number(quantity);
+        cartUpdated = true;
+      }
+    });
+    if (!cartUpdated) {
+      findUser?.cart?.push({
+        product,
+        quantity,
+        color,
+        size,
+        store,
+      });
+    }
+    const updatedUser = await users.findOneAndUpdate(
+      { _id: id },
+      { $set: { cart: findUser.cart } }, // Cập nhật giỏ hàng
+      { new: true } // Trả về đối tượng người dùng mới sau khi cập nhật
+    );
+    return res.status(200).json({
+      success: updatedUser ? true : false,
+      updatedUser,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+const removeToCart = async (req, res, next) => {
+  const { id } = req.currentUser;
+
+  const { product, quantity, color, size, store } = req.body;
+  if (!id)
+    res.status(400).json({
+      err: 1,
+      msg: "missing input",
+    });
+  try {
+    const findUser = await users.findById(id).populate({
+      path: "cart",
+      populate: [
+        { path: "product", select: "title price" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "store", select: "inforByStore" }, // Lấy thông tin tên và ảnh cửa hàng
+      ],
+    });
+    if (!findUser) {
+      return res.status(404).json({
+        err: 1,
+        msg: "User not found",
+      });
+    }
+    let cartUpdated = false;
+    findUser.cart.forEach((cartItem) => {
+      if (
+        cartItem.product._id.toString() === product &&
+        cartItem.store._id.toString() === store &&
         cartItem.color === color &&
         cartItem.size === size
       ) {
@@ -57,10 +126,23 @@ const addToCart = async (req, res, next) => {
       }
     });
     if (!cartUpdated) {
-      findUser.cart.push({ product, quantity, color, size });
+      findUser?.cart?.push({
+        product,
+        quantity,
+        color,
+        size,
+        store,
+      });
     }
-    const updatedUser = await findUser.save();
-    res.json(updatedUser);
+    const updatedUser = await users.findOneAndUpdate(
+      { _id: id },
+      { $set: { cart: findUser.cart } }, // Cập nhật giỏ hàng
+      { new: true } // Trả về đối tượng người dùng mới sau khi cập nhật
+    );
+    return res.status(200).json({
+      success: updatedUser ? true : false,
+      updatedUser,
+    });
   } catch (e) {
     next(e);
   }
@@ -81,7 +163,13 @@ const getAllUsers = async (req, res) => {
 const getGetUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await users.findById(id);
+    const user = await users.findById(id).populate({
+      path: "cart",
+      populate: [
+        { path: "product", select: "title price photos" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "store", select: "inforByStore" }, // Lấy thông tin tên và ảnh cửa hàng
+      ],
+    });
     return res.status(200).json({
       success: user ? true : false,
       user,

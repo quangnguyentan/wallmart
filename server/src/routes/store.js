@@ -2,7 +2,6 @@ const {
   Create,
   CreateNewStore,
   GetAllStore,
-
   GetStoreById,
 } = require("../controllers/storeController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
@@ -21,7 +20,6 @@ const router = require("express").Router();
 router.post("/", [verifyToken], Create);
 router.get("/", GetAllStore);
 router.get("/:id", GetStoreById);
-// router.get("/shop/:userId", GetProductByShop);
 
 router.post(
   "/create",

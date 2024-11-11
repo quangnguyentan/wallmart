@@ -9,5 +9,8 @@ const path = {
   STORE: "STORE",
   DETAIL_STORE: "detail-store",
   ORDER: "order",
+  ORDER_CART: "order-cart",
+  ADD_LOCATION: "add-location",
+  ADD_ADDRESS: "add-address",
 };
 export default path;

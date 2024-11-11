@@ -4,7 +4,6 @@ import actionType from "./actionType";
 export const getCurrent = () => async (dispatch) => {
   try {
     let response = await apiGetCurrent();
-    console.log(response.response);
     if (response?.success) {
       dispatch({
         type: actionType.GET_CURRENT,

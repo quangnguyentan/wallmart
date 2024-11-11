@@ -1,31 +1,47 @@
 import product_test from "@/assets/product_test.jpg"
+import { pathImage } from "@/lib/helper"
+import { apiGetOrderById } from "@/services/orderServer"
+import { useEffect, useState } from "react"
 const Card_Order = () => {
+  const [order, setOrder] = useState("")
+  const getMyOrder = async() => {
+    const res = await apiGetOrderById()
+    setOrder(res)
+  }
+  useEffect(() => {
+    getMyOrder()
+  },[])
   return (
-    <div className="px-2 bg-white flex flex-col gap-2 py-2">
+    <div className="flex flex-col gap-2">
+      {order && order?.map((ord) => (
+        <>
+        {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
         <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
             <span>Số thứ tự:</span>
-            <span>D2024103018000856489848</span>
+            <span>{ord?._id}</span>
         </div>
-        <h3 className="text-gray-600 text-lg max-sm:text-xs">Za Za Shop</h3>
+        <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
         <div className="flex justify-between gap-3 max-sm:text-xs">
             <div className="flex  gap-2">
-            <img className="w-32 h-32 max-sm:w-20 max-sm:h-20 mix-blend-darken border rounded-xl" src={product_test} alt="product_test" />
+            <img className="w-32 h-32 max-sm:w-20 max-sm:h-20 mix-blend-darken border rounded-xl" src={`${pathImage}/${ord?.product?.photos[0]}`} alt="" />
            <div className="flex flex-col gap-1">
-           <span className="text-lg font-medium text-gray-800 max-sm:text-xs">Grocery & Gourmet  </span>
+           <span className="text-lg font-medium text-gray-800 max-sm:text-xs">{ord?.product?.title}  </span>
            <span className="text-gray-600 max-sm:text-xs">
-                Color:wine;size:2XL
+                Color:{ord?.color};size:{ord?.size}
            </span>
             </div>
            </div>
            <div className="flex flex-col items-end">
-           <span>48.67</span>
-           <span className="text-gray-600 font-semibold">X1</span>
+           <span>{ord?.product?.price}</span>
+           <span className="text-gray-600 font-semibold">X{ord?.quantity}</span>
            </div>
         </div>
         <div className="flex justify-end gap-2 text-lg font-semibold max-sm:text-xs">
             <span>Số tiền thực: </span>
-            <span className="text-red-500">$48.67</span>
+            <span className="text-red-500">${ord?.product?.price}</span>
         </div>
+    </div>}</>
+      ))}
     </div>
   )
 }

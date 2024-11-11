@@ -26,7 +26,8 @@ const userSchema = new mongoose.Schema(
     },
     cart: [
       {
-        product: { type: Schema.Types.ObjectId, ref: "store" },
+        store: { type: Schema.Types.ObjectId, ref: "store" },
+        product: { type: Schema.Types.ObjectId, ref: "product" },
         quantity: Number,
         color: String,
         size: String,
@@ -48,6 +49,7 @@ const userSchema = new mongoose.Schema(
       default: 0,
       required: true,
     },
+
     role: {
       type: String,
       enum: ["user", "admin", "agent"],

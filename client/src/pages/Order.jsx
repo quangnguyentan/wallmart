@@ -7,12 +7,13 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import Card_Order from "@/components/Card_Order";
 import EmptyOrder from "@/components/EmptyOrder";
+import { useNavigate } from "react-router-dom";
 const Order = () => {
     const [activeTab, setActiveTab] = useState('all');
 
     const isMobile = useMediaQuery("(max-width:600px)");
     const [visible, setVisible] = useState(false);
-    console.log(window.pageYOffset);
+    const navigate = useNavigate()
     const toggleVisibility = () => {
       if (window.pageYOffset >= 120) {
         setVisible(true);
@@ -20,7 +21,6 @@ const Order = () => {
         setVisible(false);
       }
     };
-  
     const scrollToTop = () => {
       window.scrollTo({
         top: 0,
@@ -41,7 +41,10 @@ const Order = () => {
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "35px" : "50px"}`}}
             className="text-gray-400 cursor-pointer"
-            onClick={() => window.history.back()}
+            onClick={() =>{
+              localStorage.setItem("page", 0)
+              navigate("/")
+            }}
           />       
       </div>
       <h3 className="text-gray-600 font-semibold text-center w-full max-sm:text-sm">Đặt hàng</h3>

@@ -201,7 +201,7 @@ function ProductEdit() {
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Tạo sản phẩm"}
+            {isLoading ? "Đang tải..." : "Chỉnh sửa sản phẩm"}
           </button>
         </div>
       </form>

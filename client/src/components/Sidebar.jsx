@@ -52,7 +52,7 @@ function Sidebar() {
                 </Link>
             </li>
             <li className="nav-item active">
-                <Link className="nav-link" to="/user-list">
+                <Link className="nav-link" to="/order-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
                     <span>Orders</span>
                 </Link>

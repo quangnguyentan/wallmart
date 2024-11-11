@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import "./sb-admin-2.min.css";
 import { apiGetProductById } from '@/services/productService';
+import { apiGetstoreById } from '@/services/storeService';
+import ProductList from './ProductList';
 
 function StoreView() {
     const { id } = useParams();
@@ -17,7 +19,7 @@ function StoreView() {
 
     let getUsers = async (id) => {
         try {
-            const user = await apiGetProductById(id)
+            const user = await apiGetstoreById(id)
             console.log(user)
             // console.log(user);
             setUserList(user);
@@ -44,23 +46,31 @@ function StoreView() {
                                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
-                                            <th>Name</th>
-                                            <th>E-Mail</th>
-                                            <th>City</th>
-                                            <th>State</th>
-                                            <th>Country</th>
+                                        <th>Loại sản phẩm</th>
+                                        <th>Ngành</th>
+                                        <th>Số người theo dõi</th>
+                                        <th>Tên người tạo cửa hàng</th>
+                                        <th>Số điện thoại người tạo cửa hàng</th>
+                                        <th>Tên cửa hàng</th>
+                                        <th>Khu vực người đăng ký</th>
+                                        <th>Thành phố người đăng ký</th>
+                                        <th>Tỉnh người đăng kí</th>
+                                        <th>Hành động</th>
                                         </tr>
                                     </thead>
                                    
                                     <tbody>
                                         <tr>
-                                            <td>{userList.id}</td>
-                                            <td> {userList.username} </td>
-                                            <td>{userList.email}</td>
-                                            <td>{userList.city}</td>
-                                            <td>{userList.state}</td>
-                                            <td>{userList.country}</td>
+                                        <td>{userList?.catergory}</td>
+                                        <td>{userList?.industry}</td>
+                                        <td>{userList?.follow}</td>
+                                        <td>{userList?.fullname}</td>
+                                        <td>{userList?.phone}</td>
+                                        <td>{userList?.inforByStore?.nameStore}</td>
+                                        <td>{userList?.address?.area}</td>
+                                        <td>{userList?.address?.city}</td>
+                                        <td>{userList?.address?.province}</td>
+
                                         </tr>
                                     </tbody>
                                 </table>

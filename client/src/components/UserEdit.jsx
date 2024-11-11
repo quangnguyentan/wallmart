@@ -1,152 +1,156 @@
-import axios from 'axios';
-import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import "./sb-admin-2.min.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiCreateProduct } from '@/services/productService';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 function UserEdit() {
-    const params = useParams();
-    const [isLoading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    useEffect(() => {
-        getUserData()
-    }, [])
+  const [isLoading, setLoading] = useState(false);
+  const [postMultipleFile, setPostMultipleFile] = useState([])
+  const navigate = useNavigate();
+  const [addNameColorField, setAddNameColorField] = useState([])
+  const [addNameSizeField, setAddNameSizeField] = useState([])
+  const [addImageNameField, setAddImageNameField] = useState([])
+  const [addImageSizeField, setAddImageSizeField] = useState([])
 
-    let getUserData = async () => {
-        try {
-            const user = await axios.get(`https://63a9bccb7d7edb3ae616b639.mockapi.io/users/${params.id}`);
-            myFormik.setValues(user.data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-        }
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+  } = useForm();
+  const createProduct = async (data) => {
+    try {
+      const formData = new FormData();
+      for(let index = 0; index < postMultipleFile.length; index++) {
+        const file = postMultipleFile[index]
+        formData.append("photos", file); 
+      }
+      for(let index = 0; index < addNameColorField.length; index++) {
+        const file = addNameColorField[index]
+       
+        formData.append("color", [
+         file
+        ]); 
+      }
+      for(let index = 0; index < addNameSizeField.length; index++) {
+        const file = addNameSizeField[index]
+        formData.append("size", [
+         file
+        ]); 
+      }
+      formData.append("title", data?.title); 
+      formData.append("description", data?.description); 
+      formData.append("price", data?.price); 
+      formData.append("priceOld", data?.priceOld); 
+      formData.append("inventory", data?.inventory); 
+      formData.append("stockOff", Boolean(data?.stock)); 
+      setLoading(true);
+      const res = await apiCreateProduct(formData); 
+      setLoading(false);
+      console.log(res)
+      if (res?.success) {
+        toast.success("Đăng kí thành công");
+       
+      } else {
+        toast.error(res.message || "Đã xảy ra lỗi");
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
+    }
+  };
+  const handleKeyDownSize = (e) => {
+    if(e.key === "Enter") {
+      e.preventDefault()
+
+     if(addNameSizeField.includes(e.target.value) ){
+      setAddNameSizeField(addNameSizeField.filter(item => item !== e.target.value));
+
+      resetField("size")
+     }else{
+      setAddNameSizeField([...addNameSizeField, e.target.value])
+      resetField("size")
+     }
     }
 
-    const myFormik = useFormik({
-        initialValues: {
-            username: "",
-            email: "",
-            city: "",
-            state: "",
-            country: ""
-        },
-        // Validating Forms while entering the data
-        validate: (values) => {
-            let errors = {}           //Validating the form once the error returns empty else onsubmit won't work
+  }
+  const handleKeyDownColor = (e) => {
+    if(e.key === "Enter") {
+      e.preventDefault()
 
-            if (!values.username) {
-                errors.username = "Please enter username";
-            } else if (values.username.length < 5) {
-                errors.username = "Name shouldn't be less than 3 letters";
-            } else if (values.username.length > 25) {
-                errors.username = "Name shouldn't be more than 20 letters";
-            }
+     if(addNameColorField.includes(e.target.value)){
+      setAddNameColorField(addNameColorField.filter(item => item !== e.target.value));
+      resetField("color")
+     }else{
+      setAddNameColorField([...addNameColorField, e.target.value])
+      resetField("color")
+     }
+    }
 
-            if (!values.email) {
-                errors.email = "Please enter email";
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-
-            if (!values.city) {
-                errors.city = "Please select any one city";
-            }
-
-            if (!values.state) {
-                errors.state = "Please select any one state";
-            }
-
-            if (!values.country) {
-                errors.country = "Please select any one state";
-            }
-
-            return errors;
-        },
-
-        onSubmit: async (values) => {
-            try {
-                setLoading(true);
-                await axios.put(`https://63a9bccb7d7edb3ae616b639.mockapi.io/users/${params.id}`, values);
-                setLoading(false);
-                navigate("/portal/user-list")
-            } catch (error) {
-                console.log(error);
-                setLoading(false);
-            }
-        }
-    })
-    return (
-        <>
-            <h3>UserEdit - Id : {params.id} </h3>
-            <div className='container'>
-                <form onSubmit={myFormik.handleSubmit}>
-                    <div className='row'>
-                        <div className="col-lg-6">
-                            <label>Name</label>
-                            <input name='username' value={myFormik.values.username} onChange={myFormik.handleChange} type={"text"}
-                                className={`form-control ${myFormik.errors.username ? "is-invalid" : ""} `} />
-                            <span style={{ color: "red" }}>{myFormik.errors.username}</span>
-                        </div>
-
-                        <div className="col-lg-6">
-                            <label>E-Mail</label>
-                            <input name='email' value={myFormik.values.email} onChange={myFormik.handleChange} type={"mail"}
-                                className={`form-control ${myFormik.errors.email ? "is-invalid" : ""} `} />
-                            <span style={{ color: "red" }}>{myFormik.errors.email}</span>
-                        </div>
-
-                        <div className='col-lg-4'>
-                            <label>City</label>
-                            <select name='city' value={myFormik.values.city} onChange={myFormik.handleChange}
-                                className={`form-control ${myFormik.errors.city ? "is-invalid" : ""} `} >
-                                <option value="">----Select----</option>
-                                <option value="CN">Chennai</option>
-                                <option value="KN">Kochin</option>
-                                <option value="MU">Mumbai</option>
-                                <option value="SA">Seattle</option>
-                                <option value="MI">Miami</option>
-                                <option value="VB">Virginia Beach</option>
-                            </select>
-                            <span style={{ color: "red" }}>{myFormik.errors.city}</span>
-                        </div>
-
-                        <div className='col-lg-4'>
-                            <label>State</label>
-                            <select name='state' value={myFormik.values.state} onChange={myFormik.handleChange}
-                                className={`form-control ${myFormik.errors.state ? "is-invalid" : ""} `} >
-                                <option value="">----Select----</option>
-                                <option value="TN">TamilNadu</option>
-                                <option value="KL">Kerala</option>
-                                <option value="MH">Maharashtra</option>
-                                <option value="WA">Washington</option>
-                                <option value="FL">Florida</option>
-                                <option value="VA">Virginia</option>
-                            </select>
-                            <span style={{ color: "red" }}>{myFormik.errors.state}</span>
-                        </div>
-
-                        <div className='col-lg-4'>
-                            <label>Country</label>
-                            <select name='country' value={myFormik.values.country} onChange={myFormik.handleChange}
-                                className={`form-control ${myFormik.errors.country ? "is-invalid" : ""} `} >
-                                <option value="">----Select----</option>
-                                <option value="IN">India</option>
-                                <option value="US">USA</option>
-                            </select>
-                            <span style={{ color: "red" }}>{myFormik.errors.country}</span>
-                        </div>
-
-                        <div className='col-lg-4 mt-3'>
-                            <input disabled={isLoading} type="submit" value={isLoading ? "Updating..." : "Update"} className=' btn btn-primary' />
-                        </div>
-                    </div>
-                </form>
-                {/* {JSON.stringify(myFormik.values)} */}
-            </div>
-        </>
-
-
-    )
+  }
+  return (
+    <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
+      <form onSubmit={handleSubmit(createProduct)}>
+        <div className='grid grid-cols-2 gap-4'>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Tên người dùng</label>
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên người dùng' {...register("title", {
+                  required: "Tên người dùng là bắt buộc",
+                 
+                })} />
+        {errors.title && (
+              <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
+            )}
+        </div>
+        <div  className='flex gap-4 items-center  px-8 w-full'>
+        <label htmlFor="photo">Ảnh người dùng:</label>
+        <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Vai trò</label>
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập vai trò' {...register("description", {
+                  required: "Vai trò là bắt buộc",
+                 
+                })} />
+        {errors.description && (
+              <p className="text-red-500 text-xs px-2">{errors.description.message}</p>
+            )}
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Nạp tiền</label>
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='(vd : 30000$)' {...register("price", {
+                  required: "Giá tiền sau khi giảm giá là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập số tiền lớn hơn hoặc bằng 0";
+                    }
+                  },
+                })} />
+        {errors.price && (
+              <p className="text-red-500 text-xs px-2">{errors.price.message}</p>
+            )}
+        </div>
+        
+       
+        
+       
+        </div>
+        
+        <div className="px-8 w-[30%] mx-auto py-10">
+          <button
+            className="button w-full py-2 px-2 bg-red-500 rounded-full text-white text-xl max-sm:text-base max-sm:py-2"
+            type="submit"
+            disabled={isLoading} // Disable button khi đang tải
+          >
+            {isLoading ? "Đang tải..." : "Chỉnh sửa người dùng"}
+          </button>
+        </div>
+      </form>
+     
+    </div>
+  );
 }
 
-export default UserEdit
+export default UserEdit;

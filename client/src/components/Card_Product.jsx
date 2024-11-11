@@ -3,7 +3,7 @@ import product_test1 from "@/assets/product_test1.jpg";
 import loading from "@/assets/loading.gif";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { list_product } from "@/lib/helper";
+import { list_product, pathImage } from "@/lib/helper";
 
 const Card_Product = ({ profile, hidden, products }) => {
   const scrollToTop = () => {
@@ -34,7 +34,7 @@ const Card_Product = ({ profile, hidden, products }) => {
          <Link to={`/detail-product/${product?._id}`} key={product._id}>
          <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
            <img
-             src={`http://localhost:8080/images/${product?.photos[0]}`}
+             src={`${pathImage}/${product?.photos[0]}`}
              alt="product_test"
              className="h-[256px] max-sm:h-[180px] w-full object-cover"
            />
