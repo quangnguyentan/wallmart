@@ -32,6 +32,14 @@ import ProductEdit from "./components/ProductEdit";
 import StoreList from "./components/StoreList";
 import StoreCreate from "./components/StoreCreate";
 import StoreEdit from "./components/StoreEdit";
+import OrderCart from "./components/OrderCart";
+import LocationOrder from "./components/LocaltionOrder";
+import Address_Order from "./components/Address_Order";
+import Orderlist from "./components/Orderlist";
+import OrderCreate from "./components/OrderCreate";
+import StoreView from "./components/StoreView";
+import OrderView from "./components/OrderView";
+import OrderEdit from "./components/OrderEdit";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -62,15 +70,19 @@ function App() {
                 <Route path='user-list' element={<Userlist />} />
                 <Route path='create-user' element={<UserCreate />} />
                 <Route path='user-view/:id/:userId' element={<UserView />} />
-                <Route path='user-edit/:id/:userId' element={<UserEdit />} />
+                <Route path='user-edit/:id' element={<UserEdit />} />
                 <Route path='product-list' element={<ProductList />} />
                 <Route path='create-product/:userId' element={<ProductCreate />} />
                 <Route path='product-view/:id/:userId' element={<ProductView />} />
                 <Route path='product-edit/:id' element={<ProductEdit />} />
                 <Route path='store-list' element={<StoreList />} />
                 <Route path='create-store' element={<StoreCreate />} />
-                <Route path='store-view/:id/:userId' element={<StoreCreate />} />
-                <Route path='store-edit/:id/:userId' element={<StoreEdit />} />
+                <Route path='store-view/:id' element={<StoreView />} />
+                <Route path='store-edit/:id' element={<StoreEdit />} />
+                <Route path='order-list' element={<Orderlist />} />
+                <Route path='create-order' element={<OrderCreate />} />
+                <Route path='order-view/:id' element={<OrderView />} />
+                <Route path='order-edit/:id' element={<OrderEdit />} />
               </Route> : <> 
             {currentData?.role === "agent" ? <Route path='/' element={<Portal />}>
                 <Route path='dashboard' element={<Dashboard />} />
@@ -90,6 +102,9 @@ function App() {
             <Route path={path.STORE} element={<Store />} />
             <Route path={path.DETAIL_STORE} element={<Store_detail />} />
             <Route path={path.ORDER} element={<Order />} />
+            <Route path={path.ORDER_CART} element={<OrderCart />} />
+            <Route path={path.ADD_LOCATION} element={<LocationOrder />} />
+            <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
 
 
           </Route>  :   <Route path={path.PUBLIC} element={<Public />}>
@@ -102,6 +117,11 @@ function App() {
           <Route path={path.STORE} element={<Store />} />
           <Route path={path.DETAIL_STORE} element={<Store_detail />} />
           <Route path={path.ORDER} element={<Order />} />
+          <Route path={path.ORDER_CART} element={<OrderCart />} />
+          <Route path={path.ADD_LOCATION} element={<LocationOrder />} />
+          <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
+
+
         </Route>}
             
             </>}

@@ -15,7 +15,6 @@ const Create = async (req, res, next) => {
 };
 
 const GetProductByShop = async (req, res, next) => {
-  console.log("abc");
   try {
     const { id } = req.params;
     console.log(id);

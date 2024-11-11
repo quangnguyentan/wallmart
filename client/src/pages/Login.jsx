@@ -28,7 +28,7 @@ const Login = () => {
       formState: { errors },
       reset
     } = useForm();
-    console.log(errors);
+    
     const dispatch = useDispatch();
     const router = useNavigate();
     const { isLoggedIn, token } = useSelector((state) => state.auth);

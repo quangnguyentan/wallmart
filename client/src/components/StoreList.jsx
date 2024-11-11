@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
 import { apiGetProduct } from "@/services/productService";
+import { apiGetStore } from "@/services/storeService";
 
 function StoreList() {
   const [productList, setproductList] = useState([])
@@ -17,7 +18,7 @@ function StoreList() {
 
   let getUsers = async () => {
     try {
-      const products = await apiGetProduct()
+      const products = await apiGetStore()
       console.log(products)
       setproductList(products);
       setLoading(false);
@@ -47,11 +48,11 @@ function StoreList() {
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
         <Link
-          to="/create-user"
+          to="/create-store"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
-          Create User
+          Create Store
         </Link>
       </div>
       {/* <!-- DataTables --> */}
@@ -72,13 +73,15 @@ function StoreList() {
               >
                 <thead>
                   <tr>
-                    <th>Tên sản phẩm</th>
-                    <th>Mô tả sản phẩm</th>
-                    <th>Giá tiền mặc định</th>
-                    <th>Giá tiền chưa giảm giá</th>
-                    <th>Hàng tồn kho</th>
-                    <th>Kích thước sản phẩm</th>
-                    <th>Màu sắc sản phẩm</th>
+                    <th>Loại sản phẩm</th>
+                    <th>Ngành</th>
+                    <th>Số người theo dõi</th>
+                    <th>Tên người tạo cửa hàng</th>
+                    <th>Số điện thoại người tạo cửa hàng</th>
+                    <th>Tên cửa hàng</th>
+                    <th>Khu vực người đăng ký</th>
+                    <th>Thành phố người đăng ký</th>
+                    <th>Tỉnh người đăng kí</th>
                     <th>Hành động</th>
 
                   </tr>
@@ -88,22 +91,25 @@ function StoreList() {
                   {productList.map((product) => {
                     return (
                       <tr key={product?.id}>
-                        <td>{product?.title}</td>
-                        <td>{product?.description}</td>
-                        <td>{product?.price}$</td>
-                        <td>{product?.priceOld}$</td>
-                        <td>{product?.inventory} sản phẩm</td>
-                        <td>{product?.size?.join(",")}</td>
-                        <td>{product?.color?.join(",")}</td>
-                        <th>
+                        <td>{product?.catergory}</td>
+                        <td>{product?.industry}</td>
+                        <td>{product?.follow}</td>
+                        <td>{product?.fullname}</td>
+                        <td>{product?.phone}</td>
+                        <td>{product?.inforByStore?.nameStore}</td>
+                        <td>{product?.address?.area}</td>
+                        <td>{product?.address?.city}</td>
+                        <td>{product?.address?.province}</td>
+
+                        <th className="flex flex-col gap-2">
                           <Link
-                            to={`/product-view/${product?._id}`}
+                            to={`/store-view/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             View
                           </Link>
                           <Link
-                            to={`/product-edit/${product?._id}`}
+                            to={`/store-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
                             Edit

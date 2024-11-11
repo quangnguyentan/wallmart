@@ -1,26 +1,40 @@
-import mongoose from "mongoose";
-
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "user",
+    ref: "User",
   },
+
   status: {
     type: String,
     enum: ["waitPay", "delivery", "successfull", "canceled"],
     default: "waitPay",
   },
-  adress: {
+  stress: {
     type: String,
-    required: true,
   },
-  shop: {
+  color: String,
+  size: String,
+  quantity: String,
+  revicerName: String,
+  phone: String,
+  province: String,
+  houseNumber: String,
+  city: String,
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  store: {
     type: Schema.Types.ObjectId,
     ref: "store",
   },
-
+  product: {
+    type: Schema.Types.ObjectId,
+    ref: "product",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -29,4 +43,4 @@ const OrderSchema = new Schema({
 
 const Order = mongoose.model("order", OrderSchema);
 
-export default Order;
+module.exports = Order;

@@ -388,3 +388,5 @@ export const list_product = [
     image: product_test19,
   },
 ];
+
+export const pathImage = "http://localhost:8080/images";

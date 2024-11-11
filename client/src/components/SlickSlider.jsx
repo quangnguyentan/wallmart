@@ -10,6 +10,7 @@ import TranslateOutlinedIcon from "@mui/icons-material/TranslateOutlined";
 import banner_classify from "@/assets/banner_classify.jpg";
 import product_demo from "@/assets/product_demo.jpg";
 import { useMediaQuery } from "@mui/material";
+import { pathImage } from "@/lib/helper";
 
 var settings = {
   dots: false,
@@ -93,12 +94,12 @@ const SlickSlider = ({ home, detail, products }) => {
         </div>
       ) : (
        <>
-       {detail ?  <div className="slider-container bg-white ">
-          <Slider {...settings} className="w-full ">
+       {detail ?  <div className="slider-container bg-white w-full h-[300px]">
+          <Slider {...settings} className="w-full h-full">
             {products?.map((photo, index) => (
-              <div className="w-full" key={index}>
+              <div className="w-full h-full" key={index}>
               <img
-                src={`http://localhost:8080/images/${photo}`}
+                src={`${pathImage}/${photo}`}
                 alt="banner"
                 className="w-full h-full object-contain"
               />

@@ -8,9 +8,14 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import Card_Product from "@/components/Card_Product";
+import { apiGetProduct } from "@/services/productService";
 const List_product = () => {
+    const [products, setProducts] = useState([])
     const [activeTab, setActiveTab] = useState('all');
-
+    const getProduct = async() => {
+      const res = await apiGetProduct()
+      setProducts(res)
+    }
     const isMobile = useMediaQuery("(max-width:600px)");
     const [visible, setVisible] = useState(false);
     console.log(window.pageYOffset);
@@ -35,6 +40,9 @@ const List_product = () => {
         window.removeEventListener("scroll", toggleVisibility);
       };
     }, []);
+    useEffect(() => {
+      getProduct()
+    }, [])
   return (
     <div className="bg-[#f5f5f5] h-screen overflow-x-scroll scrollbar-hide">
         <div className="w-full flex items-center bg-white py-2">
@@ -99,7 +107,7 @@ const List_product = () => {
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Product hidden/>
+        <Card_Product products={products} hidden/>
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -121,7 +129,7 @@ const List_product = () => {
       </TabsContent>
       </div>
       <TabsContent value="sell">
-      <Card_Product hidden/>
+      <Card_Product products={products} hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -143,7 +151,7 @@ const List_product = () => {
       </TabsContent>
       
       <TabsContent value="price"> 
-      <Card_Product hidden/>
+      <Card_Product hidden />
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

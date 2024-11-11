@@ -11,6 +11,19 @@ export const apiGetAllUser = () =>
       reject(error);
     }
   });
+export const apiAddToCart = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: "/users/addToCart",
+        data,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
 export const apiGetUserById = (id) =>
   new Promise(async (resolve, reject) => {
     try {

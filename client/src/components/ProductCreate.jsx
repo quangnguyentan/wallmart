@@ -48,13 +48,15 @@ function ProductCreate() {
       formData.append("inventory", data?.inventory); 
       formData.append("stockOff", Boolean(data?.stock)); 
       formData.append("userId", userId); 
+      formData.append("sold", data?.sold); 
 
       setLoading(true);
       const res = await apiCreateProduct(formData); 
       setLoading(false);
       console.log(res)
       if (res?.success) {
-        toast.success("Đăng kí thành công");
+        toast.success("Tạo sản phẩm thành công");
+        navigate("/product-list")
        
       } else {
         toast.error(res.message || "Đã xảy ra lỗi");
@@ -100,7 +102,7 @@ function ProductCreate() {
         <div className='grid grid-cols-2 gap-4'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Tên sản phẩm</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên sản phẩm' {...register("title", {
+        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên sản phẩm' {...register("title", {
                   required: "Tên sản phẩm là bắt buộc",
                  
                 })} />
@@ -114,7 +116,7 @@ function ProductCreate() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mô tả</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập Mô tả' {...register("description", {
+        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập Mô tả' {...register("description", {
                   required: "Mô tả là bắt buộc",
                  
                 })} />
@@ -124,7 +126,7 @@ function ProductCreate() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền sau khi giảm giá</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", {
+        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", {
                   required: "Giá tiền sau khi giảm giá là bắt buộc",
                   validate: (value) => {
                     if (value < 0 ) {
@@ -138,7 +140,7 @@ function ProductCreate() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền mặc định</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền mặc định (vd:50000$)' {...register("priceOld", {
+        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền mặc định (vd:50000$)' {...register("priceOld", {
                   required: "Giá tiền mặc định là bắt buộc",
                   validate: (value) => {
                     if (value < 0 ) {
@@ -153,7 +155,7 @@ function ProductCreate() {
 
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Hàng tồn kho</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập hàng tồn kho' {...register("inventory", {
+        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập hàng tồn kho' {...register("inventory", {
                   required: "Hàng tồn kho là bắt buộc",
                   validate: (value) => {
                     if (value < 0 ) {
@@ -173,7 +175,7 @@ function ProductCreate() {
           <span key={el} className='text-red-500'>[{el}]</span>
         ))}</div>
         </div>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập màu sắc' {...register("color")} onKeyDown={handleKeyDownColor}/>
+        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập màu sắc' {...register("color")} onKeyDown={handleKeyDownColor}/>
        
         </div>
 
@@ -184,19 +186,32 @@ function ProductCreate() {
           <span key={el} className='text-red-500'>[{el}]</span>
         ))}</div>
         </div>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập kích thước' {...register("size")} onKeyDown={handleKeyDownSize}  />
+        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập kích thước' {...register("size")} onKeyDown={handleKeyDownSize}  />
       
         </div>
        
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Còn sản phẩm không?</label>
-        <select  className='outline-none py-2 placeholder:px-2' {...register("stock")}>
+        <select  className='outline-none py-2  px-2' {...register("stock")}>
         <option value={false}>Còn hàng</option>
         <option value={true}>Hết hàng</option>
       </select>
         
         </div>
-       
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Sản phẩm đã bán</label>
+        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập số sản phẩm đã bán' {...register("sold", {
+                  required: "Sản phẩm đã bán là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập sản phẩm đã bán lớn hơn hoặc bằng 0";
+                    }
+                  },
+                })} />
+        {errors.sold && (
+              <p className="text-red-500 text-xs px-2">{errors.sold.message}</p>
+            )}
+        </div>
         </div>
         
         <div className="px-8 w-[30%] mx-auto py-10">
