@@ -50,8 +50,6 @@ const Login = () => {
               router("/");
             }, 1000);
             toast.success("Đăng nhập thành công");
-           
-
             reset()
           } else {
             toast.error("Sai tên đăng nhập hoặc mật khẩu");
@@ -83,7 +81,7 @@ const Login = () => {
        
        {isLogin ? 
        <form onSubmit={handleSubmit(onLogin)}>
-       <div className="flex flex-col gap-12 max-sm:gap-4 w-full h-screen px-4 ">
+       <div className="flex flex-col gap-12 max-sm:gap-4 w-full h-screen px-2 ">
         <div className="flex items-center w-full gap-32">
         <KeyboardArrowLeftIcon
             sx={{ fontSize  : `${isMobile ? "40px" : "40px"}`}}
@@ -102,11 +100,11 @@ const Login = () => {
         </div>
         <Tabs defaultValue="phone" className="w-[450px] max-sm:w-[350px]">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="phone"  className={`text-lg max-sm:text-base ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => {
+        <TabsTrigger value="phone"  className={`text-lg max-sm:text-sm ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => {
           setActiveTab("phone")
           reset()
         }}>Đăng nhập di động</TabsTrigger>
-        <TabsTrigger value="email" className={`text-lg max-sm:text-base ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => {
+        <TabsTrigger value="email" className={`text-lg max-sm:text-sm ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => {
           setActiveTab("email")
           reset()
         }}>Đăng nhập hộp thư</TabsTrigger>
@@ -114,7 +112,7 @@ const Login = () => {
       <TabsContent value="phone" className="w-[450px] max-sm:w-[350px]">
        {activeTab === "phone" && <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập số điện thoại" {...register("phone", {
+       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập số điện thoại" {...register("phone", {
                   required: "Số điện thoại là bắt buộc",
                   validate: (value) => {
                     if (value.length < 10 ||  value.length > 11) {
@@ -125,7 +123,7 @@ const Login = () => {
         {errors.phone && (
               <p className="text-red-500 text-xs px-2">{errors.phone.message}</p>
             )}
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
+       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
                     if (value.length < 5 ) {
@@ -158,7 +156,7 @@ const Login = () => {
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-sm hover:text-red-500 " onClick={() => {
           setIsLogin(!isLogin)
           reset()
-          setActiveTab("phone")
+          // setActiveTab("phone")
         }
         }>Đăng kí người dùng mới</h3>
        </div>}
@@ -169,7 +167,7 @@ const Login = () => {
 
       <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-          <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập email" {...register("email", {
+          <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập email" {...register("email", {
                   required: "Email là bắt buộc",
                   validate: (value) => {
                     if (!value.toLowerCase()
@@ -183,7 +181,7 @@ const Login = () => {
          {errors.email && (
               <p className="text-red-500 text-xs px-2">{errors.email.message}</p>
             )}
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
+       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
                     if (value.length < 5 ) {
@@ -217,7 +215,7 @@ const Login = () => {
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-sm hover:text-red-500 " onClick={() => {
           setIsLogin(!isLogin)
           reset()
-          setActiveTab("phone")
+          // setActiveTab("phone")
         }
         }>Đăng kí người dùng mới</h3>
        </div>
@@ -244,11 +242,11 @@ const Login = () => {
         </div>
         <Tabs defaultValue="phone" className="w-[450px] max-sm:w-[350px]">
       <TabsList className="grid w-full grid-cols-2">
-        <TabsTrigger value="phone"  className={`text-lg max-sm:text-base ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => {
+        <TabsTrigger value="phone"  className={`text-lg max-sm:text-sm ${activeTab === "phone" ? " custom-switch" : ""}`} onClick={() => {
           setActiveTab("phone")
           reset()
         }}>Đăng ký di động</TabsTrigger>
-        <TabsTrigger value="email" className={`text-lg max-sm:text-base ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => {
+        <TabsTrigger value="email" className={`text-lg max-sm:text-sm ${activeTab === "email" ? " custom-switch" : ""}`} onClick={() => {
           setActiveTab("email")
           reset()
         }}>Đăng ký hộp thư</TabsTrigger>
@@ -256,7 +254,7 @@ const Login = () => {
       <TabsContent value="phone" className="w-[450px] max-sm:w-[350px]">
       {activeTab === "phone" &&  <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập số điện thoại" {...register("phone", {
+       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập số điện thoại" {...register("phone", {
                   required: "Số điện thoại là bắt buộc",
                   validate: (value) => {
                     if (value.length < 10 ||  value.length > 11) {
@@ -267,7 +265,7 @@ const Login = () => {
         {errors.phone && (
               <p className="text-red-500 text-xs px-2">{errors.phone.message}</p>
             )}
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
+       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
                     if (value.length < 5 ) {
@@ -299,7 +297,7 @@ const Login = () => {
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-sm hover:text-red-500" onClick={() => {
           setIsLogin(!isLogin)
           reset()
-          setActiveTab("phone")
+          // setActiveTab("phone")
         }
         }>Đăng nhập ngay</h3>
        </div>}
@@ -308,7 +306,7 @@ const Login = () => {
       <TabsContent value="email" className="w-[450px] max-sm:w-[350px]">
       {activeTab === "email" && <div className="flex flex-col gap-10 py-8">
        <div className="flex flex-col gap-4">
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập email" {...register("email", {
+       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập email" {...register("email", {
                   required: "Email là bắt buộc",
                   validate: (value) => {
                     if (!value.toLowerCase()
@@ -322,7 +320,7 @@ const Login = () => {
          {errors.email && (
               <p className="text-red-500 text-xs px-2">{errors.email.message}</p>
             )}
-       <input type="text" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
+       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
                     if (value.length < 5 ) {
@@ -356,7 +354,7 @@ const Login = () => {
         <h3 className="text-gray-500 text-xl cursor-pointer max-sm:text-sm hover:text-red-500" onClick={() => {
           setIsLogin(!isLogin)
           reset()
-          setActiveTab("phone")
+          // setActiveTab("phone")
         }
         }>Đăng nhập ngay</h3>
        </div>}

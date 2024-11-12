@@ -74,7 +74,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
-            <div className="flex flex-col items-center gap-1 " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
               navigate("/order")
             }}>
               <img
@@ -84,7 +84,7 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
-            <div className="flex flex-col items-center gap-1 " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
               navigate("/order")
             }}>
               <img
@@ -94,7 +94,7 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
               navigate("/order")
             }}>
               <img
@@ -104,7 +104,7 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Đang vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
               navigate("/order")
             }}>
               <img
@@ -114,7 +114,7 @@ const Profile = () => {
               />
               <span className="line-clamp-1">Đơn hoàn thành</span>
             </div>
-            <div className="flex flex-col items-center gap-1 " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
               navigate("/order")
             }}>
               <img

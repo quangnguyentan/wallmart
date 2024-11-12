@@ -390,3 +390,4 @@ export const list_product = [
 ];
 
 export const pathImage = "http://localhost:8080/images";
+// export const pathImage = "https://wallmar-server.onrender.com/images";
