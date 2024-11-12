@@ -12,18 +12,18 @@ export const apiGetStore = () =>
       console.log("Failed to get store", error);
     }
   });
-  export const apiGetMyStore = () =>
-    new Promise(async (resolve, reject) => {
-      try {
-        const response = await axiosConfig({
-          method: "GET",
-          url: "/store/myStore",
-        });
-        resolve(response);
-      } catch (error) {
-        console.log("Failed to get store", error);
-      }
-    });
+export const apiGetMyStore = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: "/store/myStore",
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get store", error);
+    }
+  });
 export const apiDeletestoreById = (id) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -49,6 +49,18 @@ export const apiGetstoreById = (id) =>
     }
   });
 export const apiGetstoreByShop = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/store/shop/` + id,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get store", error);
+    }
+  });
+export const apiGetstoreFromShop = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({

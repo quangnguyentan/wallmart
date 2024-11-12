@@ -1,59 +1,64 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-
+import { apiGetOrderByIdOrder, apiUpdateOrder } from '@/services/orderServer';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+const list_status = [
+  {
+    id : 1,
+    name : "Đợi giao hàng"
+  },
+  {
+    id : 2,
+    name : "Đang giao hàng"
+  },
+  {
+    id : 3,
+    name : "Giao hàng thành công"
+  },
+  {
+    id : 4,
+    name : "Đơn hàng bị hủy"
+  },
+]
 function OrderEdit() {
+  const [values, setValues] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [postMultipleFile, setPostMultipleFile] = useState([])
   const navigate = useNavigate();
   const [addNameColorField, setAddNameColorField] = useState([])
   const [addNameSizeField, setAddNameSizeField] = useState([])
-  const [addImageNameField, setAddImageNameField] = useState([])
-  const [addImageSizeField, setAddImageSizeField] = useState([])
-
+  const [order, setOrder] = useState("")
+  const { id } = useParams()
   const {
     register,
     handleSubmit,
     resetField,
     formState: { errors },
+    watch,
+    getValues,
+    setValue,
+
   } = useForm();
-  const createProduct = async (data) => {
+  const updateOrder = async (data) => {
     try {
       const formData = new FormData();
-      for(let index = 0; index < postMultipleFile.length; index++) {
-        const file = postMultipleFile[index]
-        formData.append("photos", file); 
-      }
-      for(let index = 0; index < addNameColorField.length; index++) {
-        const file = addNameColorField[index]
-       
-        formData.append("color", [
-         file
-        ]); 
-      }
-      for(let index = 0; index < addNameSizeField.length; index++) {
-        const file = addNameSizeField[index]
-        formData.append("size", [
-         file
-        ]); 
-      }
-      formData.append("title", data?.title); 
-      formData.append("description", data?.description); 
-      formData.append("price", data?.price); 
-      formData.append("priceOld", data?.priceOld); 
-      formData.append("inventory", data?.inventory); 
-      formData.append("stockOff", Boolean(data?.stock)); 
+    
+      
+      // formData.append("description", data?.description); 
+      // formData.append("price", data?.price); 
+      // formData.append("priceOld", data?.priceOld); 
+      // formData.append("inventory", data?.inventory); 
+      // formData.append("stockOff", Boolean(data?.stock)); 
       setLoading(true);
-      const res = await apiCreateProduct(formData); 
-      setLoading(false);
-      console.log(res)
-      if (res?.success) {
+      const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : "canceled" : order?.status }); 
+      if(res) {
+        setLoading(false);
         toast.success("Đăng kí thành công");
-       
-      } else {
-        toast.error(res.message || "Đã xảy ra lỗi");
+        navigate("/order-list")
       }
     } catch (error) {
       console.error(error);
@@ -61,90 +66,50 @@ function OrderEdit() {
       toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
     }
   };
-  const handleKeyDownSize = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
-
-     if(addNameSizeField.includes(e.target.value) ){
-      setAddNameSizeField(addNameSizeField.filter(item => item !== e.target.value));
-
-      resetField("size")
-     }else{
-      setAddNameSizeField([...addNameSizeField, e.target.value])
-      resetField("size")
-     }
-    }
-
+  const fetchGetOrder = async(id) => {
+    const res = await apiGetOrderByIdOrder(id)
+    console.log(res)
+    setOrder(res)
   }
-  const handleKeyDownColor = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
+  useEffect(() => {
+    setLoading(true)
+    fetchGetOrder(id)
+    setLoading(false)
+  }, [id])
+  
 
-     if(addNameColorField.includes(e.target.value)){
-      setAddNameColorField(addNameColorField.filter(item => item !== e.target.value));
-      resetField("color")
-     }else{
-      setAddNameColorField([...addNameColorField, e.target.value])
-      resetField("color")
-     }
-    }
 
-  }
+  
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
-      <form onSubmit={handleSubmit(createProduct)}>
-        <div className='grid grid-cols-2 gap-4'>
+      <form onSubmit={handleSubmit(updateOrder)}>
+        <div className='flex items-center justify-center w-[40%] mx-auto'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Tên người dùng</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên người dùng' {...register("title", {
-                  required: "Tên người dùng là bắt buộc",
-                 
-                })} />
-        {errors.title && (
-              <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
-            )}
+        <div className="py-4">
+                        <Autocomplete
+                              disablePortal
+                              options={list_status?.map((option) => option.name)}
+                              // defaultValue={setValue("title", order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy")}
+                            
+                              className="w-full h-[40px] outline-none border-none"
+                              value={order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  : "Đơn hàng bị hủy"}
+                             
+                              onChange={(event, newValue) => {
+                                setValues(newValue);
+                              }}
+                              renderInput={(params) => <TextField {...params} label="Trạng thái đơn hàng" />}
+                          />
+                         
+            </div>
         </div>
-        <div  className='flex gap-4 items-center  px-8 w-full'>
-        <label htmlFor="photo">Ảnh người dùng:</label>
-        <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
         </div>
-        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Vai trò</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập vai trò' {...register("description", {
-                  required: "Vai trò là bắt buộc",
-                 
-                })} />
-        {errors.description && (
-              <p className="text-red-500 text-xs px-2">{errors.description.message}</p>
-            )}
-        </div>
-        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Nạp tiền</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='(vd : 30000$)' {...register("price", {
-                  required: "Giá tiền sau khi giảm giá là bắt buộc",
-                  validate: (value) => {
-                    if (value < 0 ) {
-                      return "Vui lòng nhập số tiền lớn hơn hoặc bằng 0";
-                    }
-                  },
-                })} />
-        {errors.price && (
-              <p className="text-red-500 text-xs px-2">{errors.price.message}</p>
-            )}
-        </div>
-        
-       
-        
-       
-        </div>
-        
         <div className="px-8 w-[30%] mx-auto py-10">
           <button
             className="button w-full py-2 px-2 bg-red-500 rounded-full text-white text-xl max-sm:text-base max-sm:py-2"
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Chỉnh sửa người dùng"}
+            {isLoading ? "Đang tải..." : "Chỉnh sửa đơn hàng"}
           </button>
         </div>
       </form>

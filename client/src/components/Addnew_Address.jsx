@@ -19,7 +19,7 @@ import Switch from '@mui/material/Switch';
 import { useForm } from "react-hook-form"
 import { apiCreateAddress } from "@/services/addressService"
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-const Address_Order = () => {
+const Addnew_Address = () => {
   const navigate = useNavigate()
   const {
     register,
@@ -41,15 +41,12 @@ const Address_Order = () => {
     setChecked(e.target.checked);
   }
   const onCreateAddressOrder = async (data) => {
-    const res  = await apiCreateAddress({...data, active: checked ? true : false})
-    console.log(res)
+   await apiCreateAddress({...data, active: checked ? true : false})
     toast.success("Thêm địa chỉ thành công")
-    navigate("/order-cart", { state : { isChecked } })
+    localStorage.setItem("page", 3)
+    navigate("/")
   }
   
-
-
-
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <div className="flex items-center w-full max-sm:gap-20 gap-48 ">
@@ -98,4 +95,4 @@ const Address_Order = () => {
   )
 }
 
-export default Address_Order
+export default Addnew_Address

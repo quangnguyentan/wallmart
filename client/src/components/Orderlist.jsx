@@ -7,22 +7,33 @@ import "./sb-admin-2.min.css";
 import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { apiGetAllUser } from "@/services/userService";
-import { apiGetOrder } from "@/services/orderServer";
+import { apiDeleteOrderById, apiGetOrder, apiGetOrderByShop } from "@/services/orderServer";
+import { apiGetMyStore } from "@/services/storeService";
+
+
 
 function Orderlist() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
+
   const { currentData } = useSelector((state) => state.user); 
   useEffect(() => {
     getUsers();
   }, []);
-
+  
+ 
   let getUsers = async () => {
     try {
-      const user = await apiGetOrder()
-      console.log(user)
-      setproductList(user);
-      setLoading(false);
+      if(currentData?.role === "agent"){
+        const user = await apiGetOrderByShop()
+        setproductList(user);
+        setLoading(false);
+      }else{
+        const user = await apiGetOrder()
+        setproductList(user);
+        setLoading(false);
+      }
+    
     } catch (error) {
       console.log(error);
     }
@@ -34,16 +45,14 @@ function Orderlist() {
         "Are you sure do you want to delete the data?"
       );
       if (confirmDelete) {
-        await axios.delete(
-          `https://63a9bccb7d7edb3ae616b639.mockapi.io/users/${id}`
-        );
+        await apiDeleteOrderById(id)
         getUsers();
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+ 
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -80,7 +89,6 @@ function Orderlist() {
                     <th>Tỉnh </th>
                     <th>Thành phố</th>
                     <th>Đường phố, số nhà</th>
-                    
                     <th>Hành động</th>
                     
 
@@ -93,12 +101,13 @@ function Orderlist() {
                       <tr key={product?._id}>
                         <td>{product?.revicerName}</td>
                         <td>{product?.phone}</td>
-                        <td>{product?.status === "successfull" ? "Thành công" : "Thất bại"}</td>
+                        <td>{product && product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
                         <td>{product?.province}</td>
                         <td>{product?.city}</td>
                         <td>{product?.stress}</td>
-                        
+
                         <th className="flex flex-col gap-2">
+                        
                           <Link
                             to={`/order-view/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
@@ -109,7 +118,7 @@ function Orderlist() {
                             to={`/order-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
-                            Chỉnh sửa
+                            {currentData?.role === "agent" ? "Cập nhật trạng thái đơn hàng" : "Chỉnh sửa"}
                           </Link>
                           <button
                             onClick={() => handleDelete(product?._id)}

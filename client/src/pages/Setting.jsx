@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Setting = () => {
     const isMobile = useMediaQuery("(max-width:600px)");
     const dispatch = useDispatch()
+    const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
 
   return (
@@ -36,7 +37,9 @@ const Setting = () => {
             <KeyboardArrowRightIcon sx={{ fontSize: `${isMobile ? "25px" : "40px"}`, color : "gray"  }}/>
           </Link>
           </div>
-           <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
+           <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 " onClick={() => {
+            navigate("/add-location")
+           }}>
             <span className="text-xl max-sm:text-xs">Quản lý địa chỉ nhận hàng</span>
         <Link>
             <KeyboardArrowRightIcon sx={{ fontSize: `${isMobile ? "25px" : "40px"}`, color : "gray"  }}/>
@@ -68,12 +71,12 @@ const Setting = () => {
           </Link>
           </div>
           </div>
-          <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
+          {/* <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
             <span className="text-xl max-sm:text-xs">Đa ngôn ngữ</span>
         <Link>
             <KeyboardArrowRightIcon sx={{ fontSize: `${isMobile ? "25px" : "40px"}`, color : "gray"  }}/>
           </Link>
-          </div>
+          </div> */}
           <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
             <span className="text-xl max-sm:text-xs">Về chúng tôi</span>
         <Link>

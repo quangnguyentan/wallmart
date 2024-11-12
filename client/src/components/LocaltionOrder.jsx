@@ -25,7 +25,6 @@ const LocationOrder = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const  isChecked  = location.state 
-  console.log(selectedAddress)
   const fetchOrder = async() => {
     const res = await apiGetAddressById()
     setOrder(res)
@@ -38,13 +37,13 @@ const LocationOrder = () => {
 
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
-      <div className="flex items-center w-full max-sm:gap-28 gap-48 ">
+      <div className="flex items-center w-full max-sm:gap-24 gap-48 ">
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "30px" : "40px"}`, cursor : "pointer"}}
             
             onClick={() => window.history.back()}
         />
-      <h3 className="text-center text-gray-600 py-2">Địa chỉ nhận hàng</h3>
+      <h3 className="text-center text-gray-600 py-2 max-sm:text-sm">Địa chỉ nhận hàng</h3>
       </div>
        
        {order?.length > 0 ? <div className="pb-40 px-2">
@@ -102,7 +101,14 @@ const LocationOrder = () => {
        </div>}
        <div className="fixed bottom-0 w-[30%] max-sm:w-full items-center justify-center flex  mx-auto h-16 bg-slate-100 shadow-md">
          
-          <button className="px-8 py-4  max-sm:text-xs w-full rounded-xl bg-red-500 text-white" onClick={() => navigate("/add-address", { state : isChecked})}>Thêm dịa chỉ</button>
+          <button className="px-8 py-4  max-sm:text-xs w-full rounded-xl bg-red-500 text-white" onClick={() => {
+            if(isChecked){
+              navigate("/add-address", { state : isChecked})
+            }else{
+              navigate("/add-new-address")
+            }
+          }
+          }>Thêm dịa chỉ</button>
          </div>
     </div>
   )

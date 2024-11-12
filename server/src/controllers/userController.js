@@ -35,7 +35,6 @@ const getCurrent = async (req, res) => {
 };
 const addToCart = async (req, res, next) => {
   const { id } = req.currentUser;
-  console.log(id);
   const { product, quantity, color, size, store } = req.body;
   if (!id)
     res.status(400).json({
@@ -63,11 +62,11 @@ const addToCart = async (req, res, next) => {
         cartItem.color === color &&
         cartItem.size === size
       ) {
-        console.log("abc");
         cartItem.quantity += Number(quantity);
         cartUpdated = true;
       }
     });
+    findUser.cart = findUser.cart.filter((cartItem) => cartItem.quantity > 0);
     if (!cartUpdated) {
       findUser?.cart?.push({
         product,
@@ -185,7 +184,6 @@ const getDeleteUserById = async (req, res) => {
     const { id } = req.params;
     if (!id) throw new Error("Invalid");
     const user = await users.findByIdAndDelete(id);
-    console.log(user);
     return res.status(200).json({
       success: user ? true : false,
       user,
@@ -198,15 +196,8 @@ const getDeleteUserById = async (req, res) => {
 };
 const updatedUser = async (req, res) => {
   try {
- 
     const { id } = req.params;
-    console.log(id)
-    const {
-      fullName,
-      username,
-      deposit,
-      role,
-    } = req.body;
+    const { fullName, username, deposit, role } = req.body;
     const findUser = await users.findById(id);
 
     const user = await users.findByIdAndUpdate(
@@ -214,9 +205,9 @@ const updatedUser = async (req, res) => {
       {
         fullName,
         username,
-        deposit : findUser?.deposit + Number(deposit), 
+        deposit: findUser?.deposit + Number(deposit),
         role,
-        avatar : req.files.images[0].filename,
+        avatar: req.files.images[0].filename,
       },
       { new: true }
     );
@@ -320,7 +311,6 @@ const updatedStatusWithDraw = async (req, res) => {
     let updateBill;
     let findWithDraw = await withDraw.findById(WithDrawId);
     let user = await users.findById(userId);
-    console.log(status);
     if (findWithDraw && status === "Thành công") {
       updateBill = await users.findByIdAndUpdate(
         userId,
@@ -329,7 +319,6 @@ const updatedStatusWithDraw = async (req, res) => {
         },
         { new: true }
       );
-      console.log(updateBill);
       if (updateBill) {
         let findBill = await withDraw.findByIdAndUpdate(
           WithDrawId,

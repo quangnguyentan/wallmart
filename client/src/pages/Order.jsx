@@ -137,7 +137,7 @@ const Order = () => {
       <div >
       <TabsContent value="all">
         
-        {order?.length > 0  ? <Card_Order hidden/> : <EmptyOrder hidden/>}
+        {order?.length > 0  ? <Card_Order hidden type="all"/> : <EmptyOrder hidden/>}
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -159,7 +159,7 @@ const Order = () => {
       </TabsContent>
       </div>
       <TabsContent value="waitPayment">
-      <EmptyOrder hidden/>
+      {order?.length > 0  ? <Card_Order hidden type="wait"/> : <EmptyOrder hidden/>}
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -181,7 +181,8 @@ const Order = () => {
       </TabsContent>
       
       <TabsContent value="waitDelivery"> 
-      <EmptyOrder hidden/>
+      {order?.length > 0  ? <Card_Order hidden type="waitDelivery"/> : <EmptyOrder hidden/>}
+
 
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
@@ -203,7 +204,8 @@ const Order = () => {
       </div>
       </TabsContent>
       <TabsContent value="Delivering"> 
-      <EmptyOrder hidden/>
+      {order?.length > 0  ? <Card_Order hidden type="delivering"/> : <EmptyOrder hidden/>}
+
 
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
@@ -225,7 +227,8 @@ const Order = () => {
       </div>
       </TabsContent>
       <TabsContent value="Successful"> 
-      <EmptyOrder hidden/>
+      {order?.length > 0  ? <Card_Order hidden type="successfull" /> : <EmptyOrder hidden/>}
+
 
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
@@ -247,7 +250,8 @@ const Order = () => {
       </div>
       </TabsContent>
       <TabsContent value="Cancel"> 
-      <EmptyOrder hidden/>
+      {order?.length > 0  ? <Card_Order hidden type="canceled"/> : <EmptyOrder hidden/>}
+
 
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (

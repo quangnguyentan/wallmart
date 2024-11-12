@@ -7,8 +7,9 @@ const StoreSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  active : {
-    type : String,
+
+  active: {
+    type: String,
   },
   follow: Number,
   industry: {
@@ -29,7 +30,7 @@ const StoreSchema = new Schema({
   idYourself: {
     type: String,
   },
-  service : String,
+  service: String,
   emailYourself: {
     type: String,
   },
@@ -38,6 +39,7 @@ const StoreSchema = new Schema({
     backside: String,
     yourFace: String,
   },
+
   businessLicense: String,
 
   inforByStore: {

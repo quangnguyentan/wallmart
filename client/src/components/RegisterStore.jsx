@@ -33,6 +33,7 @@ const RegisterStore = () => {
   } = useForm();
   const isMobile = useMediaQuery("(max-width:600px)");
   const [value, setValue] = useState("");
+  
     const [loading, setLoading] = useState(false)
   const location = useLocation();
   const  checked  = location.state  

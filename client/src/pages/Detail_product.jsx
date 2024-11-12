@@ -76,7 +76,7 @@ const Detail_product = () => {
   const [isSelectedSize, setIsSelectedSize] = useState([])
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
-
+  const [buyProduct, setBuyProduct] = useState([])
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const fetchProductById = async(id) => {
@@ -107,6 +107,7 @@ const Detail_product = () => {
       setIsSelectedSize([ size])
      }
   }
+  
 
   const addToCart = async() => {
     const res = await apiAddToCart({
@@ -129,15 +130,13 @@ const Detail_product = () => {
   useEffect(() => {
     fetchProductById(id)
   },[])
- 
- 
+  console.log(buyProduct)
   return (
     <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
       <div className="flex items-center">
         <div className="flex items-center justify-between flex-4 ">
           <KeyboardArrowLeftIcon
              sx={{ fontSize  :  `${isMobile ? "30px" : "50px"}`, cursor : "pointer"}}
-            
             onClick={() => window.history.back()}
           />
           <span className="text-blue-600 max-sm:text-xs">Hàng hóa</span>
@@ -151,7 +150,10 @@ const Detail_product = () => {
             />
             {dropDown && (
               <div className="absolute z-50 w-24 h-40 max-sm:h-24 max-sm:w-16 bg-[#fff] flex flex-col gap-2 items-center left-[-80px] py-2 px-2">
-                <div className="h-[50%] w-full cursor-pointer border-b">
+                <div className="h-[50%] w-full cursor-pointer border-b" onClick={() => {
+                    localStorage.setItem("page", 1)
+                    navigate("/")
+                }}>
                   <p className="text-xl text-center text-blue-500 max-sm:text-xs">Hàng hóa</p>
                 </div>
                 <div className="h-[50%] w-full cursor-pointer " onClick={() => navigate("/store")}>
@@ -259,7 +261,7 @@ const Detail_product = () => {
             <span className="text-xl font-medium text-black max-sm:text-base">Chi tiết</span>
             
           <div className="text-black px-2 w-full break-words max-sm:text-sm">
-            <li>{products?.store?.inforByStore?.descriptionStore}</li>
+            <li>{products?.description}</li>
           </div>
         </div>
       </div>
@@ -509,12 +511,26 @@ const Detail_product = () => {
               
             
           </div>
-          <div className="px-8 w-full py-4 max-sm:py-2">
-        <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" onClick={() => {
-          if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
-            toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
-          }
-        }}>Thêm vào giỏ hàng</button>
+          <div className="px-8 w-full py-4 max-sm:py-2" onClick={() =>{
+          
+              if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
+                toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
+              }else{
+                const isChecked = [
+                  {
+                    ...products,
+                    color: products.color[0], 
+                    size: products.size[0] ,
+                    quantity : quantity   
+                  }
+                ]
+            
+               navigate("/order-cart", {state : { isChecked }})
+              }
+            
+           
+          }}>
+        <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" >Mua hàng</button>
         </div>
          
                 </div>

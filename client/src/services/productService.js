@@ -36,6 +36,18 @@ export const apiGetProductById = (id, userId) =>
       console.log("Failed to get product", error);
     }
   });
+export const apiGetProductByStoreId = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/product/store/${id}`,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get product", error);
+    }
+  });
 export const apiGetProductByShop = (id) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -73,12 +85,12 @@ export const apiCreateProduct = (data) =>
       console.log("Failed to get product", error);
     }
   });
-export const apiUpdateProduct = (id, userId, data) =>
+export const apiUpdateProduct = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: `/product/update/${id}/${userId}`,
+        url: `/product/update/${id}`,
         data,
       });
       resolve(response);

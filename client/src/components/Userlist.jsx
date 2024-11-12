@@ -6,7 +6,7 @@ import axios from "axios";
 import "./sb-admin-2.min.css";
 import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
-import { apiGetAllUser } from "@/services/userService";
+import { apiDeleteUserById, apiGetAllUser } from "@/services/userService";
 
 function Userlist() {
   const [productList, setproductList] = useState([])
@@ -32,9 +32,7 @@ function Userlist() {
         "Are you sure do you want to delete the data?"
       );
       if (confirmDelete) {
-        await axios.delete(
-          `https://63a9bccb7d7edb3ae616b639.mockapi.io/users/${id}`
-        );
+        await apiDeleteUserById(id)
         getUsers();
       }
     } catch (error) {
@@ -91,7 +89,7 @@ function Userlist() {
                         <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
-                        <td>{product?.role}</td>
+                        <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                         <td>{product?.gender}</td>
                         
                         <th className="flex flex-col gap-2">

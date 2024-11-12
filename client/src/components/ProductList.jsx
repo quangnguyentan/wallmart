@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
-import { apiGetProduct } from "@/services/productService";
+import { apiDeleteProductById, apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 
 function ProductList() {
@@ -32,9 +32,7 @@ function ProductList() {
         "Are you sure do you want to delete the data?"
       );
       if (confirmDelete) {
-        await axios.delete(
-          `https://63a9bccb7d7edb3ae616b639.mockapi.io/users/${id}`
-        );
+        await apiDeleteProductById(id)
         getUsers();
       }
     } catch (error) {
@@ -46,13 +44,13 @@ function ProductList() {
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
-        <Link
+        {currentData?.role === "agent" && <Link
           to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
           Tạo sản phẩm
-        </Link>
+        </Link>}
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">

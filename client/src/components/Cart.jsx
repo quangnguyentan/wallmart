@@ -22,13 +22,13 @@ const Cart = () => {
   const onChangeChecked = (product) => {
     const check = isChecked?.some((item) => item?._id === product?._id)
     if(check){
-      console.log("abc")
       setIsChecked(isChecked.filter(item => item?._id !== product?._id));
      }else{
       setIsChecked([...isChecked, product])
      }
    
   }
+  console.log(isChecked)
   const onChangeCheckedAll = (data) => {
     if(isCheckedAll ) {
       setIsChecked(data)
@@ -69,6 +69,7 @@ const Cart = () => {
   useEffect(() => {
     dispatch(getCurrent())
   },[])
+  console.log(isChecked)
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <h3 className="w-full text-center text-gray-600 bg-white py-2 shadow-sm">Giỏ hàng</h3>
@@ -90,15 +91,15 @@ const Cart = () => {
                 </div>
              </div>
                 <div className="flex items-center gap-2 border rounded-[4px]">
-                   <div className="px-3 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => {
+                   <div className="px-3 max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => {
                       addToCart(product,"decrement")
                    }}>
                     <RemoveOutlinedIcon sx={{ fontSize : "15px" }} />
                    </div>
-                    <div className="px-2">
+                    <div className="px-2 max-sm:px-0">
                     <span>{product?.quantity}</span>
                     </div>
-                    <div className="px-3 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer" onClick={() => {
+                    <div className="px-3 max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer" onClick={() => {
                       addToCart(product,"increment")
                     
                     }
@@ -132,15 +133,22 @@ const Cart = () => {
           </div>
          <div className="flex flex-col items-center line-clamp-1  ">
           <span className="max-sm:text-xs">Tổng tiền</span>
-         <span className="max-sm:text-sm text-red-500 font-semibold">${currentData?.cart?.reduce((initValue, currentValue) => {
+         <span className="max-sm:text-sm text-red-500 font-semibold">${isChecked?.length === currentData?.cart?.length  ?  currentData?.cart?.reduce((initValue, currentValue) => {
             const totalProductPrice = currentValue?.product?.price * currentValue?.quantity;
-            // Cộng dồn vào tổng tiền (initValue)
+            return initValue + totalProductPrice;
+          },0) : isChecked?.reduce((initValue, currentValue) => {
+            const totalProductPrice = currentValue?.product?.price * currentValue?.quantity;
             return initValue + totalProductPrice;
           },0)}</span>
          </div>
           <button className="px-4 py-2 max-sm:text-xs rounded-xl bg-red-500 text-white" onClick={() => {
-            navigate("/order-cart", {state : {isChecked }})
-          }}>Thanh toán</button>
+            if(isChecked?.length > 0) {
+              navigate("/order-cart", {state : {isChecked }})
+
+            }else{
+              toast.error("Vui lòng chọn sản phẩm để thanh toán")
+            }
+          }} >Thanh toán</button>
           </div>
          </div>}
     </div>
