@@ -40,7 +40,7 @@ const Order = () => {
       <div className="w-[10%]">
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "35px" : "50px"}`}}
-            className="text-gray-400 cursor-pointer"
+            className="text-gray-400 cursor-pointer line-clamp-1 px-2"
             onClick={() =>{
               localStorage.setItem("page", 0)
               navigate("/")
@@ -68,57 +68,57 @@ const Order = () => {
        <div className="w-full overflow-x-hidden border-none ">
     <Tabs defaultValue="all" className="w-full h-full ">
       <div className="w-full flex flex-col z-40 px-2 bg-white outline-none overflow-hidden whitespace-nowrap ">
-        <TabsList className="w-full flex justify-between px-4  overflow-x-scroll scrollbar-hide ">
+        <TabsList className="w-full flex justify-between px-4  overflow-x-scroll scrollbar-hide">
         <TabsTrigger 
                  value="all" 
-                 className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
+                 className={`max-sm:text-xs h-16 line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
                  onClick={() => setActiveTab("all")}
             >
                <div className="flex items-center gap-1">
-                    <span className="font-bold ">Tất cả</span>
+                    <span className="font-bold line-clamp-1 px-2">Tất cả</span>
                </div>
-            </TabsTrigger>
+          </TabsTrigger>
         <TabsTrigger 
-                className={`max-sm:text-xs  h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 ${activeTab === 'waitPayment' ? ` background-custom ` : 'text-gray-500'}`} 
+                className={`max-sm:text-xs  h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 ${activeTab === 'waitPayment' ? ` background-custom ` : 'text-gray-500'}`} 
                 value="waitPayment" 
                 onClick={() => setActiveTab("waitPayment")}
             >
                 Đang chờ thanh toán
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="waitDelivery"
                 onClick={() => setActiveTab("waitDelivery")}
             >
                <div className="flex items-center gap-2">
-                 <span className="cursor-pointer">Vận chuyển</span>
+                 <span className="cursor-pointer line-clamp-1 px-2">Vận chuyển</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Delivering' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Delivering' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Delivering"
                 onClick={() => setActiveTab("Delivering")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer">Đang vận chuyển</span>
+                 <span className="cursor-pointer line-clamp-1 px-2">Đang vận chuyển</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Successful' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Successful' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Successful"
                 onClick={() => setActiveTab("Successful")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer">Đơn hoàn thành</span>
+                 <span className="cursor-pointer line-clamp-1 px-2">Đơn hoàn thành</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 w-[15%] line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Cancel' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Cancel' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Cancel"
                 onClick={() => setActiveTab("Cancel")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer">Đã hủy</span>
+                 <span className="cursor-pointer line-clamp-1 px-2">Đã hủy</span>
                </div>
             </TabsTrigger>
         </TabsList>
