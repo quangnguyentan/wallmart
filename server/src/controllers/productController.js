@@ -18,12 +18,12 @@ const GetProductByShop = async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log(id);
-    const products = await Product.findById(id);
-    const store = await Store.find({ userId: products?.userId?.toString() });
+    const products = await Product.findById(id).populate(
+      { path: "store", select: "inforByStore logoStore industry" }
+    );
     return res.status(200).json({
       success: products ? true : false,
       products: products,
-      store: store,
     });
   } catch (e) {
     next(e);
@@ -41,18 +41,19 @@ const GetProductById = async (req, res, next) => {
   try {
     const { id, userId } = req.params;
     console.log(id, userId);
-    const products = await Product.findById(id);
-    const store = await Store.find({ userId });
+    const products = await Product.findById(id).populate(
+      { path: "store", select: "inforByStore logoStore industry" }
+    );
     return res.status(200).json({
       success: products ? true : false,
       products: products,
-      store: store,
     });
   } catch (e) {
     next(e);
   }
 };
 const CreateNewProduct = async (req, res, next) => {
+  const { id } = req.currentUser
   try {
     const {
       title,
@@ -66,7 +67,7 @@ const CreateNewProduct = async (req, res, next) => {
       size,
       stockOff,
     } = req.body;
-
+    const store = Store.find({ userId : id })
     const files = req.files;
     let arrayFiles = [];
     if (files) {
@@ -82,6 +83,7 @@ const CreateNewProduct = async (req, res, next) => {
       price,
       priceOld,
       userId: userId,
+      store : store?._id,
       inventory,
       sold,
       color,

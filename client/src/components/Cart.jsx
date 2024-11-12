@@ -111,7 +111,10 @@ const Cart = () => {
             </div>
          ))}
          
-       </div>: <div className="flex flex-col items-center justify-center gap-16">
+       </div>: 
+
+       
+       <div className="flex flex-col items-center justify-center gap-16">
         <div className="flex flex-col items-center justify-center gap-4">
                 <img src={noCart} alt="noCart" className="w-[220px] h-[134px]" />
                 <span className="text-lg text-gray-400 font-medium max-sm:text-sm">Giỏ hàng trống</span>

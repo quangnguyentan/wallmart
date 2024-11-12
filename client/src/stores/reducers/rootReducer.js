@@ -5,6 +5,7 @@ import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { persistReducer } from "redux-persist";
 import userReducer from "./userReducer";
 import lotteryReducer from "./lotteryReducer";
+import storeReducer from "./storeReducer";
 
 const commonConfig = {
   storage,
@@ -18,6 +19,8 @@ const authConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authConfig, authReducer),
   user: userReducer,
+  store: storeReducer,
+
   lottery: lotteryReducer,
 });
 export default rootReducer;

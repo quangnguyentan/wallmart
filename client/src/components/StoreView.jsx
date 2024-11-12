@@ -46,31 +46,23 @@ function StoreView() {
                                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                                     <thead>
                                         <tr>
-                                        <th>Loại sản phẩm</th>
                                         <th>Ngành</th>
-                                        <th>Số người theo dõi</th>
                                         <th>Tên người tạo cửa hàng</th>
                                         <th>Số điện thoại người tạo cửa hàng</th>
                                         <th>Tên cửa hàng</th>
                                         <th>Khu vực người đăng ký</th>
-                                        <th>Thành phố người đăng ký</th>
-                                        <th>Tỉnh người đăng kí</th>
-                                        <th>Hành động</th>
+                                       
                                         </tr>
                                     </thead>
                                    
                                     <tbody>
                                         <tr>
-                                        <td>{userList?.catergory}</td>
                                         <td>{userList?.industry}</td>
-                                        <td>{userList?.follow}</td>
                                         <td>{userList?.fullname}</td>
                                         <td>{userList?.phone}</td>
                                         <td>{userList?.inforByStore?.nameStore}</td>
                                         <td>{userList?.address?.area}</td>
-                                        <td>{userList?.address?.city}</td>
-                                        <td>{userList?.address?.province}</td>
-
+                                       
                                         </tr>
                                     </tbody>
                                 </table>

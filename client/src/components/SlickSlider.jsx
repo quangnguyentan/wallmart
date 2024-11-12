@@ -11,6 +11,8 @@ import banner_classify from "@/assets/banner_classify.jpg";
 import product_demo from "@/assets/product_demo.jpg";
 import { useMediaQuery } from "@mui/material";
 import { pathImage } from "@/lib/helper";
+import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
+
 
 var settings = {
   dots: false,
@@ -61,7 +63,7 @@ const SlickSlider = ({ home, detail, products }) => {
                 <SmsOutlinedIcon fontSize={`${isMobile ? "medium" : "large"}`} sx={{ color: "white" }} />
               </Link>
               <Link>
-                <TranslateOutlinedIcon
+                <HeadsetMicOutlinedIcon
                  fontSize={`${isMobile ? "medium" : "large"}`}
                   sx={{ color: "white" }}
                 />

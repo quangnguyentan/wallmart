@@ -114,16 +114,7 @@ function ProductCreate() {
         <label htmlFor="photo">Ảnh sản phẩm:</label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
         </div>
-        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Mô tả</label>
-        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập Mô tả' {...register("description", {
-                  required: "Mô tả là bắt buộc",
-                 
-                })} />
-        {errors.description && (
-              <p className="text-red-500 text-xs px-2">{errors.description.message}</p>
-            )}
-        </div>
+      
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền sau khi giảm giá</label>
         <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", {

@@ -15,6 +15,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import hr from "@/assets/hr.png"
+import { apiGetAddressById } from "@/services/addressService"
 
 const LocationOrder = () => {
   const navigate = useNavigate()
@@ -26,14 +27,14 @@ const LocationOrder = () => {
   const  isChecked  = location.state 
   console.log(selectedAddress)
   const fetchOrder = async() => {
-    const res = await apiGetOrderById()
+    const res = await apiGetAddressById()
     setOrder(res)
   }
   
   useEffect(() => {
     fetchOrder()
   }, [])
- 
+ console.log(order)
 
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>

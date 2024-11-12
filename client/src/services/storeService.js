@@ -12,6 +12,18 @@ export const apiGetStore = () =>
       console.log("Failed to get store", error);
     }
   });
+  export const apiGetMyStore = () =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await axiosConfig({
+          method: "GET",
+          url: "/store/myStore",
+        });
+        resolve(response);
+      } catch (error) {
+        console.log("Failed to get store", error);
+      }
+    });
 export const apiDeletestoreById = (id) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -73,12 +85,12 @@ export const apiCreatestore = (data) =>
       console.log("Failed to get store", error);
     }
   });
-export const apiUpdatestore = (id, userId, data) =>
+export const apiUpdatestore = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: `/store/update/${id}/${userId}`,
+        url: `/store/update/${id}`,
         data,
       });
       resolve(response);

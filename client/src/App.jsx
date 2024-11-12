@@ -40,6 +40,15 @@ import OrderCreate from "./components/OrderCreate";
 import StoreView from "./components/StoreView";
 import OrderView from "./components/OrderView";
 import OrderEdit from "./components/OrderEdit";
+import RegisterStoreChoose from "./components/RegisterStoreChoose";
+import RegisterStore from "./components/RegisterStore";
+import UserDepositList from "./components/UserDepositLIST";
+import UserDepositCreate from "./components/UserDepositCreate";
+import UserDepositView from "./components/UserDepositView";
+import UserDepositEdit from "./components/UserDepositEdit";
+import StoreFromView from "./components/StoreFormView";
+import StoreFormEdit from "./components/StoreFormEdit";
+import StoreFormList from "./components/StoreFormList";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -83,6 +92,13 @@ function App() {
                 <Route path='create-order' element={<OrderCreate />} />
                 <Route path='order-view/:id' element={<OrderView />} />
                 <Route path='order-edit/:id' element={<OrderEdit />} />
+                <Route path='deposit-user-list' element={<UserDepositList />} />
+                <Route path='deposit-user-create' element={<UserDepositCreate />} />
+                <Route path='deposit-user-view/:id' element={<UserDepositView />} />
+                <Route path='deposit-user-edit/:id' element={<UserDepositEdit />} />
+                <Route path='store-list-form' element={<StoreFormList />} />
+                <Route path='store-view-form/:id' element={<StoreFromView />} />
+                <Route path='store-edit-form/:id' element={<StoreFormEdit />} />
               </Route> : <> 
             {currentData?.role === "agent" ? <Route path='/' element={<Portal />}>
                 <Route path='dashboard' element={<Dashboard />} />
@@ -105,6 +121,8 @@ function App() {
             <Route path={path.ORDER_CART} element={<OrderCart />} />
             <Route path={path.ADD_LOCATION} element={<LocationOrder />} />
             <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
+            <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
+            <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
 
 
           </Route>  :   <Route path={path.PUBLIC} element={<Public />}>
@@ -120,6 +138,8 @@ function App() {
           <Route path={path.ORDER_CART} element={<OrderCart />} />
           <Route path={path.ADD_LOCATION} element={<LocationOrder />} />
           <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
+          <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
+          <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
 
 
         </Route>}

@@ -8,9 +8,11 @@ import { useState, useEffect } from "react";
 import Card_Order from "@/components/Card_Order";
 import EmptyOrder from "@/components/EmptyOrder";
 import { useNavigate } from "react-router-dom";
+import { apiGetOrderById } from "@/services/orderServer";
 const Order = () => {
     const [activeTab, setActiveTab] = useState('all');
-
+    const [order, setOrder] = useState("")
+    
     const isMobile = useMediaQuery("(max-width:600px)");
     const [visible, setVisible] = useState(false);
     const navigate = useNavigate()
@@ -21,6 +23,11 @@ const Order = () => {
         setVisible(false);
       }
     };
+    const getMyOrder = async() => {
+      const res = await apiGetOrderById()
+      setOrder(res)
+    }
+  
     const scrollToTop = () => {
       window.scrollTo({
         top: 0,
@@ -34,6 +41,10 @@ const Order = () => {
         window.removeEventListener("scroll", toggleVisibility);
       };
     }, []);
+    useEffect(() => {
+      getMyOrder()
+    },[])
+    console.log(order)
   return (
     <div className="bg-[#f5f5f5] h-screen overflow-x-scroll scrollbar-hide">
         <div className="w-full flex items-center bg-white py-2">
@@ -125,7 +136,8 @@ const Order = () => {
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Order hidden/>
+        
+        {order?.length > 0  ? <Card_Order hidden/> : <EmptyOrder hidden/>}
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

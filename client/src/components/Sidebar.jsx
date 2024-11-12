@@ -1,13 +1,14 @@
 import { faFaceLaughWink, faTachographDigital, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import "./sb-admin-2.min.css";
 import { useDispatch } from 'react-redux';
 import { logout } from '@/stores/actions/authAction';
 
 function Sidebar() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     return (
         <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -36,32 +37,43 @@ function Sidebar() {
             <li className="nav-item active">
                 <Link className="nav-link" to="/user-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
-                    <span>Users</span>
+                    <span>Người dùng</span>
                 </Link>
             </li>
             <li className="nav-item active">
                 <Link className="nav-link" to="/product-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
-                    <span>Products</span>
+                    <span>Sản phẩm</span>
                 </Link>
             </li>
             <li className="nav-item active">
                 <Link className="nav-link" to="/store-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
-                    <span>Stores</span>
+                    <span>Cửa hàng</span>
                 </Link>
             </li>
             <li className="nav-item active">
                 <Link className="nav-link" to="/order-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
-                    <span>Orders</span>
+                    <span>Đơn hàng</span>
                 </Link>
             </li>
-            
-             
+            <li className="nav-item active">
+                <Link className="nav-link" to="/deposit-user-list">
+                    <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
+                    <span>Nạp tiền cho khách</span>
+                </Link>
+            </li>
+            <li className="nav-item active">
+                <Link className="nav-link" to="/store-list-form">
+                    <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />
+                    <span>Duyệt đơn cửa hàng</span>
+                </Link>
+            </li>
             <li className="nav-item active cursor-pointer" onClick={() => {
                 dispatch(logout())
-                window.location.href = "/login"
+                navigate("/")
+                window.location.reload()
             }}>
                 <div className="nav-link ">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />

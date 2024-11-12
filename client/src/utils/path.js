@@ -12,5 +12,9 @@ const path = {
   ORDER_CART: "order-cart",
   ADD_LOCATION: "add-location",
   ADD_ADDRESS: "add-address",
+  REGISTER_STORE_CHOOSE: "register-choose",
+  REGISTER_STORE: "register-store",
+
+
 };
 export default path;

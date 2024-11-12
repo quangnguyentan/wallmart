@@ -21,7 +21,6 @@ function ProductView() {
         try {
             const products = await apiGetProductById(id, userId)
             setproductList(products?.products);
-            setStoreList(products?.store[0])
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -44,14 +43,12 @@ function ProductView() {
                                     <thead>
                                         <tr>
                                         <th>Tên sản phẩm</th>
-                                        <th>Mô tả sản phẩm</th>
                                         <th>Giá tiền mặc định</th>
                                         <th>Giá tiền chưa giảm giá</th>
                                         <th>Hàng tồn kho</th>
                                         <th>Kích thước sản phẩm</th>
                                         <th>Màu sắc sản phẩm</th>
                                         <th>Tên cửa hàng</th>
-                                        <th>Mô tả cửa hàng</th>
 
                                         </tr>
                                     </thead>
@@ -59,15 +56,12 @@ function ProductView() {
                                     <tbody>
                                         <tr>
                                         <td>{productList?.title}</td>
-                                        <td>{productList?.description}</td>
                                         <td>{productList?.price}$</td>
                                         <td>{productList?.priceOld}$</td>
                                         <td>{productList?.inventory} sản phẩm</td>
                                         <td>{productList?.size?.join(",")}</td>
                                         <td>{productList?.color?.join(",")}</td>
-                                        <td>{storeList?.inforByStore?.nameStore}</td>
-                                        <td>{storeList?.inforByStore?.descriptionStore}</td>
-
+                                        <td>{productList?.store?.inforByStore?.nameStore}</td>
                                         </tr>
                                     </tbody>
                                 </table>

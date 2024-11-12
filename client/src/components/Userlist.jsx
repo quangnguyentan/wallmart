@@ -46,13 +46,13 @@ function Userlist() {
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
-        <Link
+        {/* <Link
           to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
           Create User
-        </Link>
+        </Link> */}
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
@@ -78,15 +78,17 @@ function Userlist() {
                     <th>Vai trò</th>
                     <th>Giới tính</th>
                     
+                    <th>Hành động</th>
 
                   </tr>
                 </thead>
                 
                 <tbody>
                   {productList?.map((product) => {
+                     if(product?.role !== "admin") {
                     return (
                       <tr key={product?.id}>
-                        <td>{product?.username}</td>
+                        <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
                         <td>{product?.role}</td>
@@ -97,23 +99,24 @@ function Userlist() {
                             to={`/user-view/${product?._id}/${currentData?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
-                            View
+                            Xem chi tiết
                           </Link>
                           <Link
                             to={`/user-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
-                            Edit
+                            Chỉnh sửa
                           </Link>
                           <button
                             onClick={() => handleDelete(product?._id)}
                             className="btn btn-danger btn-sm mr-1"
                           >
-                            Delete
+                            Xóa
                           </button>
                         </th>
                       </tr>
                     );
+                  }
                   })}
                 </tbody>
               </table>

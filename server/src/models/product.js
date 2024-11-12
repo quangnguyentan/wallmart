@@ -23,6 +23,10 @@ const ProductSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    store: {
+      type: Schema.Types.ObjectId,
+      ref: "store",
+    },
     inventory: Number,
     photos: [String],
     sold: Number,

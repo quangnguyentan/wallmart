@@ -11,7 +11,6 @@ import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlin
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
-import product_demo from "@/assets/product_demo.jpg";
 import img_demo_grey from "@/assets/img_demo_grey.jpg";
 import img_demo_black from "@/assets/img_demo_black.jpg";
 
@@ -35,6 +34,7 @@ import { getCurrent } from "@/stores/actions/userAction";
 import { pathImage } from "@/lib/helper";
 
 import { apiAddToCart } from "@/services/userService";
+import { apiGetstoreById } from "@/services/storeService";
 
 const productColor = [
   {
@@ -73,7 +73,6 @@ const Detail_product = () => {
   const [dropDown, setDropDown] = useState(false);
   const [drawerBottom, setDrawerBottom] = useState(false)
   const [products, setProducts] = useState([])
-  const [store, setStore] = useState([])
   const [isSelectedSize, setIsSelectedSize] = useState([])
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
@@ -83,9 +82,8 @@ const Detail_product = () => {
   const fetchProductById = async(id) => {
     const res = await apiGetProductByShop(id)
     setProducts(res?.products)
-    setStore(res?.store[0])
   }
-
+  
   const onChangeQuantity = (type) => {
     if(type === "increment") {
       setQuantity(quantity + 1)
@@ -116,7 +114,7 @@ const Detail_product = () => {
       color : isSelectedColor[0],
       size : isSelectedSize[0],
       product : products?._id,
-      store : store?._id
+      store : products?.store?._id
     })
     if(res?.success) {
       setDrawerBottom(false)
@@ -225,8 +223,8 @@ const Detail_product = () => {
                <div className="flex items-center gap-4 justify-center">
                 <AccountCircleIcon sx={{ fontSize  :  `${isMobile ? "40px" : "70px"}`}} className="text-gray-300"/>
                     <div className="flex flex-col gap-1 ">
-                        <span className="text-xl max-sm:text-sm font-medium text-black">{store?.inforByStore?.nameStore}</span>
-                        <span className="text-lg max-sm:text-sm font-medium">ngành toàn diện</span>
+                        <span className="text-xl max-sm:text-sm font-medium text-black">{products?.store?.inforByStore?.nameStore}</span>
+                        <span className="text-lg max-sm:text-sm font-medium">{products?.store?.industry}</span>
 
                     </div>
                </div>
@@ -261,7 +259,7 @@ const Detail_product = () => {
             <span className="text-xl font-medium text-black max-sm:text-base">Chi tiết</span>
             
           <div className="text-black px-2 w-full break-words max-sm:text-sm">
-            <li>{store?.inforByStore?.descriptionStore}</li>
+            <li>{products?.store?.inforByStore?.descriptionStore}</li>
           </div>
         </div>
       </div>

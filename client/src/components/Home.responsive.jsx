@@ -9,13 +9,25 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import Card_Product from "./Card_Product";
 import { apiGetProduct } from "@/services/productService";
+import { useNavigate } from "react-router-dom";
+import { apiGetMyStore, apiGetstoreById } from "@/services/storeService";
+import { getCurrent } from "@/stores/actions/userAction";
+import { useDispatch } from "react-redux";
 const HomePage = () => {
   const [products, setProducts] = useState([])
+  const [store, setStore] = useState("")
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const getProduct = async() => {
     const res = await apiGetProduct()
     setProducts(res)
   }
+  const getStore = async() => {
+    const res = await apiGetMyStore()
+    setStore(res[0])
+  }
+  
   const toggleVisibility = () => {
     if (window.pageYOffset >= 120) {
       setVisible(true);
@@ -38,14 +50,25 @@ const HomePage = () => {
     };
   }, []);
   useEffect(() => {
-    getProduct()
+    getProduct() && getStore()
   }, [])
   return (
     <div className="w-full flex flex-col gap-4 max-sm:gap-2 relative">
       <SlickSlider home />
       <div className="flex w-full items-center max-sm:gap-4 gap-6  justify-center">
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer" onClick={() => {
+            dispatch(getCurrent())
+            if(store) {
+              navigate("/register-store")
+            }
+            if(store && store?.active === "access") {
+              navigate("/")
+            }
+            if(!store) {
+              navigate("/register-choose")
+            }
+          }}>
             <img src={shop} alt="shop" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
@@ -53,7 +76,7 @@ const HomePage = () => {
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer">
             <img src={discount} alt="discount" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
@@ -61,7 +84,7 @@ const HomePage = () => {
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer">
             <img src={register} alt="register" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
@@ -69,7 +92,7 @@ const HomePage = () => {
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer">
             <img src={score} alt="score" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
@@ -77,7 +100,7 @@ const HomePage = () => {
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
-          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl">
+          <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer">
             <img src={cskh} alt="cskh" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">CSKH</span>

@@ -48,13 +48,13 @@ function Orderlist() {
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
-        <Link
+        {/* <Link
           to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
           Create User
-        </Link>
+        </Link> */}
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
@@ -76,9 +76,11 @@ function Orderlist() {
                   <tr>
                     <th>Người nhận</th>
                     <th>Số điện thoại</th>
+                    <th>Trạng thái đơn hàng</th>
                     <th>Tỉnh </th>
                     <th>Thành phố</th>
                     <th>Đường phố, số nhà</th>
+                    
                     <th>Hành động</th>
                     
 
@@ -91,6 +93,7 @@ function Orderlist() {
                       <tr key={product?._id}>
                         <td>{product?.revicerName}</td>
                         <td>{product?.phone}</td>
+                        <td>{product?.status === "successfull" ? "Thành công" : "Thất bại"}</td>
                         <td>{product?.province}</td>
                         <td>{product?.city}</td>
                         <td>{product?.stress}</td>
@@ -100,19 +103,19 @@ function Orderlist() {
                             to={`/order-view/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
-                            View
+                            Xem chi tiết
                           </Link>
                           <Link
                             to={`/order-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
-                            Edit
+                            Chỉnh sửa
                           </Link>
                           <button
                             onClick={() => handleDelete(product?._id)}
                             className="btn btn-danger btn-sm mr-1"
                           >
-                            Delete
+                            Xóa
                           </button>
                         </th>
                       </tr>

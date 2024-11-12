@@ -15,6 +15,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import hr from "@/assets/hr.png"
+import { apiGetAddressById } from "@/services/addressService"
 const OrderCart = () => {
   const [activeSwitchText, setActiveSwitchText] = useState(false)
   const navigate = useNavigate()
@@ -26,9 +27,10 @@ const OrderCart = () => {
   const dispatch = useDispatch();
  
   const fetchOrder = async() => {
-    const res = await apiGetOrderById()
+    const res = await apiGetAddressById ()
     setOrder(res)
   }
+  console.log(order[0])
   const onCreateAddressOrder = async () => {
     const res  = await apiOrderPayment({productsInCart : isChecked, selectedAddress : order[0] })
     console.log(res)

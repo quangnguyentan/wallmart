@@ -38,7 +38,6 @@ const GetAllStore = async (req, res, next) => {
 const GetStoreById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const products = await Store.findById(id);
     res.json(products);
   } catch (e) {
@@ -47,43 +46,52 @@ const GetStoreById = async (req, res, next) => {
 };
 
 const CreateNewStore = async (req, res, next) => {
+  const { id } = req.currentUser
   try {
     const {
       follow,
       industry,
       catergory,
+      active,
       userId,
       fullname,
       phone,
       idYourself,
       emailYourself,
-      identification,
-      inforByStore,
-      address,
+      service,
       codeByFriend,
       businessLicense,
+      nameStore,
+      area,
+      street,
+      descriptionStore
     } = req.body;
-    // const files = req.files;
-    // let arrayFiles = [];
-    // if (files) {
-    //   let index, len;
-    //   for (index = 0, len = files.length; index < len; ++index) {
-    //     arrayFiles.push(files[index].filename);
-    //   }
-    // }
     const products = await Store.create({
       follow,
       industry,
       catergory,
-      userId: userId,
-      // logoStore: req.files.images[0].filename,
+      userId: id,
+      logoStore: req.files.images[0].filename,
       phone,
       fullname,
+      active : "wait",
+      service,
       idYourself,
       emailYourself,
-      identification,
-      inforByStore,
-      address,
+      identification : {
+        front: req.files.front[0].filename,
+        backside: req.files.back[0].filename,
+        yourFace: req.files.yourFace[0].filename
+      },
+      inforByStore : {
+        nameStore : nameStore,
+        descriptionStore : descriptionStore
+      },
+      
+      address : {
+        area : area,
+        street : street
+      },
       codeByFriend,
       businessLicense,
     });
@@ -95,10 +103,92 @@ const CreateNewStore = async (req, res, next) => {
     next(e);
   }
 };
+const updateStore = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const {
+      follow,
+      active,
+      industry,
+      catergory,
+      userId,
+      fullname,
+      phone,
+      idYourself,
+      emailYourself,
+      service,
+      codeByFriend,
+      businessLicense,
+      nameStore,
+      area,
+      street,
+      descriptionStore
+    } = req.body;
+    
+    const products = await Store.findByIdAndUpdate(id,{
+      // follow,
+      // industry,
+      // catergory,
+        active
+      // logoStore: req.files.images[0].filename,
+      // phone,
+      // fullname,
+      // service,
+      // active,
+      // idYourself,
+      // emailYourself,
+      // identification : {
+      //   front: req.files.front[0].filename,
+      //   backside: req.files.back[0].filename,
+      //   yourFace: req.files.yourFace[0].filename
+      // },
+      // inforByStore : {
+      //   nameStore : nameStore,
+      //   descriptionStore : descriptionStore
+      // },
+      
+      // address : {
+      //   area : area,
+      //   street : street
+      // },
+      // codeByFriend,
+      // businessLicense,
+    });
+    return res.status(200).json({
+      success: products ? true : false,
+      products: products,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+const GetMyStore = async (req, res, next) => {
+  const { id } = req.currentUser;
+  try {
+    const orders = await Store.find({ userId: id })
+    res.json(orders);
+  } catch (e) {
+    next(e);
+  }
+};
+const deleteStore = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const orders = await Store.findByIdAndDelete(id)
+    return res.status(200).json({
+      success: orders ? true : false,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
 module.exports = {
   Create,
   CreateNewStore,
   GetAllStore,
   GetStoreById,
   GetProductByShop,
+  GetMyStore,
+  updateStore,
+  deleteStore
 };

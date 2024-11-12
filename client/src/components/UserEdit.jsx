@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { apiGetUserById, apiUpdatedUser } from '@/services/userService';
 
 function UserEdit() {
   const [isLoading, setLoading] = useState(false);
@@ -12,45 +13,31 @@ function UserEdit() {
   const [addNameSizeField, setAddNameSizeField] = useState([])
   const [addImageNameField, setAddImageNameField] = useState([])
   const [addImageSizeField, setAddImageSizeField] = useState([])
-
+  const { id } = useParams()
   const {
     register,
     handleSubmit,
     resetField,
     formState: { errors },
+    setValue,
+    getValues
   } = useForm();
   const createProduct = async (data) => {
     try {
       const formData = new FormData();
-      for(let index = 0; index < postMultipleFile.length; index++) {
-        const file = postMultipleFile[index]
-        formData.append("photos", file); 
-      }
-      for(let index = 0; index < addNameColorField.length; index++) {
-        const file = addNameColorField[index]
-       
-        formData.append("color", [
-         file
-        ]); 
-      }
-      for(let index = 0; index < addNameSizeField.length; index++) {
-        const file = addNameSizeField[index]
-        formData.append("size", [
-         file
-        ]); 
-      }
-      formData.append("title", data?.title); 
-      formData.append("description", data?.description); 
-      formData.append("price", data?.price); 
-      formData.append("priceOld", data?.priceOld); 
-      formData.append("inventory", data?.inventory); 
-      formData.append("stockOff", Boolean(data?.stock)); 
+   
+     
+     
+      formData.append("fullName", data?.title); 
+      formData.append("images", postMultipleFile); 
+      formData.append("role", data?.description); 
+      formData.append("deposit", data?.price); 
       setLoading(true);
-      const res = await apiCreateProduct(formData); 
+      const res = await apiUpdatedUser(id, formData); 
       setLoading(false);
       console.log(res)
       if (res?.success) {
-        toast.success("Đăng kí thành công");
+        toast.success("Chỉnh sửa người dùng thành công");
        
       } else {
         toast.error(res.message || "Đã xảy ra lỗi");
@@ -61,34 +48,22 @@ function UserEdit() {
       toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
     }
   };
-  const handleKeyDownSize = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
+  const [productList, setproductList] = useState([])
 
-     if(addNameSizeField.includes(e.target.value) ){
-      setAddNameSizeField(addNameSizeField.filter(item => item !== e.target.value));
+  useEffect(() => {
+      getUsers(id);
+  }, []);
+  console.log(id)
 
-      resetField("size")
-     }else{
-      setAddNameSizeField([...addNameSizeField, e.target.value])
-      resetField("size")
-     }
-    }
-
-  }
-  const handleKeyDownColor = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
-
-     if(addNameColorField.includes(e.target.value)){
-      setAddNameColorField(addNameColorField.filter(item => item !== e.target.value));
-      resetField("color")
-     }else{
-      setAddNameColorField([...addNameColorField, e.target.value])
-      resetField("color")
-     }
-    }
-
+  let getUsers = async (id) => {
+      try {
+          const products = await apiGetUserById(id)
+          setproductList(products?.user);
+          setLoading(false);
+      } catch (error) {
+          console.log(error);
+          // setLoading(false);
+      }
   }
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
@@ -96,7 +71,7 @@ function UserEdit() {
         <div className='grid grid-cols-2 gap-4'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Tên người dùng</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên người dùng' {...register("title", {
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none'   placeholder='Nhập tên người dùng' {...register("title", {
                   required: "Tên người dùng là bắt buộc",
                  
                 })} />
@@ -106,7 +81,7 @@ function UserEdit() {
         </div>
         <div  className='flex gap-4 items-center  px-8 w-full'>
         <label htmlFor="photo">Ảnh người dùng:</label>
-        <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
+        <input type="file" title='Chọn ảnh' className=' cursor-pointer'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' required />
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Vai trò</label>

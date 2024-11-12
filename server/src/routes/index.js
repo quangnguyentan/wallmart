@@ -4,6 +4,7 @@ const userRouter = require("./user");
 const storeRouter = require("./store");
 const productRouter = require("./product");
 const orderRouter = require("./order");
+const addressRouter = require("./addres");
 
 const initRoutes = (app) => {
   app.use("/api/auth", authRouter);
@@ -12,5 +13,7 @@ const initRoutes = (app) => {
   app.use("/api/store", storeRouter);
   app.use("/api/product", productRouter);
   app.use("/api/order", orderRouter);
+  app.use("/api/address", addressRouter);
+
 };
 module.exports = initRoutes;

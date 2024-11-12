@@ -22,8 +22,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCurrent } from "@/stores/actions/userAction";
 import { apiGetProduct } from "@/services/productService";
+import { apiGetMyStore } from "@/services/storeService";
 const Profile = () => {
   const [products, setProducts] = useState([])
+  const [store, setStore] = useState("")
+  const dispatch = useDispatch()
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
@@ -31,8 +34,14 @@ const Profile = () => {
     const res = await apiGetProduct()
     setProducts(res)
   }
+  const getMyStore = async() => {
+    const  res = await apiGetMyStore() 
+    setStore(res[0])
+  }
+  
+
   useEffect(() => {
-    getProduct()
+    getProduct() && getMyStore()
   },[])
   return (
     <div className="w-full bg-gray-50 h-screen">
@@ -132,35 +141,46 @@ const Profile = () => {
       </div>
       <div className="px-4">
         <div className="grid grid-cols-4 bg-white rounded-2xl px-4 py-8 gap-4 max-sm:text-xs">
-          <div className="flex flex-col items-center gap-3 ">
+          <div className="flex flex-col items-center gap-3 cursor-pointer " onClick={() => {
+            dispatch(getCurrent())
+            if(store) {
+              navigate("/register-store")
+            }
+            if(store && store?.active === "access") {
+              navigate("/")
+            }
+            if(!store) {
+              navigate("/register-choose")
+            }
+          }}>
             <img src={shop} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Bắt đầu bán</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={wallet} alt="wallet" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Ví của tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={location} alt="location" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Địa chỉ nhận</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={options} alt="options" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Đánh giá của tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={cskh} alt="cskh" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">CSKH</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={dangerous} alt="dangerous" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Khiếu nại</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={info} alt="info" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Về chúng tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={info} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Thiết lập</span>
           </div>

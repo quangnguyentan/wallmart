@@ -45,7 +45,6 @@ const List = async (req, res, next) => {
 const processPayment = async (req, res, next) => {
   const { id } = req.currentUser;
   const { selectedAddress, productsInCart } = req.body;
-
   if (!selectedAddress || !productsInCart) {
     return res.status(400).json({
       err: 1,
@@ -85,7 +84,7 @@ const processPayment = async (req, res, next) => {
         city: selectedAddress.city,
         stress: selectedAddress.stress,
         revicerName: selectedAddress.revicerName,
-        active: true,
+        active: selectedAddress.active,
         status: "successfull",
       }));
 

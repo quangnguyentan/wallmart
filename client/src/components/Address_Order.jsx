@@ -17,6 +17,7 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Switch from '@mui/material/Switch';
 import { useForm } from "react-hook-form"
+import { apiCreateAddress } from "@/services/addressService"
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const Address_Order = () => {
   const navigate = useNavigate()
@@ -31,29 +32,22 @@ const Address_Order = () => {
   const [checked, setChecked] = useState(false);
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
-  const [order, setOrder] = useState("")
   const dispatch = useDispatch();
   const location = useLocation();
   const  isChecked  = location.state 
   console.log(isChecked)
-  const fetchOrder = async() => {
-    const res = await apiGetOrderById()
-    setOrder(res)
-  }
+
   const hanleChange = (e) => {
     setChecked(e.target.checked);
   }
   const onCreateAddressOrder = async (data) => {
-    const res  = await apiCreateOrder({...data, active: checked ? true : false})
+    const res  = await apiCreateAddress({...data, active: checked ? true : false})
     console.log(res)
     toast.success("Thêm địa chỉ thành công")
     navigate("/order-cart", { state : { isChecked } })
   }
   
-  useEffect(() => {
-    fetchOrder()
-  }, [])
- 
+
 
 
   return (

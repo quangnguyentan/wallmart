@@ -198,43 +198,28 @@ const getDeleteUserById = async (req, res) => {
 };
 const updatedUser = async (req, res) => {
   try {
-    let user;
+ 
     const { id } = req.params;
+    console.log(id)
     const {
       fullName,
       username,
-      gender,
-      nameOfBank,
-      nameOfUser,
-      creditCartOfBank,
+      deposit,
+      role,
     } = req.body;
-    const findBankAlready = await users.findOne({ creditCartOfBank });
+    const findUser = await users.findById(id);
 
-    if (findBankAlready) {
-      user = await users.findByIdAndUpdate(
-        id,
-        {
-          fullName,
-          username,
-          gender,
-        },
-        { new: true }
-      );
-    } else {
-      user = await users.findByIdAndUpdate(
-        id,
-        {
-          fullName,
-          username,
-          gender,
-          nameOfBank,
-          nameOfUser,
-          creditCartOfBank,
-        },
-        { new: true }
-      );
-    }
-
+    const user = await users.findByIdAndUpdate(
+      id,
+      {
+        fullName,
+        username,
+        deposit : findUser?.deposit + Number(deposit), 
+        role,
+        avatar : req.files.images[0].filename,
+      },
+      { new: true }
+    );
     return res.status(200).json({
       success: user ? true : false,
       user,
@@ -249,13 +234,12 @@ const DepositUser = async (req, res) => {
   try {
     let data;
     const { id } = req.params;
-    const { desposit, vip } = req.body;
-    if (!desposit) throw new Error("Vui lòng nhập số tiền");
+    const { deposit } = req.body;
+    if (!deposit) throw new Error("Vui lòng nhập số tiền");
     const user = await users.findById(id);
     if (user) {
       data = await users.findByIdAndUpdate(id, {
-        withDraw: user?.withDraw + Number(desposit),
-        vip: vip,
+        deposit: user?.deposit + Number(deposit),
       });
     }
     return res.status(200).json({

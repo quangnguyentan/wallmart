@@ -11,8 +11,7 @@ function UserCreate() {
   const navigate = useNavigate();
   const [addNameColorField, setAddNameColorField] = useState([])
   const [addNameSizeField, setAddNameSizeField] = useState([])
-  const [addImageNameField, setAddImageNameField] = useState([])
-  const [addImageSizeField, setAddImageSizeField] = useState([])
+
 
   const {
     register,

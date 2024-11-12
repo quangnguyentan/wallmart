@@ -86,12 +86,12 @@ export const apiUpdatedDesposit = (id, data) =>
       reject(error);
     }
   });
-export const apiUpdatedWithDrawAndDeposit = (id, data) =>
+export const apiUpdatedMoney = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: "/users/updateMoney/" + id,
+        url: "/users/updateDeposit/" + id,
         data,
       });
       resolve(response);
