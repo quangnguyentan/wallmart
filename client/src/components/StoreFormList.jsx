@@ -97,12 +97,7 @@ function StoreFormList() {
                     <th>Số điện thoại người tạo cửa hàng</th>
                     <th>Tên cửa hàng</th>
                     <th>Khu vực người đăng ký</th>
-                    {/* <th>Số căn cước</th>
-                    <th>Ảnh mặt trước căn cước</th>
-                    <th>Ảnh mặt sau căn cước</th>
-                    <th>Ảnh chân dung</th> */}
-
-                 
+                    <th>Trạng thái cửa hàng</th>
                     <th>Hành động</th>
 
                   </tr>
@@ -117,8 +112,7 @@ function StoreFormList() {
                         <td>{product?.phone}</td>
                         <td>{product?.inforByStore?.nameStore}</td>
                         <td>{product?.address?.area}</td>
-                     
-
+                        <td>{product?.active === "wait" ? "Đang đợi duyệt" : "Đã duyệt"}</td>
                         <th className="flex flex-col gap-2">
                         <Link
                             to={`/store-view-form/${product?._id}`}
