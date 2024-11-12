@@ -93,8 +93,6 @@ function StoreList() {
                         <td>{product?.phone}</td>
                         <td>{product?.inforByStore?.nameStore}</td>
                         <td>{product?.address?.area}</td>
-                     
-
                         <th className="flex flex-col gap-2">
                           <Link
                             to={`/store-view/${product?._id}`}

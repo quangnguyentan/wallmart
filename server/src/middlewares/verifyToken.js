@@ -33,6 +33,16 @@ const isAdmin = (req, res, next) => {
   }
   next();
 };
+const isAgent = (req, res, next) => {
+  const { role } = req.currentUser;
+  if (role !== "agent") {
+    return res.status(403).json({
+      success: false,
+      mes: "Không có quyền truy cập",
+    });
+  }
+  next();
+};
 
 module.exports = {
   verifyToken,

@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const Store = require("../models/store");
 const users = require("../models/users");
 
 const Create = async (req, res, next) => {
@@ -33,7 +34,31 @@ const Create = async (req, res, next) => {
     next(e);
   }
 };
-
+const updateOrder = async (req, res, next) => {
+  const { id } = req.params;
+  const { stress, phone, province, houseNumber, city, revicerName, status } =
+    req.body;
+  console.log(status);
+  try {
+    const order = await Order.findByIdAndUpdate(
+      id,
+      {
+        phone,
+        province,
+        houseNumber,
+        city,
+        stress,
+        revicerName,
+        status,
+      },
+      { new: true }
+    );
+    console.log(order);
+    res.json(order);
+  } catch (e) {
+    next(e);
+  }
+};
 const List = async (req, res, next) => {
   try {
     const orders = await Order.find();
@@ -73,8 +98,8 @@ const processPayment = async (req, res, next) => {
     if (paymentSuccess) {
       const orderData = productsInCart.map((item) => ({
         user: id,
-        product: item.product,
-        store: item.store,
+        product: item.product || item?._id,
+        store: item.store || item.store?._id,
         quantity: item.quantity,
         size: item.size,
         color: item.color,
@@ -85,7 +110,7 @@ const processPayment = async (req, res, next) => {
         stress: selectedAddress.stress,
         revicerName: selectedAddress.revicerName,
         active: selectedAddress.active,
-        status: "successfull",
+        status: "waitDelivery",
       }));
 
       const orders = await Order.insertMany(orderData);
@@ -127,7 +152,31 @@ const GetMyOrders = async (req, res, next) => {
       { path: "product", select: "title price photos" }, // Lấy thông tin tên và giá sản phẩm
       { path: "store", select: "inforByStore" }, // Lấy thông tin cửa hàng
     ]);
-    console.log(orders);
+    res.json(orders);
+  } catch (e) {
+    next(e);
+  }
+};
+const deleteOrder = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const orders = await Order.findByIdAndDelete(id);
+    res.json(orders);
+  } catch (e) {
+    next(e);
+  }
+};
+const GetMyOrdersByShop = async (req, res, next) => {
+  const { id } = req.currentUser;
+  try {
+    let orders;
+    const shop = await Store.find({ userId: id });
+    if (shop) {
+      orders = await Order.find({ store: shop[0]?._id }).populate([
+        { path: "product", select: "title price photos" },
+        { path: "store", select: "inforByStore" },
+      ]);
+    }
     res.json(orders);
   } catch (e) {
     next(e);
@@ -148,4 +197,7 @@ module.exports = {
   GetMyOrders,
   processPayment,
   GetOrderById,
+  GetMyOrdersByShop,
+  updateOrder,
+  deleteOrder,
 };

@@ -42,13 +42,14 @@ import OrderView from "./components/OrderView";
 import OrderEdit from "./components/OrderEdit";
 import RegisterStoreChoose from "./components/RegisterStoreChoose";
 import RegisterStore from "./components/RegisterStore";
-import UserDepositList from "./components/UserDepositLIST";
+import UserDepositList from "./components/UserDepositList";
 import UserDepositCreate from "./components/UserDepositCreate";
 import UserDepositView from "./components/UserDepositView";
 import UserDepositEdit from "./components/UserDepositEdit";
 import StoreFromView from "./components/StoreFormView";
 import StoreFormEdit from "./components/StoreFormEdit";
 import StoreFormList from "./components/StoreFormList";
+import Addnew_Address from "./components/Addnew_Address";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -99,15 +100,8 @@ function App() {
                 <Route path='store-list-form' element={<StoreFormList />} />
                 <Route path='store-view-form/:id' element={<StoreFromView />} />
                 <Route path='store-edit-form/:id' element={<StoreFormEdit />} />
-              </Route> : <> 
-            {currentData?.role === "agent" ? <Route path='/' element={<Portal />}>
-                <Route path='dashboard' element={<Dashboard />} />
-                <Route path='user-list' element={<Userlist />} />
-                <Route path='create-user' element={<UserCreate />} />
-                <Route path='user-view/:id' element={<UserView />} />
-                <Route path='user-edit/:id' element={<UserEdit />} />
-              </Route> : <>
-            
+              </Route> : 
+           <>
             {isMobile ?   <Route path={path.PUBLIC} element={<PublicResponsive />}>
             <Route path={path.HOME} element={<FixedBottomNavigation />} />
             <Route path={path.SEARCH} element={<Search />} />
@@ -123,9 +117,9 @@ function App() {
             <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
             <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
             <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
-
-
-          </Route>  :   <Route path={path.PUBLIC} element={<Public />}>
+            <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
+         
+          </Route>  : <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<FixedBottomNavigation />} />
           <Route path={path.SEARCH} element={<Search />} />
           <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
@@ -140,15 +134,34 @@ function App() {
           <Route path={path.ADD_ADDRESS} element={<Address_Order />} />
           <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
           <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
-
+          <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
+         
 
         </Route>}
-            
+        {currentData?.role === "agent" && <Route path='/'   element={<Portal />}>
+            <Route path='/dashboard'  element={<Dashboard />} />
+                <Route index path='user-list' element={<Userlist />} />
+                <Route index path='create-user' element={<UserCreate />} />
+                <Route index path='user-view/:id/:userId' element={<UserView />} />
+                <Route index path='user-edit/:id' element={<UserEdit />} />
+                <Route index path='product-list' element={<ProductList />} />
+                <Route index path='create-product/:userId' element={<ProductCreate />} />
+                <Route index path='product-view/:id/:userId' element={<ProductView />} />
+                <Route index path='product-edit/:id' element={<ProductEdit />} />
+                <Route index path='store-list' element={<StoreList />} />
+                <Route index path='create-store' element={<StoreCreate />} />
+                <Route index path='store-view/:id' element={<StoreView />} />
+                <Route index path='store-edit/:id' element={<StoreEdit />} />
+                <Route index path='order-list' element={<Orderlist />} />
+                <Route index path='create-order' element={<OrderCreate />} />
+                <Route index path='order-view/:id' element={<OrderView />} />
+                <Route index path='order-edit/:id' element={<OrderEdit />} />
+              </Route>}  
             </>}
           
          
         
-              </> }
+              
       
               </Routes>
 

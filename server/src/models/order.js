@@ -9,7 +9,7 @@ const OrderSchema = new Schema({
 
   status: {
     type: String,
-    enum: ["waitPay", "delivery", "successfull", "canceled"],
+    enum: ["waitPay", "waitDelivery", "delivering", "successfull", "canceled"],
     default: "waitPay",
   },
   stress: {

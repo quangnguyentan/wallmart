@@ -49,7 +49,14 @@ function UserEdit() {
     }
   };
   const [productList, setproductList] = useState([])
-
+  useEffect(() => {
+    if (productList) {
+      setValue("title", productList.fullName);
+      setValue("description", productList?.role);
+      setValue("price", productList.deposit);
+      setValue("photo", productList.avatar);
+    }
+  }, [productList, setValue]);
   useEffect(() => {
       getUsers(id);
   }, []);

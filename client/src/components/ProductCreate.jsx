@@ -1,10 +1,11 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { apiGetMyStore } from '@/services/storeService';
 
 function ProductCreate() {
   const [isLoading, setLoading] = useState(false);
@@ -14,6 +15,7 @@ function ProductCreate() {
   const [addNameSizeField, setAddNameSizeField] = useState([])
   const [addImageNameField, setAddImageNameField] = useState([])
   const [addImageSizeField, setAddImageSizeField] = useState([])
+  const [store, setStore] = useState("")
   const { userId } = useParams()
   const {
     register,
@@ -21,6 +23,13 @@ function ProductCreate() {
     resetField,
     formState: { errors },
   } = useForm();
+  const fetchGetMyStore = async() => {
+    const res = await apiGetMyStore()
+    setStore(res[0])
+  }
+  useEffect(() => {
+    fetchGetMyStore()
+  },[])
   const createProduct = async (data) => {
     try {
       const formData = new FormData();
@@ -48,12 +57,13 @@ function ProductCreate() {
       formData.append("inventory", data?.inventory); 
       formData.append("stockOff", Boolean(data?.stock)); 
       formData.append("userId", userId); 
-      formData.append("sold", data?.sold); 
+      formData.append("sold", data?.sold);
+      formData.append("store", store?._id); 
+
 
       setLoading(true);
       const res = await apiCreateProduct(formData); 
       setLoading(false);
-      console.log(res)
       if (res?.success) {
         toast.success("Tạo sản phẩm thành công");
         navigate("/product-list")

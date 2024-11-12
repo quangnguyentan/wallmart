@@ -7,14 +7,13 @@ const path = {
   LOGIN: "login",
   SETTING: "setting",
   STORE: "STORE",
-  DETAIL_STORE: "detail-store",
+  DETAIL_STORE: "detail-store/:id",
   ORDER: "order",
   ORDER_CART: "order-cart",
   ADD_LOCATION: "add-location",
   ADD_ADDRESS: "add-address",
   REGISTER_STORE_CHOOSE: "register-choose",
   REGISTER_STORE: "register-store",
-
-
+  ADDNEW_ADDRESS: "add-new-address",
 };
 export default path;

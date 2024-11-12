@@ -21,7 +21,6 @@ const getAllUsers = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { phone, password, email } = req.body;
-    console.log(phone, password, email);
     const response = await users.findOne({ phone });
     const findEmail = await users.findOne({ email });
     const isCorrectPasswordByPhone =
@@ -29,7 +28,6 @@ const login = async (req, res) => {
     const isCorrectPasswordByEmail =
       findEmail && bcrypt.compareSync(password, findEmail.password);
     let accessToken;
-    console.log(phone, email);
     if (!!phone) {
       accessToken =
         isCorrectPasswordByPhone &&

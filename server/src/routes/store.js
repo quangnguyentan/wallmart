@@ -5,7 +5,8 @@ const {
   GetStoreById,
   GetMyStore,
   updateStore,
- deleteStore 
+  deleteStore,
+  GetProductByShop,
 } = require("../controllers/storeController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const multer = require("multer");
@@ -25,18 +26,22 @@ const router = require("express").Router();
 router.post("/", [verifyToken], Create);
 router.get("/myStore", [verifyToken], GetMyStore);
 router.get("/", GetAllStore);
+router.get("/shop/:userId", GetProductByShop);
+
 router.delete("/delete/:id", deleteStore);
 
 router.get("/:id", GetStoreById);
-router.put("/update/:id",[verifyToken, isAdmin], updateStore);
+router.put("/update/:id", [verifyToken, isAdmin], updateStore);
 
 router.post(
   "/create",
   [verifyToken],
-  upload.fields([{ name: "images", maxCount: 1 },
-        { name: "front", maxCount: 1 }, 
-        { name: "back", maxCount: 1 }, 
-        { name: "yourFace", maxCount: 1 }]),
+  upload.fields([
+    { name: "images", maxCount: 1 },
+    { name: "front", maxCount: 1 },
+    { name: "back", maxCount: 1 },
+    { name: "yourFace", maxCount: 1 },
+  ]),
   CreateNewStore
 );
 module.exports = router;

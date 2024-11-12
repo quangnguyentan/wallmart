@@ -1,5 +1,7 @@
 const User = require("../models/users");
 const Store = require("../models/store");
+const users = require("../models/users");
+const Product = require("../models/product");
 const Create = async (req, res, next) => {
   const { id } = req.currentUser;
   let inforByStore = req.body.inforByStore;
@@ -12,16 +14,17 @@ const Create = async (req, res, next) => {
     });
 
     const savedData = await store.save();
-    console.log(savedData);
     res.json(savedData);
   } catch (e) {
     next(e);
   }
 };
-const  GetProductByShop = async (req, res, next) => {
-  const { userId } = req.body;
+const GetProductByShop = async (req, res, next) => {
   try {
-    const store = await Product.find({ userId });
+    const { userId } = req.params;
+    console.log(userId);
+    const store = await Product.find({ userId: { $in: userId } });
+    console.log(store);
     res.json(store);
   } catch (e) {
     next(e);
@@ -46,7 +49,7 @@ const GetStoreById = async (req, res, next) => {
 };
 
 const CreateNewStore = async (req, res, next) => {
-  const { id } = req.currentUser
+  const { id } = req.currentUser;
   try {
     const {
       follow,
@@ -64,7 +67,7 @@ const CreateNewStore = async (req, res, next) => {
       nameStore,
       area,
       street,
-      descriptionStore
+      descriptionStore,
     } = req.body;
     const products = await Store.create({
       follow,
@@ -74,23 +77,23 @@ const CreateNewStore = async (req, res, next) => {
       logoStore: req.files.images[0].filename,
       phone,
       fullname,
-      active : "wait",
+      active: "wait",
       service,
       idYourself,
       emailYourself,
-      identification : {
+      identification: {
         front: req.files.front[0].filename,
         backside: req.files.back[0].filename,
-        yourFace: req.files.yourFace[0].filename
+        yourFace: req.files.yourFace[0].filename,
       },
-      inforByStore : {
-        nameStore : nameStore,
-        descriptionStore : descriptionStore
+      inforByStore: {
+        nameStore: nameStore,
+        descriptionStore: descriptionStore,
       },
-      
-      address : {
-        area : area,
-        street : street
+
+      address: {
+        area: area,
+        street: street,
       },
       codeByFriend,
       businessLicense,
@@ -105,13 +108,12 @@ const CreateNewStore = async (req, res, next) => {
 };
 const updateStore = async (req, res, next) => {
   try {
-    const { id } = req.params
+    const { id } = req.params;
     const {
       follow,
       active,
       industry,
       catergory,
-      userId,
       fullname,
       phone,
       idYourself,
@@ -119,41 +121,31 @@ const updateStore = async (req, res, next) => {
       service,
       codeByFriend,
       businessLicense,
-      nameStore,
-      area,
-      street,
-      descriptionStore
     } = req.body;
-    
-    const products = await Store.findByIdAndUpdate(id,{
-      // follow,
-      // industry,
-      // catergory,
-        active
-      // logoStore: req.files.images[0].filename,
-      // phone,
-      // fullname,
-      // service,
-      // active,
-      // idYourself,
-      // emailYourself,
-      // identification : {
-      //   front: req.files.front[0].filename,
-      //   backside: req.files.back[0].filename,
-      //   yourFace: req.files.yourFace[0].filename
-      // },
-      // inforByStore : {
-      //   nameStore : nameStore,
-      //   descriptionStore : descriptionStore
-      // },
-      
-      // address : {
-      //   area : area,
-      //   street : street
-      // },
-      // codeByFriend,
-      // businessLicense,
+    const products = await Store.findByIdAndUpdate(id, {
+      follow,
+      industry,
+      catergory,
+      active,
+      logoStore: req.files && req.files.images[0].filename,
+      phone,
+      fullname,
+      service,
+      active,
+      idYourself,
+      emailYourself,
+      codeByFriend,
+      businessLicense,
     });
+    if (products) {
+      await users.findByIdAndUpdate(
+        products?.userId,
+        {
+          role: "agent",
+        },
+        { new: true }
+      );
+    }
     return res.status(200).json({
       success: products ? true : false,
       products: products,
@@ -165,7 +157,7 @@ const updateStore = async (req, res, next) => {
 const GetMyStore = async (req, res, next) => {
   const { id } = req.currentUser;
   try {
-    const orders = await Store.find({ userId: id })
+    const orders = await Store.find({ userId: id });
     res.json(orders);
   } catch (e) {
     next(e);
@@ -174,7 +166,7 @@ const GetMyStore = async (req, res, next) => {
 const deleteStore = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const orders = await Store.findByIdAndDelete(id)
+    const orders = await Store.findByIdAndDelete(id);
     return res.status(200).json({
       success: orders ? true : false,
     });
@@ -190,5 +182,5 @@ module.exports = {
   GetProductByShop,
   GetMyStore,
   updateStore,
-  deleteStore
+  deleteStore,
 };

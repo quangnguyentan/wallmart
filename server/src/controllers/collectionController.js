@@ -73,7 +73,6 @@ const updateMatch = async (req, res) => {
     const { title, image, video, view } = req.body;
     // if (!title || !image || !video) throw new Error("Invalid");
     const filterViewUser = !data?.view?.includes(user?._id);
-    console.log(filterViewUser);
     if (filterViewUser) {
       data = await collection.findByIdAndUpdate(id, {
         $push: { view: user?._id },
@@ -93,7 +92,6 @@ const deleteMatch = async (req, res) => {
     const { id } = req.params;
     if (!id) throw new Error("Invalid");
     const movie = await collection?.findByIdAndDelete(id);
-    console.log(movie);
     return res.status(200).json({
       success: movie ? true : false,
       movie,

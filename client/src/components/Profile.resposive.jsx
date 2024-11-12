@@ -28,8 +28,11 @@ const Profile = () => {
   const [store, setStore] = useState("")
   const dispatch = useDispatch()
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+  
   const getProduct = async() => {
     const res = await apiGetProduct()
     setProducts(res)
@@ -38,22 +41,32 @@ const Profile = () => {
     const  res = await apiGetMyStore() 
     setStore(res[0])
   }
-  
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      setLoading(true);
+      setTimeout(() => {
+        dispatch(getCurrent());
+        setLoading(false);
+      }, 500);
+    } 
+  }, [isLoggedIn, token, dispatch]);
 
   useEffect(() => {
     getProduct() && getMyStore()
   },[])
+  console.log(currentData)
   return (
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
         <div className="flex items-center gap-2">
           <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />
       <Link to="/login" >
-          {currentData && currentData?.role === "user" ? 
+          {currentData && currentData?.role === "user" || currentData?.role === "agent" ? 
             <div className="flex flex-col gap-2">
-              <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData?.fullName}</span>
-              <div className="w-40 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" >
-                <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span>
+              <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>
+              <div className={`${currentData?.role === "user" ? "w-40 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" : "w-48 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer"}`} >
+                {currentData?.role === "user" ? <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span> : <span className="text-[#f90] max-sm:text-xs">Người dùng bán hàng</span>}
+                
             </div>
             </div>
           : <span className="text-2xl cursor-pointer hover:text-gray-200 max-sm:text-base">Đăng nhập/Đăng kí</span>}
@@ -147,7 +160,7 @@ const Profile = () => {
               navigate("/register-store")
             }
             if(store && store?.active === "access") {
-              navigate("/")
+              navigate("/dashboard")
             }
             if(!store) {
               navigate("/register-choose")
@@ -160,9 +173,11 @@ const Profile = () => {
             <img src={wallet} alt="wallet" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Ví của tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
+          <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
+              navigate("/add-location")
+            }}> 
             <img src={location} alt="location" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
-            <span className="line-clamp-1">Địa chỉ nhận</span>
+            <span className="line-clamp-1" >Địa chỉ nhận</span>
           </div>
           <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={options} alt="options" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
@@ -180,7 +195,9 @@ const Profile = () => {
             <img src={info} alt="info" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Về chúng tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
+          <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
+              navigate("/setting")
+            }}> 
             <img src={info} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Thiết lập</span>
           </div>

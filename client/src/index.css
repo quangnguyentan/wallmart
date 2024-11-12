@@ -4,34 +4,32 @@
 
 .slider-container {
   display: flex;
-  flex-direction: column; 
-  align-items: center; 
-  overflow: hidden; 
-  max-height: 400px; 
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  max-height: 400px;
 }
 
-.custom-label:focus  {
+.custom-label:focus {
   color: #ff9e66; /* Màu khi được focus */
 }
 .custom-hover {
-  color : #ff4c15 !important;
+  color: #ff4c15 !important;
   background: transparent !important;
   box-shadow: none !important;
   font-size: 14px;
 }
 #custom-button {
-  background: linear-gradient(90deg,#ff8864,#ff2121) !important;
-  
+  background: linear-gradient(90deg, #ff8864, #ff2121) !important;
 }
 .background-custom {
   background-color: transparent !important;
-  color : red !important;
+  color: red !important;
   box-shadow: none !important;
-
 }
 .custom-switch {
   background-color: transparent !important;
-  color : red !important;
+  color: red !important;
   box-shadow: none !important;
 }
 @media (max-width: 768px) {
@@ -81,3 +79,7 @@
   }
 }
 
+#width_agent {
+  width: 100% !important;
+  height: 100% !important;
+}

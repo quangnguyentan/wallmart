@@ -12,7 +12,7 @@ export const apiGetOrder = () =>
       console.log("Failed to get product", error);
     }
   });
-export const apiDeleteProductById = (id) =>
+export const apiDeleteOrderById = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
@@ -30,6 +30,18 @@ export const apiGetOrderById = (id, userId) =>
       const response = await axiosConfig({
         method: "GET",
         url: `/order/myOrder`,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get order", error);
+    }
+  });
+export const apiGetOrderByShop = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/order/myOrderByShop`,
       });
       resolve(response);
     } catch (error) {
@@ -76,12 +88,12 @@ export const apiOrderPayment = (data) =>
       console.log("Failed to get order", error);
     }
   });
-export const apiUpdateOrder = (id, userId, data) =>
+export const apiUpdateOrder = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: `/product/update/${id}/${userId}`,
+        url: `/order/updateOrder/${id}`,
         data,
       });
       resolve(response);
