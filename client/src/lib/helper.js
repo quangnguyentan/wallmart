@@ -1,3 +1,5 @@
+export const pathImage = "http://localhost:8000/images";
+// export const pathImage = "https://sv.wallmatt88.com/images";
 import shoes from "@/assets/shoes.jpg";
 import clothes from "@/assets/clothes.jpg";
 import shoes_casual from "@/assets/shoes_casual.jpg";
@@ -17,377 +19,673 @@ import shoes_man from "@/assets/shoes_man.jpg";
 import basketball_clothes from "@/assets/basketball_clothes.jpg";
 import protective_glasses from "@/assets/protective_glasses.jpg";
 import cooking_machine from "@/assets/cooking_machine.jpg";
-import product_test from "@/assets/product_test.jpg";
-import product_test1 from "@/assets/product_test1.jpg";
-import product_test2 from "@/assets/product_test2.jpg";
-import product_test3 from "@/assets/product_test3.jpg";
-import product_test4 from "@/assets/product_test4.jpg";
-import product_test5 from "@/assets/product_test5.jpg";
-import product_test6 from "@/assets/product_test6.jpg";
-import product_test7 from "@/assets/product_test7.jpg";
-import product_test8 from "@/assets/product_test8.jpg";
-import product_test9 from "@/assets/product_test9.jpg";
-import product_test10 from "@/assets/product_test10.jpg";
-import product_test11 from "@/assets/product_test11.jpg";
-import product_test12 from "@/assets/product_test12.jpg";
-import product_test13 from "@/assets/product_test13.jpg";
-import product_test14 from "@/assets/product_test14.jpg";
-import product_test15 from "@/assets/product_test15.jpg";
-import product_test16 from "@/assets/product_test16.jpg";
-import product_test17 from "@/assets/product_test17.jpg";
-import product_test18 from "@/assets/product_test18.jpg";
-import product_test19 from "@/assets/product_test19.jpg";
+import ao_phong_chu from "@/assets/ao_phong_chu.jpg";
+import ao_so_mi_trang from "@/assets/ao_so_mi_trang.jpg";
+import ao_quan_ngan from "@/assets/ao_quan_ngan.jpg";
+import do_ngu_nu from "@/assets/do_ngu_nu.png";
+import ao_bong_chay from "@/assets/ao_bong_chay.jpg";
+import san_pham_cham_soc_da from "@/assets/san_pham_cham_soc_da.png";
+import san_pham_nu_tinh from "@/assets/san_pham_nu_tinh.png";
+import do_dung_nha_bep from "@/assets/do_dung_nha_bep.png";
+import thiet_bi_lam_dep from "@/assets/thiet_bi_lam_dep.png";
+import may_chay_bo from "@/assets/may_chay_bo.jpg";
+import san_pham_dien_tu from "@/assets/san_pham_dien_tu.png";
+import thiet_bi_an_ninh from "@/assets/thiet_bi_an_ninh.jpg";
+import may_tinh from "@/assets/may_tinh.jpg";
+import may_chieu from "@/assets/may_chieu.jpg";
+import do_dung_tre_en from "@/assets/do_dung_tre_en.png";
+import phu_kien_quan_ao from "@/assets/phu_kien_quan_ao.jpg";
+import san_pham_suc_khoe from "@/assets/san_pham_suc_khoe.jpg";
+import hat_rang from "@/assets/hat_rang.jpg";
+import keo_socola from "@/assets/keo_socola.jpg";
+import ngan_tay from "@/assets/ngan_tay.jpg";
+import tat_nam from "@/assets/tat_nam.png";
+import mu_trum_dau from "@/assets/mu_trum_dau.jpg";
+import tay_ao_dai from "@/assets/tay_ao_dai.jpg";
+import ao_polo from "@/assets/ao_polo.jpg";
+import giay_casual from "@/assets/giay_casual.jpg";
+import giay_bean from "@/assets/giay_bean.jpg";
+import giay_trang from "@/assets/giay_trang.jpg";
+import giay_nu_cao_cap from "@/assets/giay_nu_cao_cap.jpg";
+import giay_dep from "@/assets/giay_dep.jpg";
+import giay_cuoi from "@/assets/giay_cuoi.jpg";
+import giay_cao_got from "@/assets/giay_cao_got.jpg";
+import giay_medium_follow from "@/assets/giay_medium_follow.jpg";
+import nguoi_may from "@/assets/nguoi_may.jpg";
+import xe_dieu_khien_tu_xa from "@/assets/xe_dieu_khien_tu_xa.jpg";
+import thuyen_dieu_khuyen_tu_xa from "@/assets/thuyen_dieu_khuyen_tu_xa.jpg";
+import ghe_sofa from "@/assets/ghe_sofa.jpg";
+import tam_tham from "@/assets/tam_tham.jpg";
+import rem_cua from "@/assets/rem_cua.jpg";
+import dau_rong from "@/assets/dau_rong.jpg";
+import mat_day_chuyen from "@/assets/mat_day_chuyen.jpg";
+import phong_tam from "@/assets/phong_tam.jpg";
+import nha_ve_sinh from "@/assets/nha_ve_sinh.jpg";
+import nuoc_loc_nuoc_mem from "@/assets/nuoc_loc_nuoc_mem.jpg";
+import voi_hoa_sen from "@/assets/voi_hoa_sen.jpg";
+import dien_thoai from "@/assets/dien_thoai.jpg";
+import dien_thoai_choi_game from "@/assets/dien_thoai_choi_game.jpg";
+import dien_thoai_chup_anh from "@/assets/dien_thoai_chup_anh.jpg";
+import dien_thoai_nu from "@/assets/dien_thoai_nu.jpg";
+import noi_ap_suat from "@/assets/noi_ap_suat.jpg";
+import am_dun_nuoc_dien from "@/assets/am_dun_nuoc_dien.jpg";
+import lo_vi_song from "@/assets/lo_vi_song.jpg";
+import may_dien from "@/assets/may_dien.jpg";
+import may_nau_an from "@/assets/may_nau_an.jpg";
+import nuoc_hoa_nam from "@/assets/nuoc_hoa_nam.jpg";
+import nuoc_hoa_nu from "@/assets/nuoc_hoa_nu.jpg";
+import hop_qua_tang_nuoc_hoa from "@/assets/hop_qua_tang_nuoc_hoa.jpg";
+import do_dung_cho_thu_cung from "@/assets/do_dung_cho_thu_cung.png";
+import may_hut_long from "@/assets/may_hut_long.jpg";
+import vong_tay_tram_huong from "@/assets/vong_tay_tram_huong.jpg";
+import dong_ho_do from "@/assets/dong_ho_do.jpg";
+import dong_ho_sang_trong from "@/assets/dong_ho_sang_trong.jpg";
+import dong_ho_treo_tuong from "@/assets/dong_ho_treo_tuong.jpg";
 
 export const listLeftCategories = [
   {
     id: 1,
     name: "Phân loại đề xuất",
+    category: [
+      {
+        id: 1,
+        name: "Giày Casual",
+        thumbnail: shoes,
+      },
+      {
+        id: 2,
+        name: "Ngắn tay",
+        thumbnail: clothes,
+      },
+      {
+        id: 3,
+        name: "Giày Casual",
+        thumbnail: shoes_casual,
+      },
+      {
+        id: 4,
+        name: "Quần yếm",
+        thumbnail: pants,
+      },
+      {
+        id: 5,
+        name: "Việt",
+        thumbnail: instrument,
+      },
+      {
+        id: 6,
+        name: "Quần đùi rộng",
+        thumbnail: pants_short,
+      },
+      {
+        id: 7,
+        name: "Trang phục",
+        thumbnail: dress,
+      },
+      {
+        id: 8,
+        name: "Mũ trùm đầu",
+        thumbnail: warm_clothes,
+      },
+      {
+        id: 9,
+        name: "Đan Tây",
+        thumbnail: vest,
+      },
+      {
+        id: 10,
+        name: "Phim điện thoại di động",
+        thumbnail: cellphone,
+      },
+      {
+        id: 11,
+        name: "Đầm dệt kim",
+        thumbnail: festival_dress,
+      },
+      {
+        id: 12,
+        name: "Lò vi sóng",
+        thumbnail: microwave_oven,
+      },
+      {
+        id: 13,
+        name: "Chăm sóc răng miệng",
+        thumbnail: cosmetics,
+      },
+      {
+        id: 14,
+        name: "Máy lạnh",
+        thumbnail: air_conditioner,
+      },
+      {
+        id: 15,
+        name: "Trang phục sexy",
+        thumbnail: sleeveless_dress,
+      },
+      {
+        id: 16,
+        name: "Giày trắng",
+        thumbnail: shoes_man,
+      },
+      {
+        id: 17,
+        name: "Quần áo bóng chày",
+        thumbnail: basketball_clothes,
+      },
+      {
+        id: 18,
+        name: "Vỏ bảo vệ",
+        thumbnail: protective_glasses,
+      },
+      {
+        id: 19,
+        name: "Máy nấu ăn",
+        thumbnail: cooking_machine,
+      },
+    ],
   },
   {
     id: 2,
     name: "Trang phục",
+    category: [
+      {
+        id: 1,
+        name: "Áo phông chữ",
+        thumbnail: ao_phong_chu,
+      },
+      {
+        id: 2,
+        name: "Áo sơ mi trắng",
+        thumbnail: ao_so_mi_trang,
+      },
+      {
+        id: 3,
+        name: "Áo khoác ngắn",
+        thumbnail: ao_quan_ngan,
+      },
+      {
+        id: 4,
+        name: "Áo bóng chày",
+        thumbnail: ao_bong_chay,
+      },
+      {
+        id: 5,
+        name: "Đồ ngủ nữ",
+        thumbnail: do_ngu_nu,
+      },
+    ],
   },
   {
     id: 3,
     name: "Nhu yếu phẩm hàng ngày",
+    category: [
+      {
+        id: 1,
+        name: "Sản phẩm chăm sóc da",
+        thumbnail: san_pham_cham_soc_da,
+      },
+      {
+        id: 2,
+        name: "Sản phẩm nữ tính",
+        thumbnail: san_pham_nu_tinh,
+      },
+      {
+        id: 3,
+        name: "Đồ dùng nhà bếp",
+        thumbnail: do_dung_nha_bep,
+      },
+    ],
   },
   {
     id: 4,
     name: "Thiết bị y tế",
+    category: [
+      {
+        id: 1,
+        name: "Thiết bị làm đẹp",
+        thumbnail: thiet_bi_lam_dep,
+      },
+      {
+        id: 2,
+        name: "Máy chạy bộ",
+        thumbnail: may_chay_bo,
+      },
+    ],
   },
   {
     id: 5,
     name: "Thiết bị văn phòng",
+    category: [
+      {
+        id: 1,
+        name: "Sản phẩm điện tử",
+        thumbnail: san_pham_dien_tu,
+      },
+      {
+        id: 2,
+        name: "Thiết bị giám sát an ninh",
+        thumbnail: thiet_bi_an_ninh,
+      },
+      {
+        id: 3,
+        name: "Máy tính",
+        thumbnail: may_tinh,
+      },
+      {
+        id: 4,
+        name: "Máy chiếu",
+        thumbnail: may_chieu,
+      },
+    ],
   },
   {
     id: 6,
     name: "Quần áo & Phụ kiện",
+    category: [
+      {
+        id: 1,
+        name: "Đồ dùng trẻ em",
+        thumbnail: do_dung_tre_en,
+      },
+      {
+        id: 2,
+        name: "Phụ kiện & quần áo",
+        thumbnail: phu_kien_quan_ao,
+      },
+    ],
   },
   {
     id: 7,
     name: "Danh mục thực phẩm",
+    category: [
+      {
+        id: 1,
+        name: "Sản phẩm sức khỏe",
+        thumbnail: san_pham_suc_khoe,
+      },
+      {
+        id: 2,
+        name: "Các loại hạt rang",
+        thumbnail: hat_rang,
+      },
+      {
+        id: 3,
+        name: "Kẹo Socola",
+        thumbnail: keo_socola,
+      },
+    ],
   },
   {
     id: 8,
     name: "Quần áo nam",
+    category: [
+      {
+        id: 1,
+        name: "Ngắn tay",
+        thumbnail: ngan_tay,
+      },
+      {
+        id: 2,
+        name: "Tất nam",
+        thumbnail: tat_nam,
+      },
+      {
+        id: 3,
+        name: "Áo sơ mi dài tay",
+        thumbnail: ao_so_mi_trang,
+      },
+      {
+        id: 4,
+        name: "Mũ trùm đầu",
+        thumbnail: mu_trum_dau,
+      },
+      {
+        id: 5,
+        name: "Tay áo dài",
+        thumbnail: tay_ao_dai,
+      },
+      {
+        id: 6,
+        name: "Áo Polo",
+        thumbnail: ao_polo,
+      },
+    ],
   },
   {
     id: 9,
-    name: "Quần áo nam",
+    name: "Quần áo nữ",
+    category: [
+      {
+        id: 1,
+        name: "Ngắn tay",
+        thumbnail: ngan_tay,
+      },
+      {
+        id: 2,
+        name: "Tất nam",
+        thumbnail: tat_nam,
+      },
+      {
+        id: 3,
+        name: "Áo sơ mi dài tay",
+        thumbnail: ao_so_mi_trang,
+      },
+      {
+        id: 4,
+        name: "Mũ trùm đầu",
+        thumbnail: mu_trum_dau,
+      },
+      {
+        id: 5,
+        name: "Tay áo dài",
+        thumbnail: tay_ao_dai,
+      },
+      {
+        id: 6,
+        name: "Áo Polo",
+        thumbnail: ao_polo,
+      },
+    ],
   },
   {
     id: 10,
     name: "Giày nam",
+    category: [
+      {
+        id: 1,
+        name: "Giày Casual",
+        thumbnail: giay_casual,
+      },
+      {
+        id: 2,
+        name: "Giày Bean",
+        thumbnail: giay_bean,
+      },
+      {
+        id: 3,
+        name: "Giày Canvas",
+        thumbnail: giay_trang,
+      },
+    ],
   },
   {
     id: 11,
     name: "Giày nữ",
+    category: [
+      {
+        id: 1,
+        name: "Giày Casual",
+        thumbnail: giay_casual,
+      },
+      {
+        id: 2,
+        name: "Giày Bean",
+        thumbnail: giay_bean,
+      },
+      {
+        id: 3,
+        name: "Giày Canvas",
+        thumbnail: giay_trang,
+      },
+      {
+        id: 4,
+        name: "Giày nữ cao cấp",
+        thumbnail: giay_nu_cao_cap,
+      },
+      {
+        id: 5,
+        name: "Giày Đẹp",
+        thumbnail: giay_dep,
+      },
+      {
+        id: 6,
+        name: "Giày Cưới",
+        thumbnail: giay_cuoi,
+      },
+      {
+        id: 7,
+        name: "Giày Cao Gót",
+        thumbnail: giay_cao_got,
+      },
+      {
+        id: 8,
+        name: "Giày Medium Follow",
+        thumbnail: giay_medium_follow,
+      },
+    ],
   },
   {
     id: 12,
     name: "Nhạc cụ đồ chơi",
+    category: [
+      {
+        id: 1,
+        name: "Người máy",
+        thumbnail: nguoi_may,
+      },
+      {
+        id: 2,
+        name: "Xe điều khiển từ xa",
+        thumbnail: xe_dieu_khien_tu_xa,
+      },
+      {
+        id: 3,
+        name: "Thuyền điều khiển từ xa",
+        thumbnail: thuyen_dieu_khuyen_tu_xa,
+      },
+    ],
   },
   {
     id: 13,
     name: "Trang chủ Dệt",
+    category: [
+      {
+        id: 1,
+        name: "Ghế sofa",
+        thumbnail: ghe_sofa,
+      },
+      {
+        id: 2,
+        name: "Tấm thảm",
+        thumbnail: tam_tham,
+      },
+      {
+        id: 3,
+        name: "Rèm cửa",
+        thumbnail: rem_cua,
+      },
+    ],
   },
   {
     id: 14,
     name: "Trang trí nội thất",
+    category: [
+      {
+        id: 1,
+        name: "Đầu rồng",
+        thumbnail: dau_rong,
+      },
+      {
+        id: 2,
+        name: "Mặt dây chuyền nhà bếp",
+        thumbnail: mat_day_chuyen,
+      },
+      {
+        id: 3,
+        name: "Phòng tắm",
+        thumbnail: phong_tam,
+      },
+      {
+        id: 4,
+        name: "Nhà vệ sinh",
+        thumbnail: nha_ve_sinh,
+      },
+      {
+        id: 5,
+        name: "Nước lọc nước mềm",
+        thumbnail: nuoc_loc_nuoc_mem,
+      },
+      {
+        id: 6,
+        name: "Vòi hoa sen",
+        thumbnail: voi_hoa_sen,
+      },
+    ],
   },
   {
     id: 15,
     name: "Điện thoại di động",
+    category: [
+      {
+        id: 1,
+        name: "Điện thoại",
+        thumbnail: dien_thoai,
+      },
+      {
+        id: 2,
+        name: "Điện thoại chơi game",
+        thumbnail: dien_thoai_choi_game,
+      },
+      {
+        id: 3,
+        name: "Chụp ảnh điện thoại",
+        thumbnail: dien_thoai_chup_anh,
+      },
+      {
+        id: 4,
+        name: "Điện thoại nữ",
+        thumbnail: dien_thoai_nu,
+      },
+    ],
   },
   {
     id: 16,
     name: "Thiết bị gia dụng",
+    category: [
+      {
+        id: 1,
+        name: "Nồi áp suất điện",
+        thumbnail: noi_ap_suat,
+      },
+      {
+        id: 2,
+        name: "Ấm đun nước điện",
+        thumbnail: am_dun_nuoc_dien,
+      },
+      {
+        id: 3,
+        name: "Lò vi sóng",
+        thumbnail: lo_vi_song,
+      },
+      {
+        id: 4,
+        name: "Bánh điện",
+        thumbnail: may_dien,
+      },
+      {
+        id: 5,
+        name: "Máy nấu ăn",
+        thumbnail: may_nau_an,
+      },
+    ],
   },
   {
     id: 17,
     name: "Trang điểm và chăm sóc da",
+    category: [
+      {
+        id: 1,
+        name: "Nước hoa nữ",
+        thumbnail: nuoc_hoa_nu,
+      },
+      {
+        id: 2,
+        name: "Nước hoa nam",
+        thumbnail: nuoc_hoa_nam,
+      },
+      {
+        id: 3,
+        name: "Hộp quà tặng nước hoa",
+        thumbnail: hop_qua_tang_nuoc_hoa,
+      },
+    ],
   },
   {
     id: 18,
     name: "Cuộc sống thú cưng",
+    category: [
+      {
+        id: 1,
+        name: "Đồ dùng cho thú cưng",
+        thumbnail: do_dung_cho_thu_cung,
+      },
+    ],
   },
   {
     id: 19,
     name: "Phụ kiện Quần áo",
+    category: [
+      {
+        id: 1,
+        name: "Máy hút lông",
+        thumbnail: may_hut_long,
+      },
+    ],
   },
   {
     id: 20,
     name: "Dồ gỗ thủ công mỹ nghệ",
+    category: [
+      {
+        id: 1,
+        name: "Vòng tay trầm hương",
+        thumbnail: vong_tay_tram_huong,
+      },
+    ],
   },
   {
     id: 21,
     name: "Watch",
+    category: [
+      {
+        id: 1,
+        name: "Đồng hồ đo",
+        thumbnail: dong_ho_do,
+      },
+      {
+        id: 2,
+        name: "Đồng hồ sang trọng",
+        thumbnail: dong_ho_sang_trong,
+      },
+      {
+        id: 2,
+        name: "Đồng hồ treo tường",
+        thumbnail: dong_ho_treo_tuong,
+      },
+    ],
   },
-  {
-    id: 22,
-    name: "Đồ chơi tình dục (sản phẩm dành cho người lớn)",
-  },
-  {
-    id: 23,
-    name: "Nghành thiết bị điện",
-  },
-  {
-    id: 24,
-    name: "Trang sức thủ công",
-  },
-  {
-    id: 25,
-    name: "Túi hàng hiệu",
-  },
-  {
-    id: 26,
-    name: "Giày nữ cao cấp",
-  },
-  {
-    id: 27,
-    name: "Sản phẩm vệ sinh",
-  },
+  // {
+  //   id: 22,
+  //   name: "Đồ chơi tình dục (sản phẩm dành cho người lớn)",
+  // },
+  // {
+  //   id: 23,
+  //   name: "Nghành thiết bị điện",
+  // },
+  // {
+  //   id: 24,
+  //   name: "Trang sức thủ công",
+  // },
+  // {
+  //   id: 25,
+  //   name: "Túi hàng hiệu",
+  // },
+  // {
+  //   id: 26,
+  //   name: "Giày nữ cao cấp",
+  // },
+  // {
+  //   id: 27,
+  //   name: "Sản phẩm vệ sinh",
+  // },
 ];
-export const list_info_product_classify = [
-  {
-    id: 1,
-
-    name: "Giày Casual",
-    thumbnail: shoes,
-  },
-  {
-    id: 2,
-    name: "Ngắn tay",
-    thumbnail: clothes,
-  },
-  {
-    id: 3,
-    name: "Giày Casual",
-    thumbnail: shoes_casual,
-  },
-  {
-    id: 4,
-    name: "Quần yếm",
-    thumbnail: pants,
-  },
-  {
-    id: 5,
-    name: "Việt",
-    thumbnail: instrument,
-  },
-  {
-    id: 6,
-    name: "Quần đùi rộng",
-    thumbnail: pants_short,
-  },
-  {
-    id: 7,
-    name: "Trang phục",
-    thumbnail: dress,
-  },
-  {
-    id: 8,
-    name: "Mũ trùm đầu",
-    thumbnail: warm_clothes,
-  },
-  {
-    id: 9,
-    name: "Đan Tây",
-    thumbnail: vest,
-  },
-  {
-    id: 10,
-    name: "Phim điện thoại di động",
-    thumbnail: cellphone,
-  },
-  {
-    id: 11,
-    name: "Đầm dệt kim",
-    thumbnail: festival_dress,
-  },
-  {
-    id: 12,
-    name: "Lò vi sóng",
-    thumbnail: microwave_oven,
-  },
-  {
-    id: 13,
-    name: "Chăm sóc răng miệng",
-    thumbnail: cosmetics,
-  },
-  {
-    id: 14,
-    name: "Máy lạnh",
-    thumbnail: air_conditioner,
-  },
-  {
-    id: 15,
-    name: "Trang phục sexy",
-    thumbnail: sleeveless_dress,
-  },
-  {
-    id: 16,
-    name: "Giày trắng",
-    thumbnail: shoes_man,
-  },
-  {
-    id: 17,
-    name: "Quần áo bóng chày",
-    thumbnail: basketball_clothes,
-  },
-  {
-    id: 18,
-    name: "Vỏ bảo vệ",
-    thumbnail: protective_glasses,
-  },
-  {
-    id: 19,
-    name: "Máy nấu ăn",
-    thumbnail: cooking_machine,
-  },
-];
-export const list_product = [
-  {
-    id: 1,
-    title: "Grocery & Gourmet Food",
-    price: "$41.89",
-    image: product_test,
-  },
-  {
-    id: 2,
-    title:
-      "COMFIER Shiatsu Neck Back Massager with Heat, 2D ro 3D Kneading Massage Chair Pad, Adjustable Compression Seat Massager for Full Body Relaxation, Gifts for Women Men,Dark Gray",
-    price: "$190.32",
-    image: product_test1,
-  },
-  {
-    id: 3,
-    title:
-      "Vera Wang Eau de Parfum for Women - Delicate, Floral Scent - Notes of Iris, Lillies, & Sandalwood - Feminine & Subtle - 3.4 Fl Oz",
-    price: "$27.90",
-    image: product_test2,
-  },
-  {
-    id: 4,
-    title:
-      "Swiss Arabian Layali - Luxury Products From Dubai - Long Lasting And Addictive Personal Perfume Oil Fragrance - A Seductive, Signature Aroma - The Luxurious Scent Of Arabia - 0.5 Oz",
-    price: "$21.50",
-    image: product_test3,
-  },
-  {
-    id: 5,
-    title: "Grocery & Gourmet Food",
-    price: "$41.89",
-    image: product_test4,
-  },
-  {
-    id: 6,
-    title:
-      "NCCB Girls Sneakers Slip On Casual Sneakers for Girls Nonslip Comfort Lightweight Flats Shoes for Big Girls Little Girls",
-    price: "$18.89",
-    image: product_test5,
-  },
-  {
-    id: 7,
-    title:
-      "O gift three-eye men's watch quartz men's watch blue light glass belt watch men's watch",
-    price: "$88.88",
-    image: product_test6,
-  },
-  {
-    id: 8,
-    title:
-      "Revlon Lipstick, Super Lustrous The Luscious Mattes Lip Stick, High Impact with Moisturizing Velvety Formula, Matte Finish, 011 Untold Stories, 0.74 Oz",
-    price: "$9.00",
-
-    image: product_test7,
-  },
-  {
-    id: 9,
-    title:
-      "Amazon Basics Ultra Thin Incontinence, Bladder Control & Postpartum Pads for Women, Regular Length, Light Absorbency, Unscented, 30 count, 1 Pack (Previously Solimo)",
-    price: "$6.85",
-
-    image: product_test8,
-  },
-  {
-    id: 10,
-    title:
-      "Amazon Basics Ultra Thin Pads with Flexi-Wings for Periods, Regular Absorbency, Unscented, Size 1, 36 Count, 1 Pack (Previously Solimo)",
-    price: "$6.11",
-
-    image: product_test9,
-  },
-  {
-    id: 11,
-    title:
-      "Natracare Cotton Natural Feminine Ultra Pads Regular With Wings By Natracare, 14 Ea, 14 Count",
-    price: "$9.32",
-
-    image: product_test10,
-  },
-  {
-    id: 12,
-    title:
-      "Vagisil 2-in-1 Leak Rescue Intimate Feminine Wipes for Women, Gynecologist Tested & Hypoallergenic, 12 ct (Pack of 1)",
-    price: "$7.49",
-
-    image: product_test11,
-  },
-  {
-    id: 13,
-    title:
-      "Vagisil Healthy pH Care Daily Intimate Feminine Wash for Women, Gynecologist Tested, 34 Fl Oz (1L)",
-    price: "$12.79",
-    image: product_test12,
-  },
-  {
-    id: 14,
-    title: "Dyson Gen5detect Cordless Vacuum Cleaner, Purple/Purple, Large",
-    price: "$745.01",
-    image: product_test13,
-  },
-  {
-    id: 15,
-    title: "Sanitaire - SC887E SC887 Tradition Upright Vacuum Red 10",
-    price: "$266.01",
-    image: product_test14,
-  },
-  {
-    id: 16,
-    title:
-      "GroKenmore BU4022 Intuition Bagged Upright Vacuum liftup Cleaner 2-Motor Power Suction with HEPA Filter,2 Cleaning Tool for Pet Hair, Carpet and Hardwood Floor, Green",
-    price: "$190.01",
-    image: product_test15,
-  },
-  {
-    id: 17,
-    title:
-      "Aspiron Canister Vacuum Cleaner, 1300W Bagged Canister Vacuum, Turbo Brush, 5 Tools, 3.7Qt, H13 HEPA Filter, Automatic Cord Rewind, Vacuum Cleaner for Carpets, Hardwood Floors, Pet Hair, Blue",
-    price: "$162.01",
-    image: product_test16,
-  },
-  {
-    id: 18,
-    title:
-      "BISSELL CrossWave Cordless Max All in One Wet-Dry Vacuum Cleaner and Mop for Hard Floors and Area Rugs, Black, 2554A",
-    price: "$243.01",
-    image: product_test17,
-  },
-  {
-    id: 19,
-    title:
-      "Hoover SmartWash+ Automatic Carpet Cleaner, Upright Shampooer, FH52000, Turquoise",
-    price: "$230.01",
-    image: product_test18,
-  },
-  {
-    id: 20,
-    title: "SAMSUNG NT670U HG43NT670UF LED-LCD TV - 4K UHDTV - Black",
-    price: "$513.01",
-    image: product_test19,
-  },
-];
-
-// export const pathImage = "http://localhost:8000/images";
-export const pathImage = "https://sv.wallmatt88.com/images";
