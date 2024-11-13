@@ -29,7 +29,7 @@ router.get("/getUserById/:id", [verifyToken], getGetUserById);
 router.get("/get-current", verifyToken, getCurrent);
 router.put(
   "/update/:id",
-  [verifyToken, isAdmin],
+  [verifyToken],
   upload.fields([{ name: "images", maxCount: 1 }]),
   updatedUser
 );

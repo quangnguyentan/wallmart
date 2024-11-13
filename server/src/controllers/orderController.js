@@ -119,7 +119,9 @@ const processPayment = async (req, res, next) => {
         (item) =>
           !productsInCart.some(
             (cartItem) =>
-              cartItem?.product?._id.toString() === item.product?._id.toString()
+              cartItem?.product?._id.toString() === item.product?._id.toString() &&
+            item.size === cartItem.size &&
+            item.color === cartItem.color
           )
       );
 

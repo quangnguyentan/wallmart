@@ -39,7 +39,7 @@ const OrderCart = () => {
     setOrder(res)
   }
   const onCreateAddressOrder = async () => {
-    const res  = await apiOrderPayment({productsInCart : isChecked, selectedAddress : order[0] })
+    const res  = await apiOrderPayment({productsInCart : isChecked, selectedAddress : selectedAddress })
     if(res?.success) {
         toast.success("Đặt hàng thành công")
         navigate("/order")
@@ -60,29 +60,33 @@ const OrderCart = () => {
         />
       <h3 className="text-center text-gray-600 py-2">Thanh toán</h3>
       </div>
-        <div className='flex items-center px-2 cursor-pointer' onClick={() => navigate("/add-location", {state : isChecked})}>
-            {order?.length > 0 ?  <div className="flex flex-col gap-2 bg-white px-4"  key={order[0] ? order[0]?._id: selectedAddress?._id}>
-           <div className="flex items-center gap-1 w-full py-4">
-                <LocationOnOutlinedIcon sx={{ fontSize : `${isMobile}` ? "20px" : "25px" }}/>
-               <div className="flex flex-col gap-1 py-2 ">
-              <div className="flex gap-1 items-center">
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{order[0] ? order[0]?.revicerName: selectedAddress?.revicerName}</span>
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{order[0] ? order[0]?.phone: selectedAddress?.phone}</span>
-              </div>
-              <div className="flex items-center gap-1 pb-2">
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{order[0] ? order[0]?.province: selectedAddress?.province}</span>
-               <span className="max-sm:text-xs text-black font-semibold text-lg">{order[0] ? order[0]?.city: selectedAddress?.city}</span>
-               <span className="max-sm:text-xs text-black font-semibold text-lg">{order[0] ? order[0]?.stress: selectedAddress?.stress}</span>
-              </div>
-               </div>
-            </div>
-            <img src={hr} alt="hr" className="py-2" />
-           </div> : <div className="flex items-center justify-center gap-1 w-full">
-                    <LocationOnOutlinedIcon sx={{ fontSize : `${isMobile}` ? "20px" : "25px" }}/>
-                    <span className="max-sm:text-xs text-black font-semibold text-lg">Thêm địa chỉ</span>
-                </div>}
-              
+      <div className="flex items-center px-2 cursor-pointer" onClick={() => navigate("/add-location", { state: isChecked })}>
+  {selectedAddress ? (
+    <div className="flex flex-col gap-2 bg-white px-4" key={selectedAddress?._id}>
+      <div className="flex items-center gap-1 w-full py-4">
+        <LocationOnOutlinedIcon sx={{ fontSize: isMobile ? "20px" : "25px" }} />
+        <div className="flex flex-col gap-1 py-2">
+          <div className="flex gap-1 items-center">
+            <span className="max-sm:text-xs text-black font-semibold text-lg">{selectedAddress?.revicerName}</span>
+            <span className="max-sm:text-xs text-black font-semibold text-lg">{selectedAddress?.phone}</span>
+          </div>
+          <div className="flex items-center gap-1 pb-2">
+            <span className="max-sm:text-xs text-black font-semibold text-lg">{selectedAddress?.province}</span>
+            <span className="max-sm:text-xs text-black font-semibold text-lg"> {selectedAddress?.city}</span>
+            <span className="max-sm:text-xs text-black font-semibold text-lg">{selectedAddress?.stress}</span>
+          </div>
         </div>
+      </div>
+      <img src={hr} alt="hr" className="py-2" />
+    </div>
+  ) : (
+    <div className="flex items-center justify-center gap-1 w-full">
+      <LocationOnOutlinedIcon sx={{ fontSize: isMobile ? "20px" : "25px" }} />
+      <span className="max-sm:text-xs text-black font-semibold text-lg">Thêm địa chỉ</span>
+    </div>
+  )}
+</div>
+
        {isChecked?.length > 0 ? <div className="pb-40 px-2">
         <div className="flex flex-col gap-4 ">
          {isChecked?.map((product) => (
@@ -144,10 +148,10 @@ const OrderCart = () => {
          
 
           <button className="px-8 py-2 max-sm:text-[10px] rounded-xl bg-red-500 text-white" onClick={() => {
-            if(currentData?.deposit >= totalBuy) {
+            if(currentData?.deposit >= totalBuy && isChecked && selectedAddress) {
               onCreateAddressOrder()
             }else{
-              toast.error("Bạn không đủ tiền để thanh toán")
+              toast.error(currentData?.deposit < totalBuy ? "Bạn không đủ tiền để thanh toán" : "Bạn chưa chọn địa chỉ hoặc đơn hàng")
             }
           }} type="submit">Đặt hàng</button>
           </div>

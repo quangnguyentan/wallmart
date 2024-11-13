@@ -5,6 +5,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { logout } from "@/stores/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
+import { pathImage } from "@/lib/helper";
 
 const Setting = () => {
     const isMobile = useMediaQuery("(max-width:600px)");
@@ -25,9 +26,11 @@ const Setting = () => {
     </div>
         <div>
          <div className="py-1">
-         <div className="flex items-center justify-between border-b py-4 cursor-pointer pl-2 pr-4">
+         <div className="flex items-center justify-between border-b py-4 cursor-pointer pl-2 pr-4" onClick={() => {
+          navigate("/edit-profile-user")
+         }}>
             <div className="flex items-center gap-2 ">
-            <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />
+            {currentData?.avatar ? <img className=" rounded-full w-16 h-16 max-sm:w-10 max-sm:h-10" src={`${pathImage}/${currentData?.avatar}`} alt="" /> :  <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />}
             <div className="flex flex-col gap-1 ">
             <span className="text-xl max-sm:text-sm">{currentData?.fullName}</span>
             <span className="text-base max-sm:text-xs">{currentData?.phone ? currentData?.phone : currentData?.email}</span>
@@ -48,18 +51,15 @@ const Setting = () => {
          </div>
           <div className="py-1">
           
-          <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
+          <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 "  onClick={() => {
+            navigate("/change-password")
+           }}>
             <span className="text-xl max-sm:text-xs">Thay đổi mật khẩu đăng nhập</span>
         <Link>
             <KeyboardArrowRightIcon sx={{ fontSize: `${isMobile ? "25px" : "40px"}`, color : "gray"  }}/>
           </Link>
           </div>
-          <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
-            <span className="text-xl max-sm:text-xs">Quản lý mật khẩu thanh toán</span>
-        <Link>
-            <KeyboardArrowRightIcon sx={{ fontSize: `${isMobile ? "25px" : "40px"}`, color : "gray"  }}/>
-          </Link>
-          </div>
+           
           <div className="flex items-center justify-between border-b py-4 cursor-pointer px-4 text-gray-600 ">
             <span className="text-xl max-sm:text-xs" onClick={() => {
               dispatch(logout())

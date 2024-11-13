@@ -50,6 +50,8 @@ import StoreFromView from "./components/StoreFormView";
 import StoreFormEdit from "./components/StoreFormEdit";
 import StoreFormList from "./components/StoreFormList";
 import Addnew_Address from "./components/Addnew_Address";
+import EditProfileUser from "./components/EditProfileUser";
+import ChangePassword from "./components/changePassword";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -118,6 +120,10 @@ function App() {
             <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
             <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
             <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
+            <Route path={path.EDIT_PROFILE_USER} element={<EditProfileUser />} />
+            <Route path={path.CHANGE_PASSWORD} element={<ChangePassword />} />
+
+            ChangePassword
          
           </Route>  : <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<FixedBottomNavigation />} />
@@ -135,6 +141,9 @@ function App() {
           <Route path={path.REGISTER_STORE_CHOOSE} element={<RegisterStoreChoose />} />
           <Route path={path.REGISTER_STORE} element={<RegisterStore />} />
           <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
+          <Route path={path.EDIT_PROFILE_USER} element={<EditProfileUser />} />
+          <Route path={path.CHANGE_PASSWORD} element={<ChangePassword />} />
+
          
 
         </Route>}
@@ -156,6 +165,7 @@ function App() {
                 <Route index path='create-order' element={<OrderCreate />} />
                 <Route index path='order-view/:id' element={<OrderView />} />
                 <Route index path='order-edit/:id' element={<OrderEdit />} />
+
               </Route>}  
             </>}
           

@@ -15,5 +15,9 @@ const path = {
   REGISTER_STORE_CHOOSE: "register-choose",
   REGISTER_STORE: "register-store",
   ADDNEW_ADDRESS: "add-new-address",
+  EDIT_PROFILE_USER: "edit-profile-user",
+  CHANGE_PASSWORD: "change-password",
+
+
 };
 export default path;

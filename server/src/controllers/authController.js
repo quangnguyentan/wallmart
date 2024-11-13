@@ -95,6 +95,7 @@ const changePassword = async (req, res) => {
   try {
     const { id } = req.params;
     const { password, newPassword, rePassword } = req.body;
+    console.log(password, newPassword, rePassword )
     if (!password) throw new Error("Bạn chưa nhập mật khẩu cũ");
     if (!newPassword) throw new Error("Bạn chưa nhập mật khẩu mới");
     if (!rePassword) throw new Error("Bạn chưa nhập lại mật khẩu mới");

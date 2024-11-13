@@ -89,63 +89,7 @@ const addToCart = async (req, res, next) => {
     next(e);
   }
 };
-const removeToCart = async (req, res, next) => {
-  const { id } = req.currentUser;
 
-  const { product, quantity, color, size, store } = req.body;
-  if (!id)
-    res.status(400).json({
-      err: 1,
-      msg: "missing input",
-    });
-  try {
-    const findUser = await users.findById(id).populate({
-      path: "cart",
-      populate: [
-        { path: "product", select: "title price" }, // Lấy thông tin tên và ảnh sản phẩm
-        { path: "store", select: "inforByStore" }, // Lấy thông tin tên và ảnh cửa hàng
-      ],
-    });
-    if (!findUser) {
-      return res.status(404).json({
-        err: 1,
-        msg: "User not found",
-      });
-    }
-    let cartUpdated = false;
-    findUser.cart.forEach((cartItem) => {
-      if (
-        cartItem.product._id.toString() === product &&
-        cartItem.store._id.toString() === store &&
-        cartItem.color === color &&
-        cartItem.size === size
-      ) {
-        cartItem.quantity += Number(quantity);
-        cartUpdated = true;
-      }
-    });
-    if (!cartUpdated) {
-      findUser?.cart?.push({
-        product,
-        quantity,
-        color,
-        size,
-        store,
-      });
-    }
-    const updatedUser = await users.findOneAndUpdate(
-      { _id: id },
-      { $set: { cart: findUser.cart } }, // Cập nhật giỏ hàng
-      { new: true } // Trả về đối tượng người dùng mới sau khi cập nhật
-    );
-    return res.status(200).json({
-      success: updatedUser ? true : false,
-      updatedUser,
-    });
-  } catch (e) {
-    next(e);
-  }
-};
 const getAllUsers = async (req, res) => {
   try {
     const user = await users.find();
@@ -197,17 +141,18 @@ const getDeleteUserById = async (req, res) => {
 const updatedUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { fullName, username, deposit, role } = req.body;
+    const { fullName, username, deposit, role, gender } = req.body;
     const findUser = await users.findById(id);
-
+    console.log(fullName)
     const user = await users.findByIdAndUpdate(
       id,
       {
         fullName,
         username,
-        deposit: findUser?.deposit + Number(deposit),
+        deposit: deposit && findUser?.deposit + Number(deposit),
         role,
         avatar: req.files.images[0].filename,
+        gender
       },
       { new: true }
     );

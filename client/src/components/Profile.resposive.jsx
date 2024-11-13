@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import { getCurrent } from "@/stores/actions/userAction";
 import { apiGetProduct } from "@/services/productService";
 import { apiGetMyStore } from "@/services/storeService";
+import { pathImage } from "@/lib/helper";
 const Profile = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
@@ -59,7 +60,8 @@ const Profile = () => {
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
         <div className="flex items-center gap-2">
-          <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />
+        
+          {currentData?.avatar ? <img className=" rounded-full w-20 h-20 max-sm:w-10 max-sm:h-10" src={`${pathImage}/${currentData?.avatar}`} alt="" /> :  <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />}
       <Link to="/login" >
           {currentData && currentData?.role === "user" || currentData?.role === "agent" ? 
             <div className="flex flex-col gap-2">

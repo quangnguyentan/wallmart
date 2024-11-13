@@ -21,7 +21,7 @@ const LocationOrder = () => {
   const navigate = useNavigate()
   const isMobile = useMediaQuery("(max-width:600px)");
   const [order, setOrder] = useState("")
-  const [selectedAddress, setSelectedAddress] = useState([])
+  const [selectedAddress, setSelectedAddress] = useState(null)
   const dispatch = useDispatch();
   const location = useLocation();
   const  isChecked  = location.state 
@@ -33,8 +33,6 @@ const LocationOrder = () => {
   useEffect(() => {
     fetchOrder()
   }, [])
- console.log(order)
-
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <div className="flex items-center w-full max-sm:gap-24 gap-48 ">
@@ -53,7 +51,7 @@ const LocationOrder = () => {
             <>
            <div className="flex flex-col gap-2 bg-white py-2 px-4 cursor-pointer"  key={orders?._id} onClick={() => {
              setSelectedAddress(orders)
-             navigate("/order-cart", {state : { isChecked, selectedAddress }})
+             {selectedAddress && navigate("/order-cart", {state : { isChecked, selectedAddress }})}
            }}>
            <div className="flex items-center gap-1 w-full ">
                 <LocationOnOutlinedIcon sx={{ fontSize : `${isMobile}` ? "20px" : "25px" }}/>

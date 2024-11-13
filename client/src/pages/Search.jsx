@@ -35,6 +35,7 @@ const Search = () => {
     window.location.reload()
     
   }
+ 
   return (
     <div className="w-full h-screen py-2 text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-8 ">
        <div className="flex items-center">
@@ -80,6 +81,7 @@ const Search = () => {
             type="text"
             className="w-full h-11 max-sm:placeholder:text-xs rounded-xl max-sm:h-8 pl-11 max-sm:pl-6 max-sm:text-sm text-lg outline-none placeholder:text-gray-500 placeholder:font-medium "
             placeholder="Tìm kiếm sản phẩm"
+            onKeyDown={onSearch}
           />
         </div>
       </div>
