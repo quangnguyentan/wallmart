@@ -39,7 +39,7 @@ const gender = [
         
     }
 ]
-const ChangePassword = () => {
+const PasswordChange = () => {
   const navigate = useNavigate()
   const {
     register,
@@ -142,4 +142,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword
+export default PasswordChange
