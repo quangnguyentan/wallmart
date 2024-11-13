@@ -31,10 +31,11 @@ const TabsVerticel = () => {
           </TabsList>
         </div>
         <div className=" w-[70%] h-screen border-none overflow-x-scroll scrollbar-hide my-2">
-          {listLeftCategories?.map((category, index) => (
+          {listLeftCategories?.map((category) => (
+             
               <TabsContent value={category.id} key={category.id}>
                 <SlickSlider />
-                <Category_Info categoryIndex={category.id} indexActive={index + 1}/>
+                <Category_Info category={category?.category} />
               </TabsContent>
           ))}
          

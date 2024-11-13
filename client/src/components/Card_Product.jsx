@@ -3,7 +3,7 @@ import product_test1 from "@/assets/product_test1.jpg";
 import loading from "@/assets/loading.gif";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { list_product, pathImage } from "@/lib/helper";
+import { listLeftCategories, pathImage } from "@/lib/helper";
 
 const Card_Product = ({ profile, hidden, products }) => {
   const scrollToTop = () => {
