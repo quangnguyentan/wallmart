@@ -5,7 +5,7 @@ const connectDB = require("./src/configs/connectDB");
 const initRoutes = require("./src/routes");
 
 require("dotenv").config();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
