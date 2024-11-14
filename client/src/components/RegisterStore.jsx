@@ -32,9 +32,8 @@ const RegisterStore = () => {
     reset
   } = useForm();
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [value, setValue] = useState("");
   
-    const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
   const location = useLocation();
   const  checked  = location.state  
   const [imageStore, setImageStore] = useState("")
@@ -42,10 +41,27 @@ const RegisterStore = () => {
   const [backId, setBackId] = useState("")
   const [store, setStore] = useState("")
   const [yourFace, setYourFace] = useState("")
+  const [value, setValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const getCategoriesForSelectedName = (selectedName) => {
+    
+    const selectedCategoryData = listLeftCategories.find(item => item.name === selectedName);
+    return selectedCategoryData ? selectedCategoryData.category : [];
+  };
+
+  const handleCategoryChange = (event, newValue) => {
+    if (value.length < 1) {
+      toast.error("Vui lòng chọn ngành kinh doanh");
+    } else {
+      setSelectedCategory(newValue);
+    }
+  };
   const createStore = async (data) => {
     try {
       const formData = new FormData();
       formData.append("industry", value)
+      formData.append("catergory", selectedCategory)
       formData.append("images", imageStore)
       formData.append("fullname", data?.fullname); 
       formData.append("phone", data?.phone); 
@@ -81,7 +97,6 @@ const RegisterStore = () => {
   }, [])
   
  
-  console.log(store)
   return (
     <div className=' flex flex-col gap-4 bg-white h-screen w-full overflow-y-scroll overflow-x-hidden pb-28  scrollbar-hide shadow-sm'>
       <div className="flex items-center w-full max-sm:gap-28 gap-48 ">
@@ -106,27 +121,29 @@ const RegisterStore = () => {
             className="w-full h-[40px] outline-none"
             value={value}
             onChange={(event, newValue) => {
+              setValue("")
               setValue(newValue);
             }}
             renderInput={(params) => <TextField {...params} label="Ngành kinh doanh" />}
         />
       </div>
-      {/* <div onClick={() => {
+      <div onClick={() => {
               if(value.length < 1) {
                 toast.error("Vui lòng chọn ngành kinh doanh")
               }
       }} className="w-full cursor-pointer px-2">
            <Autocomplete
             disablePortal
-            options={listLeftCategories.map((option) => option.name)}
+            options={value ? getCategoriesForSelectedName(value)?.map((category) => category?.name) : []}
             sx={{ fontSize : `${isMobile ? "10px" : "16px"}`, ":placeholder-shown" : {
               fontSize : `${isMobile ? "10px" : "20px"}`
             }, }}
+            onChange={handleCategoryChange}
             renderInput={(params) => <TextField {...params} label="Mục kinh doanh" />}
-            disabled={value.length < 1 ? true : false}
+            disabled={!value}
            
         />
-      </div> */}
+      </div>
         
      </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1  gap-2 max-sm:text-xs justify-between">

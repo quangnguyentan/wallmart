@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { apiCreateProduct, apiGetProductByShop, apiUpdateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { Autocomplete, TextField, useMediaQuery } from '@mui/material';
+import { listLeftCategories } from '@/lib/helper';
 
 function ProductEdit() {
   const [isLoading, setLoading] = useState(false);
@@ -12,7 +14,9 @@ function ProductEdit() {
   const [addNameSizeField, setAddNameSizeField] = useState([])
   const [product, setProduct] = useState(null)
   const { id } = useParams()
-  
+  const [values, setValues] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const isMobile = useMediaQuery("(max-width:600px)");
   const {
     register,
     handleSubmit,
@@ -22,7 +26,19 @@ function ProductEdit() {
     setValue
   } = useForm();
  
+  const getCategoriesForSelectedName = (selectedName) => {
+    
+    const selectedCategoryData = listLeftCategories.find(item => item.name === selectedName);
+    return selectedCategoryData ? selectedCategoryData.category : [];
+  };
 
+  const handleCategoryChange = (event, newValue) => {
+    if (values.length < 1) {
+      toast.error("Vui lòng chọn ngành kinh doanh");
+    } else {
+      setSelectedCategory(newValue);
+    }
+  };
   const updateProduct = async (data) => {
     try {
       const formData = new FormData();
@@ -30,30 +46,34 @@ function ProductEdit() {
         const file = postMultipleFile[index]
         formData.append("photos", file); 
       }
-      if(addNameColorField.length > 0 || addNameSizeField.length > 0) {
-        for(let index = 0; index < addNameColorField.length; index++) {
-          const file = addNameColorField[index]
+      // if(addNameColorField.length > 0 || addNameSizeField.length > 0) {
+      //   for(let index = 0; index < addNameColorField.length; index++) {
+      //     const file = addNameColorField[index]
          
-          formData.append("color", [
-           file
-          ]); 
-        }
-        for(let index = 0; index < addNameSizeField.length; index++) {
-          const file = addNameSizeField[index]
-          formData.append("size", [
-           file
-          ]); 
-        }
-      }else{
-        formData.append("color", data.color.split(",").map((c) => c.trim()));
-        formData.append("size", data.size.split(",").map((s) => s.trim()));
-      }
+      //     formData.append("color", [
+      //      file
+      //     ]); 
+      //   }
+      //   for(let index = 0; index < addNameSizeField.length; index++) {
+      //     const file = addNameSizeField[index]
+      //     formData.append("size", [
+      //      file
+      //     ]); 
+      //   }
+      // }else{
+      //   formData.append("color", data.color.split(",").map((c) => c.trim()));
+      //   formData.append("size", data.size.split(",").map((s) => s.trim()));
+      // }
       formData.append("title", data?.title); 
+      formData.append("description", data?.description); 
+
       formData.append("sold", data?.sold);
       formData.append("price", data?.price); 
       formData.append("priceOld", data?.priceOld); 
       formData.append("inventory", data?.inventory); 
       formData.append("stockOff", Boolean(data?.stock)); 
+      // formData.append("industry", values)
+      // formData.append("category", selectedCategory)
       setLoading(true);
       const res = await apiUpdateProduct(id, formData); 
       setLoading(false);
@@ -84,9 +104,11 @@ function ProductEdit() {
       setValue("inventory", product.inventory);
       setValue("sold", product.sold);
       setValue("stock", product.stockOff);
-      setValue("color", product.color?.join(", "));
-      setValue("size", product.size?.join(", "));
+      // setValue("color", product.color?.join(", "));
+      // setValue("size", product.size?.join(", "));
       setValue("photo", product.photos[0]);
+      setValue("description", product.description);
+      
     }
   }, [product, setValue]);
   useEffect(() => {
@@ -133,7 +155,46 @@ function ProductEdit() {
          <label htmlFor="photo" {...register("photo")} className=''>Ảnh sản phẩm: <span className='text-lg px-4 bg-white shadow-sm py-4'>Chọn ảnh</span></label>
         <input type="file" title='Chọn ảnh' id='photo' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} style={{ visibility : "hidden" }} placeholder='Chọn ảnh' accept='image/*' />
         </div>
-        
+        {/* <div className="px-8">
+      <Autocomplete
+            disablePortal
+            options={listLeftCategories.map((option) => option.name)}
+            className="w-full h-[40px] outline-none"
+            value={values}
+            onChange={(event, newValue) => {
+              setValues(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} label="Ngành kinh doanh" />}
+        />
+        </div>
+    
+        <div  onClick={() => {
+                if(values.length < 1) {
+                  toast.error("Vui lòng chọn ngành kinh doanh")
+                }
+        }} className="w-full cursor-pointer px-8">
+            <Autocomplete
+              disablePortal
+              options={values ? getCategoriesForSelectedName(values)?.map((category) => category?.name) : []}
+              sx={{ fontSize : `${isMobile ? "10px" : "16px"}`, ":placeholder-shown" : {
+                fontSize : `${isMobile ? "10px" : "20px"}`
+              }, }}
+              onChange={handleCategoryChange}
+              renderInput={(params) => <TextField {...params} label="Mục kinh doanh" />}
+              disabled={!values}
+            
+          />
+        </div> */}
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Mô tả sản phẩm</label>
+        <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập mô tả sản phẩm' {...register("description", {
+                  required: "Mô tả sản phẩm là bắt buộc",
+                 
+                })} />
+        {errors.description && (
+              <p className="text-red-500 text-xs px-2">{errors.description.message}</p>
+            )}
+        </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền sau khi giảm giá</label>
         <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", )} />
@@ -156,7 +217,7 @@ function ProductEdit() {
         <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập hàng tồn kho' {...register("inventory",)} />
        
         </div>
-        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        {/* <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <div className='flex items-center gap-2'>
         <div >Màu sắc sản phẩm</div>
         <div className='flex items-center gap-2'>{addNameColorField?.map((el) => (
@@ -176,7 +237,7 @@ function ProductEdit() {
         </div>
         <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập kích thước' {...register("size")} onKeyDown={handleKeyDownSize}  />
       
-        </div>
+        </div> */}
        
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label >Còn sản phẩm không?</label>

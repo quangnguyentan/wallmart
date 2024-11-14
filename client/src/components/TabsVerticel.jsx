@@ -35,7 +35,7 @@ const TabsVerticel = () => {
              
               <TabsContent value={category.id} key={category.id}>
                 <SlickSlider />
-                <Category_Info category={category?.category} />
+                <Category_Info category={category?.category} mainCategory={category} />
               </TabsContent>
           ))}
          

@@ -109,6 +109,7 @@ function OrderCreate() {
         <label htmlFor="photo">Ảnh sản phẩm:</label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
         </div>
+        
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mô tả</label>
         <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập Mô tả' {...register("description", {

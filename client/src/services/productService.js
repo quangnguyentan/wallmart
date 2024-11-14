@@ -48,6 +48,18 @@ export const apiGetProductByStoreId = (id) =>
       console.log("Failed to get product", error);
     }
   });
+export const apiGetProductByCategory = (category) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/product/getCategory?category=${category}`,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get product", error);
+    }
+  });
 export const apiGetProductByShop = (id) =>
   new Promise(async (resolve, reject) => {
     try {

@@ -8,14 +8,25 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import Card_Product from "@/components/Card_Product";
-import { apiGetProduct } from "@/services/productService";
+import { apiGetProduct, apiGetProductByCategory } from "@/services/productService";
+import { useLocation } from "react-router-dom";
 const List_product = () => {
     const [products, setProducts] = useState([])
     const [activeTab, setActiveTab] = useState('all');
-    const getProduct = async() => {
-      const res = await apiGetProduct()
-      setProducts(res)
+    const location = useLocation();
+    const  productName   = location.state 
+    const getProduct = async (productName) => {
+      const res = await apiGetProductByCategory(productName)
+      if(res?.success) {
+      setProducts(res?.products)
+      }
     }
+   
+  useEffect(() => {
+    if (productName) {
+      getProduct(productName);
+    }
+  }, [productName]);
     const isMobile = useMediaQuery("(max-width:600px)");
     const [visible, setVisible] = useState(false);
     console.log(window.pageYOffset);
@@ -40,9 +51,7 @@ const List_product = () => {
         window.removeEventListener("scroll", toggleVisibility);
       };
     }, []);
-    useEffect(() => {
-      getProduct()
-    }, [])
+   
   return (
     <div className="bg-[#f5f5f5] h-screen overflow-x-scroll scrollbar-hide">
         <div className="w-full flex items-center bg-white py-2">

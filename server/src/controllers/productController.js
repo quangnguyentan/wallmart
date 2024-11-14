@@ -29,6 +29,22 @@ const GetProductByShop = async (req, res, next) => {
     next(e);
   }
 };
+const GetProductByCategory = async (req, res, next) => {
+  try {
+    const { category } = req.query;
+    console.log(category);
+    const products = await Product.find({ category }).populate({
+      path: "store",
+      select: "inforByStore logoStore industry",
+    });
+    return res.status(200).json({
+      success: products ? true : false,
+      products: products,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
 const GetAllProduct = async (req, res, next) => {
   try {
     const products = await Product.find();
@@ -94,6 +110,8 @@ const CreateNewProduct = async (req, res, next) => {
       size,
       stockOff,
       store,
+      category,
+      industry,
     } = req.body;
     const files = req.files;
     console.log(store);
@@ -117,6 +135,8 @@ const CreateNewProduct = async (req, res, next) => {
       color,
       size,
       stockOff,
+      category,
+      industry,
     });
     return res.status(200).json({
       success: products ? true : false,
@@ -185,4 +205,5 @@ module.exports = {
   UpdateProduct,
   DeleteProductById,
   GetProductByStorId,
+  GetProductByCategory,
 };

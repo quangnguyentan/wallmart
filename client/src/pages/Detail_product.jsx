@@ -77,6 +77,8 @@ const Detail_product = () => {
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
   const [buyProduct, setBuyProduct] = useState([])
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const fetchProductById = async(id) => {
@@ -362,8 +364,8 @@ const Detail_product = () => {
               </div>
               
               <div className="grid grid-cols-10 gap-4 max-sm:text-xs">
-              {products?.size?.map((product) => (
-                  <div className={`${isSelectedSize.length > 0 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={product?._id} onClick={() => onSelectSize(product)}>
+              {products?.size?.map((product,  index) => (
+                  <div className={`${isSelectedSize.length > 0 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={index} onClick={() => onSelectSize(product)}>
                       {product}            
                   </div>
 
@@ -391,12 +393,16 @@ const Detail_product = () => {
           </div>
           <div className="px-8 w-full py-4 max-sm:py-2">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" onClick={() => {
+        if(isLoggedIn && token) {
           if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
             toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
           }
          if(isSelectedColor.length > 0 && isSelectedSize.length > 0) {
           addToCart()
          }
+        }else{
+          navigate("/login")
+        }
         }}>Thêm vào giỏ hàng</button>
         </div>
          
@@ -484,8 +490,8 @@ const Detail_product = () => {
               </div>
               
               <div className="grid grid-cols-10 gap-4 max-sm:text-xs">
-              {products?.size?.map((product) => (
-                  <div className={`${isSelectedSize.length > 1 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={product?._id} onClick={() => onSelectSize(product)}>
+              {products?.size?.map((product, index) => (
+                  <div className={`${isSelectedSize.length > 1 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={index} onClick={() => onSelectSize(product)}>
                       {product}            
                   </div>
 
@@ -513,6 +519,7 @@ const Detail_product = () => {
           </div>
           <div className="px-8 w-full py-4 max-sm:py-2" onClick={() =>{
           
+             if(isLoggedIn && token) {
               if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
                 toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
               }else{
@@ -527,6 +534,9 @@ const Detail_product = () => {
             
                navigate("/order-cart", {state : { isChecked }})
               }
+             }else{
+              navigate("/login")
+             }
             
            
           }}>

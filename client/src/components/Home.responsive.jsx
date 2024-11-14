@@ -12,13 +12,15 @@ import { apiGetProduct } from "@/services/productService";
 import { useNavigate } from "react-router-dom";
 import { apiGetMyStore, apiGetstoreById } from "@/services/storeService";
 import { getCurrent } from "@/stores/actions/userAction";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+
   const getProduct = async() => {
     const res = await apiGetProduct()
     setProducts(res)
@@ -50,7 +52,11 @@ const HomePage = () => {
     };
   }, []);
   useEffect(() => {
-    getProduct() && getStore()
+    getProduct() 
+    if(isLoggedIn && token) {
+      getStore()
+    }
+    
   }, [])
   return (
     <div className="w-full flex flex-col gap-4 max-sm:gap-2 relative">
@@ -58,7 +64,8 @@ const HomePage = () => {
       <div className="flex w-full items-center max-sm:gap-4 gap-6  justify-center">
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
           <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer" onClick={() => {
-            dispatch(getCurrent())
+            if(isLoggedIn && token) {
+              dispatch(getCurrent())
             if(store) {
               navigate("/register-store")
             }
@@ -67,6 +74,9 @@ const HomePage = () => {
             }
             if(!store) {
               navigate("/register-choose")
+            }
+            }else{
+              navigate("/login")
             }
           }}>
             <img src={shop} alt="shop" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />

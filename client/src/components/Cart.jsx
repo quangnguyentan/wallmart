@@ -13,6 +13,8 @@ const Cart = () => {
   const [activeSwitchText, setActiveSwitchText] = useState(false)
   const navigate = useNavigate()
   const isMobile = useMediaQuery("(max-width:600px)");
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState([])
   const [isCheckedAll, setIsCheckedAll] = useState(false)
@@ -28,7 +30,6 @@ const Cart = () => {
      }
    
   }
-  console.log(isChecked)
   const onChangeCheckedAll = (data) => {
     if(isCheckedAll ) {
       setIsChecked(data)
@@ -67,9 +68,8 @@ const Cart = () => {
     
   }
   useEffect(() => {
-    dispatch(getCurrent())
-  },[])
-  console.log(isChecked)
+   if(isLoggedIn && token)  dispatch(getCurrent())
+  },[isLoggedIn, token, dispatch])
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <h3 className="w-full text-center text-gray-600 bg-white py-2 shadow-sm">Giỏ hàng</h3>
