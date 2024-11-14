@@ -9,6 +9,12 @@ const ProductSchema = new Schema(
     description: {
       type: String,
     },
+    category: {
+      type: String,
+    },
+    industry: {
+      type: String,
+    },
     price: {
       type: Number,
     },

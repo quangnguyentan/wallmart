@@ -65,7 +65,60 @@ function App() {
       }, 500);
     } 
   }, [isLoggedIn, token]);
+  function clearIndexedDB() {
+    // Kiểm tra xem trình duyệt có hỗ trợ IndexedDB không
+    if (!window.indexedDB) {
+      console.log("IndexedDB is not supported by this browser.");
+      return;
+    }
+  
+    // Lấy tất cả các database hiện có trong trình duyệt
+    const request = indexedDB.open("your-database-name", 1); // Đặt tên cho database của bạn
+  
+    request.onsuccess = (event) => {
+      const db = event.target.result;
+      const transaction = db.transaction(db.objectStoreNames, "readwrite");
+  
+      // Lặp qua tất cả các object store và xóa tất cả dữ liệu
+      for (let storeName of db.objectStoreNames) {
+        const objectStore = transaction.objectStore(storeName);
+        const clearRequest = objectStore.clear(); // Xóa tất cả dữ liệu trong object store
+  
+        clearRequest.onsuccess = () => {
+          console.log(`Successfully cleared store: ${storeName}`);
+        };
+  
+        clearRequest.onerror = (error) => {
+          console.error(`Failed to clear store: ${storeName}`, error);
+        };
+      }
+  
+      transaction.oncomplete = () => {
+        db.close();
+        console.log("IndexedDB cache cleared successfully.");
+      };
+  
+      transaction.onerror = (error) => {
+        console.error("Transaction error: ", error);
+      };
+    };
+  
+    request.onerror = (error) => {
+      console.error("Error opening IndexedDB: ", error);
+    };
+  }
+  useEffect(() => {
+    clearIndexedDB();
+    sessionStorage.clear();
 
+    if ('caches' in window) {
+      caches.keys().then((cacheNames) => {
+        cacheNames.forEach((cacheName) => {
+          caches.delete(cacheName); 
+        });
+      });
+    }
+  }, []); 
   return (
  <>
     {loading ? <div className="flex w-full h-screen items-center justify-center">

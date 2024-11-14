@@ -6,6 +6,8 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { apiGetMyStore } from '@/services/storeService';
+import { listLeftCategories } from '@/lib/helper';
+import { Autocomplete, TextField, useMediaQuery } from '@mui/material';
 
 function ProductCreate() {
   const [isLoading, setLoading] = useState(false);
@@ -16,6 +18,9 @@ function ProductCreate() {
   const [addImageNameField, setAddImageNameField] = useState([])
   const [addImageSizeField, setAddImageSizeField] = useState([])
   const [store, setStore] = useState("")
+  const [value, setValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const isMobile = useMediaQuery("(max-width:600px)");
   const { userId } = useParams()
   const {
     register,
@@ -30,6 +35,21 @@ function ProductCreate() {
   useEffect(() => {
     fetchGetMyStore()
   },[])
+
+
+  const getCategoriesForSelectedName = (selectedName) => {
+    
+    const selectedCategoryData = listLeftCategories.find(item => item.name === selectedName);
+    return selectedCategoryData ? selectedCategoryData.category : [];
+  };
+
+  const handleCategoryChange = (event, newValue) => {
+    if (value.length < 1) {
+      toast.error("Vui lòng chọn ngành kinh doanh");
+    } else {
+      setSelectedCategory(newValue);
+    }
+  };
   const createProduct = async (data) => {
     try {
       const formData = new FormData();
@@ -52,6 +72,8 @@ function ProductCreate() {
       }
       formData.append("title", data?.title); 
       formData.append("description", data?.description); 
+      formData.append("industry", value)
+      formData.append("category", selectedCategory)
       formData.append("price", data?.price); 
       formData.append("priceOld", data?.priceOld); 
       formData.append("inventory", data?.inventory); 
@@ -59,14 +81,12 @@ function ProductCreate() {
       formData.append("userId", userId); 
       formData.append("sold", data?.sold);
       formData.append("store", store?._id); 
-
-
       setLoading(true);
       const res = await apiCreateProduct(formData); 
       setLoading(false);
       if (res?.success) {
         toast.success("Tạo sản phẩm thành công");
-        // navigate("/product-list")
+        navigate("/product-list")
        
       } else {
         toast.error(res.message || "Đã xảy ra lỗi");
@@ -124,6 +144,37 @@ function ProductCreate() {
         <label htmlFor="photo">Ảnh sản phẩm:</label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} placeholder='Chọn ảnh' accept='image/*' required />
         </div>
+        <div className="px-8">
+      <Autocomplete
+            disablePortal
+            options={listLeftCategories.map((option) => option.name)}
+            className="w-full h-[40px] outline-none"
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} label="Ngành kinh doanh" />}
+        />
+        </div>
+    
+        <div  onClick={() => {
+                if(value.length < 1) {
+                  toast.error("Vui lòng chọn ngành kinh doanh")
+                }
+        }} className="w-full cursor-pointer px-8">
+            <Autocomplete
+              disablePortal
+              options={value ? getCategoriesForSelectedName(value)?.map((category) => category?.name) : []}
+              sx={{ fontSize : `${isMobile ? "10px" : "16px"}`, ":placeholder-shown" : {
+                fontSize : `${isMobile ? "10px" : "20px"}`
+              }, }}
+              onChange={handleCategoryChange}
+              renderInput={(params) => <TextField {...params} label="Mục kinh doanh" />}
+              disabled={!value}
+            
+          />
+        </div>
+        
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mô tả sản phẩm</label>
         <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập mô tả sản phẩm' {...register("description", {

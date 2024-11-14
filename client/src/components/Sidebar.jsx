@@ -19,7 +19,7 @@ function Sidebar() {
                 <div className="sidebar-brand-icon rotate-n-15">
                     <FontAwesomeIcon icon={faFaceLaughWink} size={"2x"} />
                 </div>
-                <div className="sidebar-brand-text mx-3 text-xs">Wallmart Admin</div>
+                <div className="sidebar-brand-text mx-3 text-xs">{currentData?.role === "agent" ? "Wallmart Agent" : "Wallmart Admin"} </div>
             </Link>
 
             {/* <!-- Divider --> */}
@@ -29,7 +29,7 @@ function Sidebar() {
             <li className="nav-item active">
                 <Link className="nav-link" to="/">
                     <FontAwesomeIcon icon={faTachographDigital} style={{ marginRight: "0.5rem" }} />
-                    <span>Dashboard</span>
+                    <span>{currentData?.role === "agent" ? "Mua sắm" : "Dashboard"} </span>
                 </Link>
             </li>
             {/* <!-- Divider --> */}

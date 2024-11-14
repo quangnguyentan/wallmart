@@ -53,9 +53,11 @@ const Profile = () => {
   }, [isLoggedIn, token, dispatch]);
 
   useEffect(() => {
-    getProduct() && getMyStore()
+    getProduct() 
+    if(isLoggedIn && token) {
+      getMyStore()
+    }
   },[])
-  console.log(currentData)
   return (
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
@@ -76,10 +78,19 @@ const Profile = () => {
         </Link>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <img src={icon_newsWhite} className="h-8 w-8 cursor-pointer max-sm:w-4 max-sm:h-4" alt="icon_newsWhite" />
+          
+          <img src={icon_newsWhite} className="h-8 w-8 cursor-pointer max-sm:w-4 max-sm:h-4" alt="icon_newsWhite" onClick={() => {
+             if(currentData && isLoggedIn && token) {
+               return
+            }else{
+              navigate("/login")
+            }
+          }} />
           <SettingsOutlinedIcon onClick={() => {
-            if(currentData) {
+            if(currentData && isLoggedIn && token) {
               navigate("/setting")
+            }else{
+              navigate("/login")
             }
           }} sx={{ fontSize : `${isMobile ? "20px" : "32px"}`, color : "white", cursor : "pointer" }}/>
         </div>
@@ -157,6 +168,7 @@ const Profile = () => {
       <div className="px-4">
         <div className="grid grid-cols-4 bg-white rounded-2xl px-4 py-8 gap-4 max-sm:text-xs">
           <div className="flex flex-col items-center gap-3 cursor-pointer " onClick={() => {
+           if(isLoggedIn && token) {
             dispatch(getCurrent())
             if(store) {
               navigate("/register-store")
@@ -167,6 +179,9 @@ const Profile = () => {
             if(!store) {
               navigate("/register-choose")
             }
+           }else{
+            navigate("/login")
+           }
           }}>
             <img src={shop} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Bắt đầu bán</span>
@@ -176,7 +191,11 @@ const Profile = () => {
             <span className="line-clamp-1">Ví của tôi</span>
           </div>
           <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
-              navigate("/add-location")
+              if(isLoggedIn && token) {
+                navigate("/add-location")
+              }else{
+                navigate("/login")
+              }
             }}> 
             <img src={location} alt="location" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1" >Địa chỉ nhận</span>
@@ -198,7 +217,11 @@ const Profile = () => {
             <span className="line-clamp-1">Về chúng tôi</span>
           </div>
           <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
-              navigate("/setting")
+              if(isLoggedIn && token) {
+                navigate("/setting")
+              }else{
+                navigate("/login")
+              }
             }}> 
             <img src={info} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Thiết lập</span>
