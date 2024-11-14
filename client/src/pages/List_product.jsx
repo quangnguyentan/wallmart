@@ -159,8 +159,8 @@ const List_product = () => {
       </div>
       </TabsContent>
       
-      <TabsContent value="price"> 
-      <Card_Product hidden />
+      <TabsContent  value="price"> 
+      <Card_Product hidden products={products} />
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
