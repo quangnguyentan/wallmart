@@ -44,12 +44,18 @@ function ProductList() {
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 className="h3 mb-0 text-gray-800">User-List</h1>
-        {currentData?.role === "agent" && <Link
+        {currentData?.role === "admin" ? <Link
           to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
         >
           <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
           Tạo sản phẩm
+        </Link> : <Link
+          to={`/buy-product`}
+          className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
+        >
+          <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
+          Nhập sản phẩm
         </Link>}
       </div>
       {/* <!-- DataTables --> */}

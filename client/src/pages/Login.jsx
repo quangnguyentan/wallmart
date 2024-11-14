@@ -46,11 +46,11 @@ const Login = () => {
           const rs = await apiLoginSuccess(data);
           if (rs?.success === 0) {
             dispatch(loginSuccessAction(data));
+            reset()
             setTimeout(() => {
               router("/");
-            }, 1000);
+            }, 1000); 
             toast.success("Đăng nhập thành công");
-            reset()
           } else {
             toast.error("Sai tên đăng nhập hoặc mật khẩu");
           }
@@ -64,9 +64,10 @@ const Login = () => {
        try{
         const res = await apiRegister(data);
         if (res?.success) {
-          router("/login");
-          toast.success("Đăng kí thành công");
           reset()
+          setIsLogin(!isLogin)
+          toast.success("Đăng kí thành công");
+        
         }
         if (!res?.success) {
           toast?.error(res.message);
@@ -135,7 +136,7 @@ const Login = () => {
               <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
             )}
        </div>
-       <div className="flex flex-col gap-2">
+       {/* <div className="flex flex-col gap-2">
        <div className="flex gap-2 items-center max-sm:text-xs max-sm:gap-1">
             <input type="radio" className="w-4 h-4 max-sm:w-2 max-sm:h-2 cursor-pointer" {...register("radio", {
                   required: "Vui lòng đọc điều khoản",
@@ -148,7 +149,7 @@ const Login = () => {
         {errors.radio && (
               <p className="text-red-500 text-xs px-2">{errors.radio.message}</p>
             )}
-       </div>
+       </div> */}
         
         <div className="px-8 w-full">
         <button className="button w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:text-base max-sm:py-2 " type="submit">Đăng nhập</button>
@@ -193,7 +194,7 @@ const Login = () => {
               <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
             )}
        </div>
-       <div className="flex flex-col gap-2">
+       {/* <div className="flex flex-col gap-2">
        <div className="flex gap-2 items-center max-sm:text-xs max-sm:gap-1">
             <input type="radio" className="w-4 h-4 max-sm:w-2 max-sm:h-2 cursor-pointer"   {...register("radio", {
                   required: "Vui lòng đọc điều khoản",
@@ -208,7 +209,7 @@ const Login = () => {
         {errors.radio && (
               <p className="text-red-500 text-xs px-2">{errors.radio.message}</p>
             )}
-       </div>
+       </div> */}
         <div className="px-8 w-full">
         <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:text-base max-sm:py-2 " type="submit">Đăng nhập</button>
         </div>

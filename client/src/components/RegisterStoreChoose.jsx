@@ -49,7 +49,10 @@ const RegisterStoreChoose = () => {
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "30px" : "40px"}`, cursor : "pointer"}}
             
-            onClick={() => window.history.back()}
+            onClick={() => {
+              localStorage.setItem("page", 3),
+              navigate("/")
+            }}
         />
       <h3 className="text-center text-gray-600 py-2">Chọn loại cửa hàng</h3>
       </div>

@@ -1,6 +1,8 @@
 const users = require("../models/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Deposit = require("../models/deposit");
+const WithDraw = require("../models/withDraw");
 
 require("dotenv").config();
 const hashPassword = (password) =>
@@ -143,7 +145,7 @@ const updatedUser = async (req, res) => {
     const { id } = req.params;
     const { fullName, username, deposit, role, gender } = req.body;
     const findUser = await users.findById(id);
-    console.log(fullName)
+    console.log(fullName);
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -152,7 +154,7 @@ const updatedUser = async (req, res) => {
         deposit: deposit && findUser?.deposit + Number(deposit),
         role,
         avatar: req.files.images[0].filename,
-        gender
+        gender,
       },
       { new: true }
     );
@@ -169,6 +171,7 @@ const updatedUser = async (req, res) => {
 const DepositUser = async (req, res) => {
   try {
     let data;
+    let createDeposit;
     const { id } = req.params;
     const { deposit } = req.body;
     if (!deposit) throw new Error("Vui lòng nhập số tiền");
@@ -177,11 +180,19 @@ const DepositUser = async (req, res) => {
       data = await users.findByIdAndUpdate(id, {
         deposit: user?.deposit + Number(deposit),
       });
+      createDeposit = await Deposit.create({
+        money: Number(deposit),
+        user: id,
+        createdAt: Date.now(),
+      });
+      createDeposit.save();
     }
+
     return res.status(200).json({
       success: data ? true : false,
       data,
-      message: data
+      createDeposit,
+      message: createDeposit
         ? "Đã nộp tiền thành công"
         : "Nộp tiền thất bại! Vui lòng thử lại",
     });
@@ -191,25 +202,28 @@ const DepositUser = async (req, res) => {
     });
   }
 };
-const withDrawAndDepositUser = async (req, res) => {
+const withDrawtUser = async (req, res) => {
   try {
     let data;
-    const { currentUser } = req;
+
     const { id } = req.params;
     const { draw } = req.body;
-
+    let createWithDraw;
     const user = await users.findById(id);
 
     if (!draw) {
-      throw new Error("Vui lòng nhập số tiền");
+      throw new Error("Vui lòng nhập số tiền muốn rút");
     }
 
     if (user?.withDraw >= Number(draw)) {
-      data = await users.findByIdAndUpdate(id, {
-        // withDraw: user?.withDraw - Number(draw),
-        withDraw: user?.withDraw,
-      });
-      data.save();
+      data = await users.findByIdAndUpdate(
+        id,
+        {
+          // withDraw: user?.withDraw - Number(draw),
+          withDraw: user?.withDraw - Number(draw),
+        },
+        { new: true }
+      );
 
       // const existsWithDraw = await withDraw.findOne({ users: id });
       // let transform;
@@ -228,11 +242,12 @@ const withDrawAndDepositUser = async (req, res) => {
       //     { new: true }
       //   );
       // }
-      await withDraw.create({
-        withDraw: Number(draw),
-        users: id,
+      createWithDraw = await WithDraw.create({
+        money: Number(draw),
+        user: id,
         createdAt: Date.now(),
       });
+      createWithDraw.save();
     } else {
       throw new Error("Không đủ tiền để rút");
     }
@@ -241,6 +256,7 @@ const withDrawAndDepositUser = async (req, res) => {
         ? "Vui lòng đợi trong giây lát"
         : "Không thể rút tiền vui lòng nhập lại",
       data,
+      createWithDraw,
     });
   } catch (error) {
     res.status(500).json({
@@ -251,47 +267,48 @@ const withDrawAndDepositUser = async (req, res) => {
 
 const updatedStatusWithDraw = async (req, res) => {
   try {
-    const { WithDrawId, userId } = req.params;
-    const { status, reson } = req.body;
-    let updateBill;
-    let findWithDraw = await withDraw.findById(WithDrawId);
-    let user = await users.findById(userId);
+    const { id } = req.params;
+    const { status, reason } = req.body;
+    let user;
+    let findBill;
+    let findWithDraw = await WithDraw.findById(id);
+    if (findWithDraw) {
+      user = await users.findById(findWithDraw?.user);
+    }
+    console.log(user);
     if (findWithDraw && status === "Thành công") {
-      updateBill = await users.findByIdAndUpdate(
-        userId,
+      findBill = await WithDraw.findByIdAndUpdate(
+        id,
         {
-          withDraw: user?.withDraw - findWithDraw.withDraw,
+          status: status,
+          reason: reason,
         },
         { new: true }
       );
-      if (updateBill) {
-        let findBill = await withDraw.findByIdAndUpdate(
-          WithDrawId,
+    }
+    if (findWithDraw && status === "Không thành công") {
+      let findUpdateUser = await users.findByIdAndUpdate(
+        user?._id,
+        {
+          withDraw: user?.withDraw + findWithDraw?.money,
+        },
+        { new: true }
+      );
+      if (findUpdateUser) {
+        findBill = await WithDraw.findByIdAndUpdate(
+          id,
           {
             status: status,
-            reson: reson,
+            reason: reason,
           },
           { new: true }
         );
-        findBill.save();
       }
     }
-    if (findWithDraw && status === "Không thành công") {
-      updateBill = await withDraw.findByIdAndUpdate(
-        WithDrawId,
-        {
-          status: status,
-          reson: reson,
-        },
-        { new: true }
-      );
-    }
     return res.status(200).json({
-      success:
-        status === "Thành công"
-          ? true
-          : updateBill.status === "Không thành công" && false,
-      updateBill,
+      success: findBill ? true : false,
+      user,
+      findBill,
     });
   } catch (error) {
     res.status(500).json({
@@ -299,15 +316,72 @@ const updatedStatusWithDraw = async (req, res) => {
     });
   }
 };
-
+const getMyDeposit = async (req, res) => {
+  const { id } = req.currentUser;
+  try {
+    const deposit = await Deposit.find({ user: id });
+    return res.status(200).json({
+      success: deposit ? true : false,
+      deposit,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+const getMyWithDraw = async (req, res) => {
+  const { id } = req.currentUser;
+  try {
+    const withDraw = await WithDraw.find({ user: id });
+    return res.status(200).json({
+      success: withDraw ? true : false,
+      withDraw,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+const getAllWithDraw = async (req, res) => {
+  try {
+    const withDraw = await WithDraw.find();
+    return res.status(200).json({
+      success: withDraw ? true : false,
+      withDraw,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+const getAllDeposit = async (req, res) => {
+  try {
+    const deposit = await Deposit.find();
+    return res.status(200).json({
+      success: deposit ? true : false,
+      deposit,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   getAllUsers,
   getCurrent,
   updatedUser,
-  withDrawAndDepositUser,
+  withDrawtUser,
   updatedStatusWithDraw,
   getDeleteUserById,
   getGetUserById,
   DepositUser,
   addToCart,
+  getMyDeposit,
+  getMyWithDraw,
+  getAllWithDraw,
+  getAllDeposit,
 };

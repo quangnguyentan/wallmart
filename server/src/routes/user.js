@@ -6,6 +6,12 @@ const {
   getGetUserById,
   addToCart,
   DepositUser,
+  getAllDeposit,
+  getAllWithDraw,
+  getMyDeposit,
+  getMyWithDraw,
+  updatedStatusWithDraw,
+  withDrawtUser,
 } = require("../controllers/userController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const router = require("express").Router();
@@ -22,7 +28,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 router.get("/", [verifyToken], getAllUsers);
-router.put("/updateDeposit/:id", [verifyToken, isAdmin], DepositUser);
+router.put("/createDeposit/:id", [verifyToken, isAdmin], DepositUser);
+router.get("/myDeposit", [verifyToken], getMyDeposit);
+router.get("/mywithDraw", [verifyToken], getMyWithDraw);
+router.get("/getDeposit", [verifyToken, isAdmin], getAllDeposit);
+router.get("/getwithDraw", [verifyToken, isAdmin], getAllWithDraw);
+router.put(
+  "/updateWithDraw/:id",
+  [verifyToken, isAdmin],
+  updatedStatusWithDraw
+);
+router.put("/withDrawUser/:id", [verifyToken], withDrawtUser);
 
 router.get("/getUserById/:id", [verifyToken], getGetUserById);
 

@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Product = require("./product");
+const Order = require("./order");
 
 const Schema = mongoose.Schema;
 
@@ -60,7 +62,16 @@ const StoreSchema = new Schema({
     default: Date.now,
   },
 });
+StoreSchema.pre("remove", async function (next) {
+  try {
+    await Order.deleteMany({ store: this._id });
+    await Product.deleteMany({ store: this._id });
 
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 const Store = mongoose.model("store", StoreSchema);
 
 module.exports = Store;
