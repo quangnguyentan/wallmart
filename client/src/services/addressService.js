@@ -1,23 +1,24 @@
 import axiosConfig from "../axios";
 
-export const apiGetOrder = () =>
+export const apiUpdateAddress = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
-        method: "GET",
-        url: "/order/",
+        method: "PUT",
+        url: "/address/update/" + id,
+        data,
       });
       resolve(response);
     } catch (error) {
       console.log("Failed to get product", error);
     }
   });
-export const apiDeleteProductById = (id) =>
+export const apiDeleteAddressById = (id) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "DELETE",
-        url: "/order/delete/" + id,
+        url: "/address/" + id,
       });
       resolve(response);
     } catch (error) {
@@ -36,8 +37,19 @@ export const apiGetAddressById = () =>
       console.log("Failed to get order", error);
     }
   });
-
-export const apiCreateAddress= (data) =>
+export const apiGetAddress = (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/address/` + id,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get order", error);
+    }
+  });
+export const apiCreateAddress = (data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
@@ -50,4 +62,3 @@ export const apiCreateAddress= (data) =>
       console.log("Failed to get order", error);
     }
   });
-

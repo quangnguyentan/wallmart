@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { apiGetUserById, apiUpdatedDesposit, apiUpdatedMoney } from '@/services/userService';
+import { apiGetUserById, apiUpdatedDesposit } from '@/services/userService';
 
 function UserDepositEdit() {
   const [isLoading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ function UserDepositEdit() {
     try {
       
       setLoading(true);
-      const res = await apiUpdatedMoney(id, { deposit : data?.title}); 
+      const res = await apiUpdatedDesposit(id, { deposit : data?.title}); 
       console.log(res)
       setLoading(false);
       if (res?.success) {

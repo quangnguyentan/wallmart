@@ -89,13 +89,7 @@ const Order = () => {
                     <span className="font-bold line-clamp-1 px-2">Tất cả</span>
                </div>
           </TabsTrigger>
-        <TabsTrigger 
-                className={`max-sm:text-xs  h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 ${activeTab === 'waitPayment' ? ` background-custom ` : 'text-gray-500'}`} 
-                value="waitPayment" 
-                onClick={() => setActiveTab("waitPayment")}
-            >
-                Đang chờ thanh toán
-            </TabsTrigger>
+      
             <TabsTrigger 
                 className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="waitDelivery"
@@ -158,28 +152,6 @@ const Order = () => {
       </div>
       </TabsContent>
       </div>
-      <TabsContent value="waitPayment">
-      {order?.length > 0  ? <Card_Order hidden type="wait"/> : <EmptyOrder hidden/>}
-      <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
-        {visible && (
-          <ArrowUpwardOutlinedIcon
-            fontSize="large"
-            onClick={scrollToTop}
-            className="responsive-icon"
-            style={{
-              width: "60px",
-              height: "60px",
-              background: "lightgray",
-              border: "none",
-              borderRadius: "100%",
-              padding: "10px",
-              cursor: "pointer",
-            }}
-          />
-        )}
-      </div>
-      </TabsContent>
-      
       <TabsContent value="waitDelivery"> 
       {order?.length > 0  ? <Card_Order hidden type="waitDelivery"/> : <EmptyOrder hidden/>}
 

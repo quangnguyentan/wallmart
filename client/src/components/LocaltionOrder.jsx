@@ -4,7 +4,7 @@ import { getCurrent } from "@/stores/actions/userAction"
 import { useMediaQuery } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { apiAddToCart } from "@/services/userService"
@@ -15,7 +15,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import hr from "@/assets/hr.png"
-import { apiGetAddressById } from "@/services/addressService"
+import { apiDeleteAddressById, apiGetAddressById } from "@/services/addressService"
 
 const LocationOrder = () => {
   const navigate = useNavigate()
@@ -33,6 +33,23 @@ const LocationOrder = () => {
   useEffect(() => {
     fetchOrder()
   }, [])
+  const handleDelete = async(id) => {
+    try {
+      const confirmDelete = window.confirm(
+        "Bạn chắc chắn muốn xóa địa chỉ này"
+      );
+      if (confirmDelete) {
+        const res = await apiDeleteAddressById(id)
+        console.log(res)
+        if(res){
+          toast.success("Xóa sản phẩm thành công")
+        }
+      }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <div className="flex items-center w-full max-sm:gap-24 gap-48 ">
@@ -48,39 +65,43 @@ const LocationOrder = () => {
         <div className='flex items-center px-2 w-full '>
             {order?.length > 0 ? <div className="flex flex-col w-full">
               {order?.map((orders) => (
-            <>
-           <div className="flex flex-col gap-2 bg-white py-2 px-4 cursor-pointer"  key={orders?._id} onClick={() => {
-             setSelectedAddress(orders)
-             {selectedAddress && navigate("/order-cart", {state : { isChecked, selectedAddress }})}
-           }}>
-           <div className="flex items-center gap-1 w-full ">
-                <LocationOnOutlinedIcon sx={{ fontSize : `${isMobile}` ? "20px" : "25px" }}/>
-               <div className="flex flex-col gap-1 py-2 ">
-              <div className="flex gap-1 items-center">
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.revicerName}</span>
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.phone}</span>
-              </div>
-              <div className="flex items-center gap-1 pb-2">
-              <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.province}</span>
-               <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.city}</span>
-               <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.stress}</span>
-
-              </div>
-               </div>
-            </div>
-            <div className="flex items-end w-full justify-end gap-4 px-4 max-sm:text-xs">
-            <div className="flex items-center gap-1 cursor-pointer">
-             <span>Chỉnh sửa</span>
-             <BorderColorOutlinedIcon sx={{ fontSize :  `${isMobile ? "15px" : "20px"}` }}/>
-             </div>
-             <div className="flex items-center gap-1 cursor-pointer">
-             <span>Xóa</span>
-             <DeleteOutlineOutlinedIcon sx={{ fontSize :  `${isMobile ? "15px" : "20px"}` }}/>
-             </div>
-            </div>
-            <img src={hr} alt="hr" className="pt-8" />
-           </div>
-              </>
+                <div className="flex flex-col gap-2 bg-white py-2 px-4 cursor-pointer"  key={orders?._id} onClick={() => {
+                    if(isChecked){
+                      setSelectedAddress(orders)
+                      {selectedAddress && navigate("/order-cart", {state : { isChecked, selectedAddress }})}
+                    }
+                   }}>
+                   <div className="flex items-center gap-1 w-full ">
+                        <LocationOnOutlinedIcon sx={{ fontSize : `${isMobile}` ? "20px" : "25px" }}/>
+                       <div className="flex flex-col gap-1 py-2 ">
+                      <div className="flex gap-1 items-center">
+                      <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.revicerName}</span>
+                      <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.phone}</span>
+                      </div>
+                      <div className="flex items-center gap-1 pb-2">
+                      <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.province}</span>
+                       <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.city}</span>
+                       <span className="max-sm:text-xs text-black font-semibold text-lg">{orders?.stress}</span>
+        
+                      </div>
+                       </div>
+                    </div>
+                    <div className="flex items-end w-full justify-end gap-4 px-4 max-sm:text-xs">
+                    <Link to={`${`/update-address/${orders?._id}`}`}>
+                    <div className="flex items-center gap-1 cursor-pointer">
+                     <span>Chỉnh sửa</span>
+                     <BorderColorOutlinedIcon sx={{ fontSize :  `${isMobile ? "15px" : "20px"}` }}/>
+                     </div></Link>
+                     <div className="flex items-center gap-1 cursor-pointer" onClick={() => {
+                        handleDelete(orders?._id)
+                        fetchOrder()
+                     }}>
+                     <span>Xóa</span>
+                     <DeleteOutlineOutlinedIcon sx={{ fontSize :  `${isMobile ? "15px" : "20px"}` }}/>
+                     </div>
+                    </div>
+                    <img src={hr} alt="hr" className="pt-8" />
+                   </div>
                
               ))}
 

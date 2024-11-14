@@ -17,7 +17,11 @@ const path = {
   ADDNEW_ADDRESS: "add-new-address",
   EDIT_PROFILE_USER: "edit-profile-user",
   CHANGE_PASSWORD: "change-password",
-
-
+  WALLET: "wallet",
+  DEPOSIT_WALLET: "deposit-wallet",
+  WITHDRAW_WALLET: "withdraw-wallet",
+  BANK_LINK: "bank-link",
+  UPDATE_ADDRESS: "update-address/:id",
+  BUY_PRODUCT: "buy-product",
 };
 export default path;

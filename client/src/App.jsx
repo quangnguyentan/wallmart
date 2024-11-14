@@ -49,6 +49,9 @@ import StoreFormList from "./components/StoreFormList";
 import Addnew_Address from "./components/Addnew_Address";
 import EditProfileUser from "./components/EditProfileUser";
 import PasswordChange from "./components/PasswordChange";
+import Wallet from "./pages/Wallet";
+import Edit_Address from "./components/Edit_Address";
+import Buy_Product_From_Admin from "./pages/Buy_Product_From_Admin";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -64,7 +67,7 @@ function App() {
         setLoading(false);
       }, 500);
     } 
-  }, [isLoggedIn, token]);
+  }, [isLoggedIn, token, dispatch]);
   function clearIndexedDB() {
     // Kiểm tra xem trình duyệt có hỗ trợ IndexedDB không
     if (!window.indexedDB) {
@@ -73,16 +76,16 @@ function App() {
     }
   
     // Lấy tất cả các database hiện có trong trình duyệt
-    const request = indexedDB.open("your-database-name", 1); // Đặt tên cho database của bạn
+    const request = indexedDB?.open("your-database-name", 1); // Đặt tên cho database của bạn
   
     request.onsuccess = (event) => {
-      const db = event.target.result;
-      const transaction = db.transaction(db.objectStoreNames, "readwrite");
+      const db = event?.target?.result;
+      const transaction = db?.transaction(db?.objectStoreNames, "readwrite");
   
       // Lặp qua tất cả các object store và xóa tất cả dữ liệu
       for (let storeName of db.objectStoreNames) {
-        const objectStore = transaction.objectStore(storeName);
-        const clearRequest = objectStore.clear(); // Xóa tất cả dữ liệu trong object store
+        const objectStore = transaction?.objectStore(storeName);
+        const clearRequest = objectStore?.clear(); // Xóa tất cả dữ liệu trong object store
   
         clearRequest.onsuccess = () => {
           console.log(`Successfully cleared store: ${storeName}`);
@@ -127,7 +130,7 @@ function App() {
       <Toaster />
 
       <Routes>
-      {currentData && currentData?.role === "admin" ? <Route path='/' element={<Portal />}>
+      {isLoggedIn && token && currentData && currentData?.role === "admin" ? <Route path='/' element={<Portal />}>
                 <Route path='/' element={<Dashboard />} />
                 <Route path='user-list' element={<Userlist />} />
                 <Route path='create-user' element={<UserCreate />} />
@@ -152,9 +155,11 @@ function App() {
                 <Route path='store-list-form' element={<StoreFormList />} />
                 <Route path='store-view-form/:id' element={<StoreFromView />} />
                 <Route path='store-edit-form/:id' element={<StoreFormEdit />} />
+                <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
+                
               </Route> : 
            <>
-            {isMobile ?   <Route path={path.PUBLIC} element={<PublicResponsive />}>
+            { isMobile ?  <Route path={path.PUBLIC} element={<PublicResponsive />}>
             <Route path={path.HOME} element={<FixedBottomNavigation />} />
             <Route path={path.SEARCH} element={<Search />} />
             <Route path={path.DETAIL_PRODUCT} element={<Detail_product />} />
@@ -172,6 +177,8 @@ function App() {
             <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
             <Route path={path.EDIT_PROFILE_USER} element={<EditProfileUser />} />
             <Route path={path.CHANGE_PASSWORD} element={<PasswordChange />} />
+            <Route path={path.WALLET} element={<Wallet />} />
+
 
          
           </Route>  : <Route path={path.PUBLIC} element={<Public />}>
@@ -192,11 +199,11 @@ function App() {
           <Route path={path.ADDNEW_ADDRESS} element={<Addnew_Address />} />
           <Route path={path.EDIT_PROFILE_USER} element={<EditProfileUser />} />
           <Route path={path.CHANGE_PASSWORD} element={<PasswordChange />} />
-
+          <Route path={path.WALLET} element={<Wallet />} />
+          <Route path={path.UPDATE_ADDRESS} element={<Edit_Address />} />
          
-
         </Route>}
-        {currentData?.role === "agent" && <Route path='/'   element={<Portal />}>
+        {isLoggedIn && token && currentData && currentData?.role === "agent" && <Route path='/'   element={<Portal />}>
             <Route path='/dashboard'  element={<Dashboard />} />
                 <Route index path='user-list' element={<Userlist />} />
                 <Route index path='create-user' element={<UserCreate />} />
@@ -214,14 +221,12 @@ function App() {
                 <Route index path='create-order' element={<OrderCreate />} />
                 <Route index path='order-view/:id' element={<OrderView />} />
                 <Route index path='order-edit/:id' element={<OrderEdit />} />
+                <Route path={path.UPDATE_ADDRESS} element={<Edit_Address />} />     
+        </Route>}  
+                <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
 
-              </Route>}  
             </>}
-          
-         
-        
-              
-      
+
               </Routes>
 
     </div>}</>

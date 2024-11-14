@@ -122,7 +122,7 @@ const OrderCart = () => {
        </div>
        <div className="flex items-center justify-between px-2 text-lg font-semibold text-black py-2 pb-4 max-sm:text-xs">
        <span>Tổng thanh toán</span>
-       <span className="max-sm:text-sm text-red-500 font-semibold">${}</span>
+       <span className="max-sm:text-sm text-red-500 font-semibold">${totalBuy}</span>
        </div>
        </div>
        </div>

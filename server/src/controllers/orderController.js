@@ -92,6 +92,18 @@ const processPayment = async (req, res, next) => {
         msg: "User not found",
       });
     }
+    let totalPrice = 0;
+    productsInCart.forEach((item) => {
+      const productPrice = item.product?.price || 0;
+      totalPrice += productPrice * item?.quantity; // Tính tổng giá trị cần thanh toán
+    });
+    if (findUser?.deposit < totalPrice) {
+      return res.status(400).json({
+        err: 1,
+        msg: "Không đủ tiền để thanh toán",
+      });
+    }
+    const newDeposit = findUser?.deposit - totalPrice;
 
     const paymentSuccess = true;
 
@@ -119,15 +131,16 @@ const processPayment = async (req, res, next) => {
         (item) =>
           !productsInCart.some(
             (cartItem) =>
-              cartItem?.product?._id.toString() === item.product?._id.toString() &&
-            item.size === cartItem.size &&
-            item.color === cartItem.color
+              cartItem?.product?._id.toString() ===
+                item.product?._id.toString() &&
+              item.size === cartItem.size &&
+              item.color === cartItem.color
           )
       );
 
       await users.findOneAndUpdate(
         { _id: id },
-        { $set: { cart: findUser.cart } },
+        { $set: { cart: findUser.cart, deposit: newDeposit } },
         { new: true }
       );
 

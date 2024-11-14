@@ -76,7 +76,6 @@ const Detail_product = () => {
   const [isSelectedSize, setIsSelectedSize] = useState([])
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
-  const [buyProduct, setBuyProduct] = useState([])
   const { isLoggedIn, token } = useSelector((state) => state.auth);
 
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -109,8 +108,6 @@ const Detail_product = () => {
       setIsSelectedSize([ size])
      }
   }
-  
-
   const addToCart = async() => {
     const res = await apiAddToCart({
       quantity,
@@ -131,8 +128,7 @@ const Detail_product = () => {
   }
   useEffect(() => {
     fetchProductById(id)
-  },[])
-  console.log(buyProduct)
+  },[id])
   return (
     <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
       <div className="flex items-center">
@@ -477,10 +473,7 @@ const Detail_product = () => {
                      {product?.photos?.length > 0 && <img src={product?.img} alt="demo_product_img" className="w-7 h-7 mix-blend-darken" />}
                      <span className={product?.photos?.length > 0 ? "font-semibold line-clamp-1" : `${isSelectedColor[0] === `${product}` ? "font-semibold line-clamp-1 w-full text-center text-red-500" : "font-semibold line-clamp-1 w-full text-center"}`}>{product}</span>
                     </div>
-                ))}
-              
-                 
-                 
+                ))} 
               </div>
           </div>
           <div className="flex flex-col w-full pb-4 px-2 gap-2 bg-white rounded-xl border-b">
@@ -490,8 +483,8 @@ const Detail_product = () => {
               </div>
               
               <div className="grid grid-cols-10 gap-4 max-sm:text-xs">
-              {products?.size?.map((product, index) => (
-                  <div className={`${isSelectedSize.length > 1 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={index} onClick={() => onSelectSize(product)}>
+              {products?.size?.map((product,  index) => (
+                  <div className={`${isSelectedSize.length > 0 && isSelectedSize[0] === product ? "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100 text-red text-red-500" : "flex items-center cursor-pointer gap-2 px-2 justify-center rounded-xl py-2 bg-gray-100"}`} key={index} onClick={() => onSelectSize(product)}>
                       {product}            
                   </div>
 

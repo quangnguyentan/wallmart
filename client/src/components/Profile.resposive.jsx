@@ -100,12 +100,18 @@ const Profile = () => {
           <div className=" flex flex-col">
             <div className="flex items-center justify-between px-2">
               <span className="text-xl font-bold max-sm:text-sm">Đơn của tôi</span>
-              <Link to="/order">
-              <div className="text-gray-500 flex items-center gap-2">
+              <div onClick={() => {
+                if(isLoggedIn && token) {
+                  navigate("/order")
+                }else{
+                  navigate("/login")
+                }
+              }}>
+              <div className="text-gray-500 flex items-center gap-2 cursor-pointer">
                 <span className=" max-sm:text-xs">Xem tất cả</span>
                 <ArrowForwardIosIcon sx={{ fontSize : `${isMobile ? "12px" : "20px"}`, cursor : "pointer" }} />
               </div>
-              </Link>
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
@@ -168,13 +174,13 @@ const Profile = () => {
       <div className="px-4">
         <div className="grid grid-cols-4 bg-white rounded-2xl px-4 py-8 gap-4 max-sm:text-xs">
           <div className="flex flex-col items-center gap-3 cursor-pointer " onClick={() => {
-           if(isLoggedIn && token) {
+           if(isLoggedIn && token && store ) {
             dispatch(getCurrent())
-            if(store) {
-              navigate("/register-store")
-            }
             if(store && store?.active === "access") {
               navigate("/dashboard")
+            }
+            if(store && store?.active === "wait") {
+              navigate("/register-store")
             }
             if(!store) {
               navigate("/register-choose")
@@ -184,11 +190,11 @@ const Profile = () => {
            }
           }}>
             <img src={shop} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
-            <span className="line-clamp-1">Bắt đầu bán</span>
+            <span className="line-clamp-1">{store && store?.active === "access" ? "Shop của tôi" : "Bắt đầu bán"}</span>
           </div>
-          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
+          <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => navigate("/wallet")}> 
             <img src={wallet} alt="wallet" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
-            <span className="line-clamp-1">Ví của tôi</span>
+            <span className="line-clamp-1" >Ví của tôi</span>
           </div>
           <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
               if(isLoggedIn && token) {

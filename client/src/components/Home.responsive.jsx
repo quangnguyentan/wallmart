@@ -82,7 +82,7 @@ const HomePage = () => {
             <img src={shop} alt="shop" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">
-            Bắt đầu bán
+          {store && store?.active === "access" ? "Shop của tôi" : "Bắt đầu bán"}
           </span>
         </div>
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">

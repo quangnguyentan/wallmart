@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import "./sb-admin-2.min.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/stores/actions/authAction';
+import toast from 'react-hot-toast';
 
 function Sidebar() {
     const dispatch = useDispatch()
@@ -79,11 +80,12 @@ function Sidebar() {
             </>}
             <li className="nav-item active cursor-pointer" onClick={() => {
                 dispatch(logout())
-                localStorage.setItem("page", 0)
-                navigate("/")
-                setTimeout(() => {
-                    window.location.reload()
-                }, 500)
+                localStorage.setItem("page", 3)
+                toast.success("Đã đăng xuất tài khoản")
+                // navigate("/")
+                // setTimeout(() => {
+                //     window.location.reload()
+                // }, 500)
             }}>
             <div className="nav-link ">
                 <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }} />

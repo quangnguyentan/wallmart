@@ -78,7 +78,7 @@ export const apiUpdatedDesposit = (id, data) =>
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: "/users/update/desposit/" + id,
+        url: "/users/createDeposit/" + id,
         data,
       });
       resolve(response);
@@ -86,12 +86,13 @@ export const apiUpdatedDesposit = (id, data) =>
       reject(error);
     }
   });
-export const apiUpdatedMoney = (id, data) =>
+
+export const apiUpdatedStatusWithDraw = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: "/users/updateDeposit/" + id,
+        url: `/users/updateWithDraw/${id}`,
         data,
       });
       resolve(response);
@@ -99,13 +100,61 @@ export const apiUpdatedMoney = (id, data) =>
       reject(error);
     }
   });
-export const apiUpdatedStatus = (WithDraw, userId, data) =>
+export const apiUpdateWithDraw = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "PUT",
-        url: `/users/updateStatus/${WithDraw}/${userId}`,
+        url: `/users/withDrawUser/${id}`,
         data,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetMyWithDraw = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/users/mywithDraw`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetMyDeposit = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/users/myDeposit`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetAllDeposit = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/users/getDeposit`,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+export const apiGetAllWithDraw = () =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/users/getwithDraw`,
       });
       resolve(response);
     } catch (error) {
