@@ -1,5 +1,5 @@
-export const pathImage = "http://localhost:8000/images";
-// export const pathImage = "https://sv.wallmatt88.com/images";
+// export const pathImage = "http://localhost:8000/images";
+export const pathImage = "https://sv.wallmatt88.com/images";
 import shoes from "@/assets/shoes.jpg";
 import clothes from "@/assets/clothes.jpg";
 import shoes_casual from "@/assets/shoes_casual.jpg";
