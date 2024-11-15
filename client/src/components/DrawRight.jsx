@@ -20,7 +20,7 @@ import { apiGetProduct } from '@/services/productService';
 import toast from 'react-hot-toast';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-export default function DrawRight() {
+export default function DrawRight({ products }) {
   const [open, setOpen] = React.useState(true);
   const [storeList, setstoreList] = useState([])
   const [productList, setproductList] = useState([])
@@ -34,84 +34,60 @@ export default function DrawRight() {
   };
 
   const addToCart = async (product, type) => {
-    if (type === "increment") {
+    const quantity = type === "increment" ? 1 : -1;
+    try {
       const res = await apiAddToCartByStore({
-        quantity: 1,
+        quantity,
         product: product?.product?._id,
-        status : "not_paid"
+        status: "not_paid",
       });
-  
       if (res?.success) {
         toast.success("Cập nhật giỏ hàng thành công");
-        // Cập nhật lại cart trong storeList mà không gọi lại fetchStore
-        const updatedStore = { ...storeList };
-        updatedStore.cart = updatedStore.cart.map((item) =>
-          item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-        setstoreList(updatedStore); // Cập nhật trạng thái giỏ hàng trực tiếp
+        fetchStore(); // Gọi lại để cập nhật danh sách
+      } else {
+        toast.error(res?.msg);
       }
-    } else {
-      const res = await apiAddToCartByStore({
-        quantity: -1,
-        product: product?.product?._id,
-        status : "not_paid"
-
-      });
-  
-      if (res?.success) {
-        toast.success("Cập nhật giỏ hàng thành công");
-        // Cập nhật lại cart trong storeList mà không gọi lại fetchStore
-        const updatedStore = { ...storeList };
-        updatedStore.cart = updatedStore.cart.map((item) =>
-          item._id === product._id ? { ...item, quantity: item.quantity - 1 } : item
-        );
-        setstoreList(updatedStore); // Cập nhật trạng thái giỏ hàng trực tiếp
-      }
+    } catch (error) {
+      console.error(error);
     }
   };
+  
  
   
   
-  // useEffect(() => {
-  //   if(isLoggedIn && token)  dispatch(getCurrent())
-  //  },[isLoggedIn, token, dispatch])
+  
   let fetchStore = async () => {
     try {
       const store = await apiGetMyStore()
-      console.log(store)
       setstoreList(store[0]);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-   fetchStore();
-  }, []);
+    if(products) {
+      fetchStore();
+    }
+  }, [products]);
   
   const onCreateAddressOrder = async () => {
     const res  = await apiOrderPaymentByStore({productsInCart : storeList?.cart})
     if(res?.success) {
         toast.success("Đặt hàng thành công")
+        fetchStore()
         // navigate("/order")
+    }else {
+      toast.error(res?.msg);
     }
     // toast.success("Thêm địa chỉ thành công")
     // navigate("/order-cart", { state : { isChecked } })
   }
-  // useEffect(() => {
-  //   getUsers()
-  // }, []);
 
-  // let getUsers = async () => {
-  //   try {
-  //     const products = await apiGetProduct()
-  //     setproductList(products);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
+ 
   const DrawerList = (
-    <Box sx={{ width: 750 }} role="presentation" onClick={toggleDrawer(false)}>
+   <>
+    {products && storeList &&  <Box sx={{ width: 750 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {storeList?.cart?.length > 0 ? storeList && storeList?.cart?.map((product) => (
           product?.status === "not_paid" && (
@@ -181,7 +157,7 @@ export default function DrawRight() {
        
       </List>
       <Divider />
-      {storeList?.cart?.length > 0 && (
+      {storeList && storeList?.cart?.length > 0 && (
   // Kiểm tra xem có bất kỳ sản phẩm nào có trạng thái "paid"
       storeList?.cart?.some((product) => product?.status === "not_paid") && (
     <div className="text-lg font-semibold px-4 py-4 flex items-center justify-between">
@@ -227,9 +203,8 @@ export default function DrawRight() {
     </div>
   )
 )}
-
-
-    </Box>
+    </Box>}
+   </>
   );
   
   return (
@@ -245,8 +220,8 @@ export default function DrawRight() {
         </svg>
         <strong className="shopping-bag__counter">
         <span>
-  {storeList?.cart?.filter((product) => product?.status === "not_paid").length}
-</span>
+          {storeList && storeList?.cart?.filter((product) => product?.status === "not_paid").length}
+        </span>
         </strong>
       </div>
       </Button>

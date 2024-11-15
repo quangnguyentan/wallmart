@@ -68,24 +68,26 @@ const productColor = [
     name : "yellowdsadasdsadas"
   },
 ]
-const Detail_product = ({agent}) => {
-  const { id } = useParams()
+const Detail_product = () => {
+  const { id, storeId} = useParams()
   const [dropDown, setDropDown] = useState(false);
   const [drawerBottom, setDrawerBottom] = useState(false)
   const [products, setProducts] = useState([])
+  const [stores, setStores] = useState(null)
   const [isSelectedSize, setIsSelectedSize] = useState([])
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
   const { isLoggedIn, token } = useSelector((state) => state.auth);
-  const location = useLocation();
-  const store = location.state;
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const fetchProductById = async(id) => {
     const res = await apiGetProductByShop(id)
     setProducts(res?.products)
   }
-  
+  const fetchStoreById = async(id) => {
+    const res = await apiGetstoreById(id)
+    setStores(res)
+  }
   const onChangeQuantity = (type) => {
     if(type === "increment") {
       setQuantity(quantity + 1)
@@ -115,7 +117,7 @@ const Detail_product = ({agent}) => {
       color : isSelectedColor[0],
       size : isSelectedSize[0],
       product : products?._id,
-      store : store?._id
+      store : stores?._id
     })
     if(res?.success) {
       setDrawerBottom(false)
@@ -128,10 +130,14 @@ const Detail_product = ({agent}) => {
     }
   }
   useEffect(() => {
-    fetchProductById(id)
-  },[id])
+    fetchProductById(id) && fetchStoreById(storeId)
+  },[id, storeId])
+  
+  const filteredOrders = stores && stores?.order?.filter((item) => item?.product?._id === products?._id);
+ 
   return (
-    <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
+    <>
+      {filteredOrders && <div className="w-full  h-screen pb-20 py-2 scrollbar-hide overflow-y-scroll text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-2">
       <div className="flex items-center">
         <div className="flex items-center justify-between flex-4 ">
           <KeyboardArrowLeftIcon
@@ -224,8 +230,8 @@ const Detail_product = ({agent}) => {
                <div className="flex items-center gap-4 justify-center">
                 <AccountCircleIcon sx={{ fontSize  :  `${isMobile ? "40px" : "70px"}`}} className="text-gray-300"/>
                     <div className="flex flex-col gap-1 ">
-                        <span className="text-xl max-sm:text-sm font-medium text-black">{store?.inforByStore?.nameStore}</span>
-                        <span className="text-lg max-sm:text-sm font-medium">{store?.industry}</span>
+                        <span className="text-xl max-sm:text-sm font-medium text-black">{stores?.inforByStore?.nameStore}</span>
+                        <span className="text-lg max-sm:text-sm font-medium">{stores?.industry}</span>
 
                     </div>
                </div>
@@ -310,7 +316,7 @@ const Detail_product = ({agent}) => {
             
                      
                     <span className="max-sm:text-xs text-gray-500 text-start">
-                        Hàng tồn kho : {products?.inventory}
+                        Hàng tồn kho : {filteredOrders[0]?.quantity}
                     </span>
                     <span className="max-sm:text-xs text-gray-700 text-lg text-start">
                      Đã chọn màu: Màu {isSelectedColor};Size {isSelectedSize}
@@ -328,7 +334,8 @@ const Detail_product = ({agent}) => {
           
                    
                   <span className="max-sm:text-xs text-gray-500">
-                      Hàng tồn kho : {products?.inventory}
+                
+                      Hàng tồn kho :  { filteredOrders[0]?.quantity}
                   </span>
                   <span className="max-sm:text-xs text-gray-700 text-lg ">
                   Vui lòng chọn màu sắc color;size
@@ -436,7 +443,7 @@ const Detail_product = ({agent}) => {
             
                      
                     <span className="max-sm:text-xs text-gray-500 text-start">
-                        Hàng tồn kho : {products?.inventory}
+                        Hàng tồn kho :  { filteredOrders[0]?.quantity}
                     </span>
                     <span className="max-sm:text-xs text-gray-700 text-lg text-start">
                      Đã chọn màu: Màu {isSelectedColor};Size {isSelectedSize}
@@ -454,7 +461,7 @@ const Detail_product = ({agent}) => {
           
                    
                   <span className="max-sm:text-xs text-gray-500">
-                      Hàng tồn kho : {products?.inventory}
+                      Hàng tồn kho :  { filteredOrders[0]?.quantity }
                   </span>
                   <span className="max-sm:text-xs text-gray-700 text-lg ">
                   Vui lòng chọn màu sắc color;size
@@ -511,31 +518,46 @@ const Detail_product = ({agent}) => {
               
             
           </div>
-          <div className="px-8 w-full py-4 max-sm:py-2" onClick={() =>{
+          {filteredOrders[0]?.quantity === 0 ? <div className="px-8 w-full py-4 max-sm:py-2">
+     <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" disabled>Hết hàng</button>
+     </div> : <div className="px-8 w-full py-4 max-sm:py-2" onClick={() =>{
           
-             if(isLoggedIn && token) {
-              if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
-                toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
-              }else{
-                const isChecked = [
-                  {
-                    ...products,
-                    color: products.color[0], 
-                    size: products.size[0] ,
-                    quantity : quantity   
-                  }
-                ]
-            
-               navigate("/order-cart", {state : { isChecked }})
-              }
-             }else{
-              navigate("/login")
-             }
-            
-           
-          }}>
-        <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" >Mua hàng</button>
-        </div>
+          if(isLoggedIn && token) {
+            if(quantity >  filteredOrders[0]?.quantity) {
+              toast.error(`Cửa hàng chỉ còn ${filteredOrders[0]?.quantity} sản phẩm `)
+              return
+            }
+           if(isSelectedColor?.length < 1 || isSelectedSize?.length < 1) {
+             toast.error(`${isSelectedSize.length < 1 ? "Vui lòng chọn size" : "Vui lòng chọn color"}`)
+           }else{
+             const isChecked = [
+               {
+                 ...products,
+                 color: products.color[0], 
+                 size: products.size[0] ,
+                 quantity : quantity,
+                 store: {
+                   _id : stores?._id,
+                   logoStore : stores?.logoStore,
+                   industry : stores?.industry,
+                   inforByStore : {
+                     nameStore : stores?.inforByStore?.nameStore
+                   }
+                 } 
+               }
+             ]
+         
+            navigate("/order-cart", {state : { isChecked }})
+           }
+          }else{
+           navigate("/login")
+          }
+         
+        
+       }}>
+     <button className="w-full py-4 px-4 bg-red-500 rounded-full text-white text-xl max-sm:py-2 max-sm:text-sm" >Mua hàng</button>
+     </div>}
+          
          
                 </div>
               </DrawerHeader>
@@ -550,7 +572,8 @@ const Detail_product = ({agent}) => {
            </div>
           
       </div>
-    </div>
+    </div>}
+    </>
   )
 }
 

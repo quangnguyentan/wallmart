@@ -1,4 +1,5 @@
 const Order = require("../models/order");
+const Product = require("../models/product");
 const Store = require("../models/store");
 const users = require("../models/users");
 
@@ -83,6 +84,7 @@ const processPayment = async (req, res, next) => {
       populate: [
         { path: "product", select: "title price photos" },
         { path: "store", select: "inforByStore" },
+        { path: "user", select: "role" },
       ],
     });
 
@@ -143,7 +145,32 @@ const processPayment = async (req, res, next) => {
         { $set: { cart: findUser.cart, deposit: newDeposit } },
         { new: true }
       );
+      // Cập nhật inventory và sold của Product
+      for (const item of productsInCart) {
+        const productId = item?.product || item?._id;
 
+        // // Cập nhật Product: giảm inventory, tăng sold
+        // await Product.findByIdAndUpdate(
+        //   productId,
+        //   {
+        //     $inc: { sold: Number(item.quantity) },
+        //     $inc: { inventory: -item.quantity },
+        //   },
+        //   { new: true }
+        // );
+        if (item.store) {
+          await Store.findOneAndUpdate(
+            {
+              _id: item.store._id,
+              "order.product": productId,
+            },
+            {
+              $inc: { "order.$.quantity": -item.quantity },
+            },
+            { new: true }
+          );
+        }
+      }
       return res.status(200).json({
         success: true,
         orders,
@@ -166,6 +193,7 @@ const GetMyOrders = async (req, res, next) => {
     const orders = await Order.find({ user: id }).populate([
       { path: "product", select: "title price photos" }, // Lấy thông tin tên và giá sản phẩm
       { path: "store", select: "inforByStore" }, // Lấy thông tin cửa hàng
+      { path: "user", select: "role" },
     ]);
     res.json(orders);
   } catch (e) {
@@ -190,6 +218,7 @@ const GetMyOrdersByShop = async (req, res, next) => {
       orders = await Order.find({ store: shop[0]?._id }).populate([
         { path: "product", select: "title price photos" },
         { path: "store", select: "inforByStore" },
+        { path: "user", select: "role" },
       ]);
     }
     res.json(orders);

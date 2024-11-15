@@ -6,7 +6,6 @@ const OrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-
   status: {
     type: String,
     enum: ["waitPay", "waitDelivery", "delivering", "successfull", "canceled"],

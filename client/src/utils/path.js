@@ -2,7 +2,7 @@ const path = {
   PUBLIC: "/",
   HOME: "",
   SEARCH: "search",
-  DETAIL_PRODUCT: "detail-product/:id",
+  DETAIL_PRODUCT: "detail-product/:id/:storeId",
   LIST_PRODUCT: "list-product",
   LOGIN: "login",
   SETTING: "setting",
@@ -20,10 +20,11 @@ const path = {
   WALLET: "wallet",
   DEPOSIT_WALLET: "deposit-wallet",
   WITHDRAW_WALLET: "withdraw-wallet",
-  BANK_LINK: "bank-link",
+  UPDATE_BANK: "update-bank",
   UPDATE_ADDRESS: "update-address/:id",
   BUY_PRODUCT: "buy-product",
   DETAIL_PRODUCT_AGENT: "detail-product-agent/:id",
-
+  WITHDRAW_ADMIN: "with-draw",
+  TRANSFORM_HISTORY: "transform-history",
 };
 export default path;

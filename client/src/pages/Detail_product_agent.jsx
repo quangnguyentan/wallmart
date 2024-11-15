@@ -1,14 +1,6 @@
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+
 import { useEffect, useState } from "react";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import icon_comments from "@/assets/icon-comments.png"
 import SlickSlider from "@/components/SlickSlider";
-import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
-import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import img_demo_grey from "@/assets/img_demo_grey.jpg";

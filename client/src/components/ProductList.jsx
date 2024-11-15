@@ -6,26 +6,34 @@ import axios from "axios";
 import "./sb-admin-2.min.css";
 import { apiDeleteProductById, apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
+import { apiGetMyStore } from "@/services/storeService";
 
 function ProductList() {
   const [productList, setproductList] = useState([])
+  const [product, setProduct] = useState(null)
   const [isLoading, setLoading] = useState(true);
   const { currentData } = useSelector((state) => state.user); 
   useEffect(() => {
     getUsers();
   }, []);
-
   let getUsers = async () => {
     try {
+     if(currentData?.role === "admin"){
       const products = await apiGetProduct()
       console.log(products)
       setproductList(products);
+    
       setLoading(false);
+     }else{
+      const products = await apiGetMyStore()
+      setProduct(products[0]);
+      setLoading(false);
+     }
     } catch (error) {
       console.log(error);
     }
   };
-
+  console.log(product)
   let handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
@@ -43,7 +51,7 @@ function ProductList() {
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800">User-List</h1>
+        <h1 className="h3 mb-0 text-gray-800 text-3xl">Sản phẩm</h1>
         {currentData?.role === "admin" ? <Link
           to={`/create-product/${currentData?._id}`}
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
@@ -80,8 +88,6 @@ function ProductList() {
                     <th>Giá tiền mặc định</th>
                     <th>Giá tiền chưa giảm giá</th>
                     <th>Hàng tồn kho</th>
-                    <th>Kích thước sản phẩm</th>
-                    <th>Màu sắc sản phẩm</th>
                     <th>Hành động</th>
 
                   </tr>
@@ -95,8 +101,7 @@ function ProductList() {
                         <td>${product?.price}</td>
                         <td>${product?.priceOld}</td>
                         <td>{product?.inventory} sản phẩm</td>
-                        <td>{product?.size?.join(",")}</td>
-                        <td>{product?.color?.join(",")}</td>
+                        
                         <th className="flex flex-col gap-2">
                           <Link
                             to={`/product-view/${product?._id}/${currentData?._id}`}
@@ -104,18 +109,59 @@ function ProductList() {
                           >
                             Xem chi tiết
                           </Link>
-                          <Link
-                            to={`/product-edit/${product?._id}`}
-                            className="btn btn-info btn-sm mr-1"
-                          >
-                            Chỉnh sửa
-                          </Link>
+                         {currentData?.role === "admin" && (
+                           <Link
+                           to={`/product-edit/${product?._id}`}
+                           className="btn btn-info btn-sm mr-1"
+                         >
+                           Chỉnh sửa
+                         </Link>
+                         )}
+                          {currentData?.role === "admin" && (
                           <button
                             onClick={() => handleDelete(product?._id)}
                             className="btn btn-danger btn-sm mr-1"
                           >
                             Xóa
                           </button>
+                         )}
+
+                        </th>
+                      </tr>
+                    );
+                  })}
+                {product?.order?.map((product) => {
+                    return (
+                      <tr key={product?.product?.id}>
+                        <td>{product?.product?.title}</td>
+                        <td>${product?.product?.price}</td>
+                        <td>${product?.product?.priceOld}</td>
+                        <td>{product?.quantity} sản phẩm</td>
+        
+                        <th className="flex flex-col gap-2">
+                          <Link
+                            to={`/product-view/${product?.product?._id}/${currentData?._id}`}
+                            className="btn btn-primary btn-sm mr-1"
+                          >
+                            Xem chi tiết
+                          </Link>
+                         {currentData?.role === "admin" && (
+                           <Link
+                           to={`/product-edit/${product?._id}`}
+                           className="btn btn-info btn-sm mr-1"
+                         >
+                           Chỉnh sửa
+                         </Link>
+                         )}
+                          {currentData?.role === "admin" && (
+                          <button
+                            onClick={() => handleDelete(product?._id)}
+                            className="btn btn-danger btn-sm mr-1"
+                          >
+                            Xóa
+                          </button>
+                         )}
+
                         </th>
                       </tr>
                     );

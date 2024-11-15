@@ -25,19 +25,17 @@ const Store = () => {
     const fetchProduct = async() => {
       const res = await apiGetProduct()
       setProducts(res)
-
     }
-    
     useEffect(() => {
       setIsLoading(true)
       fetchStore() && fetchProduct()
       setIsLoading(false)
 
     },[])
-    console.log(products)
+    
   return (
   <>
-  {isLoading && !products?.length > 0 && !store?.length > 0 ? <div className="flex w-full h-screen items-center justify-center">
+  {isLoading && !store?.length > 0 ? <div className="flex w-full h-screen items-center justify-center">
       <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif"  /> 
     </div> : <div className="w-full h-screen text-gray-500 shadow-xl bg-gray-50 px-4 flex flex-col gap-8 ">
     <div className="flex items-center ">
@@ -87,48 +85,54 @@ const Store = () => {
         />
       </div>
     </div>
-  <div className="flex flex-col gap-8">
-      {store?.map((sto) => (
-        <div className="flex flex-col gap-2" key={sto?._id}>
-        <div className="flex items-center gap-2 justify-between">
-            <div className="flex items-center gap-2">
-            <img src={`${pathImage}/${sto?.logoStore}`} alt="logo_brand" className="w-16 h-16 max-sm:w-12 max-sm:h-12 mix-blend-darken" />
-            <div className="flex flex-col max-sm:gap-2">
-               <span className="text-lg  max-sm:text-xs font-semibold text-black">{sto?.inforByStore?.nameStore}</span>
-               <span className="text-lg  max-sm:text-xs font-semibold text-black">{sto?.follow ? sto?.follow : "1"}Người đã follow</span>
+    <div className="flex flex-col gap-8">
+  {store?.map((sto) => (
+    <div className="flex flex-col gap-2" key={sto?._id}>
+      <div className="flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-2">
+          <img
+            src={`${pathImage}/${sto?.logoStore}`}
+            alt="logo_brand"
+            className="w-16 h-16 max-sm:w-12 max-sm:h-12 mix-blend-darken"
+          />
+          <div className="flex flex-col max-sm:gap-2">
+            <span className="text-lg max-sm:text-xs font-semibold text-black">
+              {sto?.inforByStore?.nameStore}
+            </span>
+            <span className="text-lg max-sm:text-xs font-semibold text-black">
+              {sto?.follow ? sto?.follow : "1"} Người đã follow
+            </span>
+          </div>
+        </div>
+        <Link to={`/detail-store/${sto?._id}`}>
+          <div className="w-32 max-sm:h-6 max-sm:w-28 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer">
+            <span className="text-[#f90] max-sm:text-xs">Dạo cửa hàng</span>
+          </div>
+        </Link>
+      </div>
 
+      {/* Hiển thị sản phẩm của cửa hàng hiện tại */}
+      <div className="grid grid-cols-3">
+        {sto?.order?.slice(0, 3).map((product) => (
+          <div key={product?.product?._id}>
+            <div className="flex flex-col gap-1 px-2">
+              <img
+                src={`${pathImage}/${product?.product?.photos[0]}`}
+                alt="product"
+                className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover"
+              />
+              <span className="line-clamp-1 max-sm:text-xs">
+                {product?.product?.title}
+              </span>
+              <span className="line-clamp-1 max-sm:text-xs">${product?.price}</span>
             </div>
-            </div>
-            <Link to={`/detail-store/${sto?._id}`}>
-              <div className="w-32 max-sm:h-6 max-sm:w-28 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" >
-                  <span className="text-[#f90] max-sm:text-xs" >Dạo cửa hàng</span>
-              </div>
-            </Link>
-        </div>
-        <div className="grid grid-cols-3">
-          {products && products
-            .filter((product) => product?.store === sto?._id) 
-            .slice(0, 3) 
-            .map((product) => (
-              <div key={product?._id}>
-                <div className="flex flex-col gap-1 px-2">
-                  <img
-                    src={`${pathImage}/${product?.photos[0]}`}
-                    alt="product"
-                    className="h-44 max-sm:h-24 mix-blend-darken rounded-xl shadow-xl object-cover"
-                  />
-                  <span className="line-clamp-1 max-sm:text-xs">
-                   {product?.title}
-                  </span>
-                  <span className="line-clamp-1 max-sm:text-xs">${product?.price}</span>
-                </div>
-              </div>
-            ))}
-        </div>
-        </div>
-      ))}
-      
-  </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
   </div>}</>
     
   )

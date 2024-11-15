@@ -32,7 +32,6 @@ const GetProductByShop = async (req, res, next) => {
 const GetProductByCategory = async (req, res, next) => {
   try {
     const { category } = req.query;
-    console.log(category);
     const products = await Product.find({ category }).populate({
       path: "store",
       select: "inforByStore logoStore industry",

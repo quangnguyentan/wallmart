@@ -53,6 +53,11 @@ import Wallet from "./pages/Wallet";
 import Edit_Address from "./components/Edit_Address";
 import Buy_Product_From_Admin from "./pages/Buy_Product_From_Admin";
 import Detail_product_agent from "./pages/Detail_product_agent";
+import WithDrawalHistory from "./components/WithDrawalHistory";
+import DepositHistory from "./components/DepositHistory";
+import UpdateBank from "./pages/UpdateBank";
+import WithDrawByAdmin from "./pages/WithDrawByAdmin";
+import TransformHistory from "./pages/TransformHistory";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -157,6 +162,9 @@ function App() {
                 <Route path='store-view-form/:id' element={<StoreFromView />} />
                 <Route path='store-edit-form/:id' element={<StoreFormEdit />} />
                 <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
+                <Route path={path.WITHDRAW_ADMIN} element={<WithDrawByAdmin />} />
+                <Route path={path.TRANSFORM_HISTORY} element={<TransformHistory />} />
+
                 
               </Route> : 
            <>
@@ -179,8 +187,9 @@ function App() {
             <Route path={path.EDIT_PROFILE_USER} element={<EditProfileUser />} />
             <Route path={path.CHANGE_PASSWORD} element={<PasswordChange />} />
             <Route path={path.WALLET} element={<Wallet />} />
-
-
+            <Route path={path.WITHDRAW_WALLET} element={<WithDrawalHistory />} />
+            <Route path={path.DEPOSIT_WALLET} element={<DepositHistory />} />
+            <Route path={path.UPDATE_BANK} element={<UpdateBank />} />
          
           </Route>  : <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<FixedBottomNavigation />} />
@@ -202,6 +211,10 @@ function App() {
           <Route path={path.CHANGE_PASSWORD} element={<PasswordChange />} />
           <Route path={path.WALLET} element={<Wallet />} />
           <Route path={path.UPDATE_ADDRESS} element={<Edit_Address />} />
+          <Route path={path.WITHDRAW_WALLET} element={<WithDrawalHistory />} />
+          <Route path={path.DEPOSIT_WALLET} element={<DepositHistory />} />
+          <Route path={path.UPDATE_BANK} element={<UpdateBank />} />
+
          
         </Route>}
         {isLoggedIn && token && currentData && currentData?.role === "agent" && <Route path='/'   element={<Portal />}>

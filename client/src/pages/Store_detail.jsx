@@ -149,7 +149,7 @@ const Store_detail = () => {
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Product products={products} hidden/>
+        <Card_Product stores={store} products={products} hidden/>
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -171,7 +171,7 @@ const Store_detail = () => {
       </TabsContent>
       </div>
       <TabsContent value="sell">
-      <Card_Product products={products} hidden/>
+      <Card_Product stores={store} products={products} hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -193,7 +193,7 @@ const Store_detail = () => {
       </TabsContent>
       
       <TabsContent value="price"> 
-      <Card_Product products={products} hidden/>
+      <Card_Product stores={store} products={products} hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -214,7 +214,7 @@ const Store_detail = () => {
       </div>
       </TabsContent>
       <TabsContent value="product"> 
-      <Card_Product products={products} hidden/>
+      <Card_Product stores={store} products={products} hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

@@ -31,8 +31,8 @@ router.get("/", [verifyToken], getAllUsers);
 router.put("/createDeposit/:id", [verifyToken, isAdmin], DepositUser);
 router.get("/myDeposit", [verifyToken], getMyDeposit);
 router.get("/mywithDraw", [verifyToken], getMyWithDraw);
-router.get("/getDeposit", [verifyToken, isAdmin], getAllDeposit);
-router.get("/getwithDraw", [verifyToken, isAdmin], getAllWithDraw);
+router.get("/getDeposit", [verifyToken], getAllDeposit);
+router.get("/getwithDraw", [verifyToken], getAllWithDraw);
 router.put(
   "/updateWithDraw/:id",
   [verifyToken, isAdmin],

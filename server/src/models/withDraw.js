@@ -15,6 +15,8 @@ const withDrawSchema = new Schema(
     },
     status: {
       type: String,
+      enum: ["Đợi duyệt", "Thành công", "Không thành công"],
+      default: "Đợi duyệt",
     },
     createdAt: {
       type: Date,
