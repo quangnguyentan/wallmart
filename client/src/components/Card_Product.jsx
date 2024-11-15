@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { listLeftCategories, pathImage } from "@/lib/helper";
 import DrawRight from "./DrawRight";
-import { apiAddToCartByStore, apiGetStore } from "@/services/storeService";
+import { apiAddToCartByStore, apiGetMyStore, apiGetStore } from "@/services/storeService";
 import toast from "react-hot-toast";
 import DrawBottom from "./DrawBottom";
 import { useState } from "react";
@@ -23,8 +23,8 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
 
   let getUsers = async () => {
     try {
-      const products = await apiGetStore()
-      setproductList(products);
+      const products = await apiGetMyStore()
+      setproductList(products[0]);
     } catch (error) {
       console.log(error);
     }
@@ -43,6 +43,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
       status : "not_paid"
     })
     if(res?.success) {
+      getUsers()
       toast.success("Thêm giỏ hàng thành công")
     }else{
       toast.error(res?.msg)
@@ -59,7 +60,6 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
       e.preventDefault(); 
     } else {
       // Logic click vào sản phẩm bình thường
-      console.log("Chuyển đến chi tiết sản phẩm", product?._id);
     }
   };
   useEffect(() => {
@@ -75,7 +75,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
       e.preventDefault();
     }));
   }, [])
-
+  console.log(stores)
   return (
     <>
       {agent ? <div className="flex flex-col gap-2 bg-[#f5f5f5] pb-12">
@@ -92,7 +92,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
         </div>
       </div> }
      <div className="flex items-center justify-end px-4">
-      <DrawRight/>
+      <DrawRight products={productList}/>
      </div>
      <div className="grid grid-cols-5 gap-2 px-4">
         {products &&
@@ -121,7 +121,6 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
                         <button className="button"  onClick={(e) => {
                               e.preventDefault()
                               fetchAddToCart(product)
-                              getUsers()
                               // setTimeout(() => {
                               //   window.location.reload()
                               // }, 1000)
@@ -158,12 +157,12 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
         </div>
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4">
-      {stores?.map((product) => (
-    product?.cart?.some(item => item.status === "not_paid") && (
+      {stores?.length > 0 ? stores?.map((product) => (
+    product?.order?.some(item => item.status === "paid") && (
       <React.Fragment key={product._id}>
-        {product.cart.map((item) => (
-          item.status === "not_paid" && (
-            <Link state={product} to={`/detail-product/${item?.product?._id}`} key={product._id}>
+        {product.order.map((item) => (
+          item.status === "paid" && (
+            <Link state={product} to={`/detail-product/${item?.product?._id}/${product?._id}`} key={product._id}>
             <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
               <img
                 src={`${pathImage}/${item?.product?.photos && item?.product?.photos[0]}`}
@@ -184,7 +183,33 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
         ))}
       </React.Fragment>
     )
-  ))}
+      )) : stores?.order &&
+        stores?.order?.map((item) => (
+          item.status === "paid" ? (
+            <Link
+              state={item}
+              to={`/detail-product/${item?.product?._id}`}
+              key={item._id}
+            >
+              <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <img
+                  src={`${pathImage}/${item?.product?.photos?.[0]}`}
+                  alt="product_test"
+                  className="h-[256px] max-sm:h-[180px] w-full object-cover rounded-lg"
+                />
+                <div className="flex flex-col gap-2 px-2">
+                  <span className="line-clamp-2 break-words font-medium text-[18px] max-sm:text-sm text-gray-800">
+                    {item?.product?.title}
+                  </span>
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base">
+                    ${item?.product?.price}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ) : null
+        )
+        )}
       </div>
       
       <div

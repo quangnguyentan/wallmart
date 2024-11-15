@@ -143,7 +143,16 @@ const getDeleteUserById = async (req, res) => {
 const updatedUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { fullName, username, deposit, role, gender } = req.body;
+    const {
+      fullName,
+      username,
+      deposit,
+      role,
+      gender,
+      nameOfBank,
+      nameOfUser,
+      creditCartOfBank,
+    } = req.body;
     const findUser = await users.findById(id);
     console.log(fullName);
     const user = await users.findByIdAndUpdate(
@@ -151,9 +160,12 @@ const updatedUser = async (req, res) => {
       {
         fullName,
         username,
+        nameOfBank,
+        nameOfUser,
+        creditCartOfBank,
         deposit: deposit && findUser?.deposit + Number(deposit),
         role,
-        avatar: req.files.images[0].filename,
+        avatar: req?.files && req.files.images[0].filename,
         gender,
       },
       { new: true }
@@ -208,6 +220,7 @@ const withDrawtUser = async (req, res) => {
 
     const { id } = req.params;
     const { draw } = req.body;
+    console.log(draw);
     let createWithDraw;
     const user = await users.findById(id);
 
@@ -215,12 +228,12 @@ const withDrawtUser = async (req, res) => {
       throw new Error("Vui lòng nhập số tiền muốn rút");
     }
 
-    if (user?.withDraw >= Number(draw)) {
+    if (user?.deposit >= Number(draw)) {
       data = await users.findByIdAndUpdate(
         id,
         {
           // withDraw: user?.withDraw - Number(draw),
-          withDraw: user?.withDraw - Number(draw),
+          deposit: user?.deposit - Number(draw),
         },
         { new: true }
       );
@@ -252,8 +265,9 @@ const withDrawtUser = async (req, res) => {
       throw new Error("Không đủ tiền để rút");
     }
     return res.status(200).json({
-      success: data
-        ? "Vui lòng đợi trong giây lát"
+      success: data ? true : false,
+      message: data
+        ? "Đã rút tiền thành công! Vui lòng đợi duyệt."
         : "Không thể rút tiền vui lòng nhập lại",
       data,
       createWithDraw,
@@ -275,7 +289,6 @@ const updatedStatusWithDraw = async (req, res) => {
     if (findWithDraw) {
       user = await users.findById(findWithDraw?.user);
     }
-    console.log(user);
     if (findWithDraw && status === "Thành công") {
       findBill = await WithDraw.findByIdAndUpdate(
         id,
@@ -290,7 +303,7 @@ const updatedStatusWithDraw = async (req, res) => {
       let findUpdateUser = await users.findByIdAndUpdate(
         user?._id,
         {
-          withDraw: user?.withDraw + findWithDraw?.money,
+          deposit: Number(user?.deposit) + Number(findWithDraw?.money),
         },
         { new: true }
       );
@@ -346,7 +359,10 @@ const getMyWithDraw = async (req, res) => {
 };
 const getAllWithDraw = async (req, res) => {
   try {
-    const withDraw = await WithDraw.find();
+    const withDraw = await WithDraw.find().populate({
+      path: "user",
+      select: "fullName deposit",
+    });
     return res.status(200).json({
       success: withDraw ? true : false,
       withDraw,

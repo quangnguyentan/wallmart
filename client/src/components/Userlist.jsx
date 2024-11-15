@@ -90,7 +90,7 @@ function Userlist() {
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
                         <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
-                        <td>{product?.gender}</td>
+                        <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         
                         <th className="flex flex-col gap-2">
                           <Link

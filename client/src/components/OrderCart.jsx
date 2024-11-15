@@ -21,6 +21,7 @@ const OrderCart = () => {
   const navigate = useNavigate()
   const location = useLocation();
   const { isChecked,  selectedAddress } = location.state 
+  console.log(isChecked)
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
   const [money, setMoney] = useState("")
