@@ -52,6 +52,7 @@ import PasswordChange from "./components/PasswordChange";
 import Wallet from "./pages/Wallet";
 import Edit_Address from "./components/Edit_Address";
 import Buy_Product_From_Admin from "./pages/Buy_Product_From_Admin";
+import Detail_product_agent from "./pages/Detail_product_agent";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -222,8 +223,11 @@ function App() {
                 <Route index path='order-view/:id' element={<OrderView />} />
                 <Route index path='order-edit/:id' element={<OrderEdit />} />
                 <Route path={path.UPDATE_ADDRESS} element={<Edit_Address />} />     
-        </Route>}  
                 <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
+                <Route path={path.DETAIL_PRODUCT_AGENT} element={<Detail_product_agent />} />
+
+        </Route>}  
+                
 
             </>}
 

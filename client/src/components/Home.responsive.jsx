@@ -10,12 +10,14 @@ import { useState, useEffect } from "react";
 import Card_Product from "./Card_Product";
 import { apiGetProduct } from "@/services/productService";
 import { useNavigate } from "react-router-dom";
-import { apiGetMyStore, apiGetstoreById } from "@/services/storeService";
+import { apiGetMyStore, apiGetStore, apiGetstoreById } from "@/services/storeService";
 import { getCurrent } from "@/stores/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
+  const [stores, setStores] = useState([])
+  
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -29,7 +31,10 @@ const HomePage = () => {
     const res = await apiGetMyStore()
     setStore(res[0])
   }
-  
+  const getAllStore = async() => {
+    const res = await apiGetStore()
+    setStores(res)
+  }
   const toggleVisibility = () => {
     if (window.pageYOffset >= 120) {
       setVisible(true);
@@ -37,7 +42,6 @@ const HomePage = () => {
       setVisible(false);
     }
   };
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -56,7 +60,7 @@ const HomePage = () => {
     if(isLoggedIn && token) {
       getStore()
     }
-    
+    getAllStore()
   }, [])
   return (
     <div className="w-full flex flex-col gap-4 max-sm:gap-2 relative">
@@ -119,7 +123,7 @@ const HomePage = () => {
       <div>
         <img src={banner_home} alt="banner_home" />
       </div>
-      <Card_Product products={products}/>
+      <Card_Product products={products} stores={stores}/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

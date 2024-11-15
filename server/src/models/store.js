@@ -43,7 +43,19 @@ const StoreSchema = new Schema({
   },
 
   businessLicense: String,
-
+  cart: [
+    {
+      product: { type: Schema.Types.ObjectId, ref: "product" },
+      quantity: Number,
+      color: String,
+      size: String,
+      status : {
+        type: String,
+        enum: ["paid", "not_paid"],
+        default: "not_paid",
+      },
+    },
+  ],
   inforByStore: {
     nameStore: String,
     descriptionStore: String,

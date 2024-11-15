@@ -7,6 +7,8 @@ const {
   updateStore,
   deleteStore,
   GetProductByShop,
+  addToCart,
+  processPayment
 } = require("../controllers/storeController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const multer = require("multer");
@@ -32,6 +34,8 @@ router.delete("/delete/:id", deleteStore);
 
 router.get("/:id", GetStoreById);
 router.put("/update/:id", [verifyToken, isAdmin], updateStore);
+router.post("/addToCart", verifyToken, addToCart);
+router.post("/payment", [verifyToken], processPayment);
 
 router.post(
   "/create",

@@ -24,6 +24,7 @@ var settings = {
   autoplaySpeed: 3000,
 };
 const SlickSlider = ({ home, detail, products }) => {
+  console.log(products)
   const isMobile = useMediaQuery("(max-width:600px)");
   return (
     <div>

@@ -24,6 +24,32 @@ export const apiGetMyStore = () =>
       console.log("Failed to get store", error);
     }
   });
+  export const apiOrderPaymentByStore = (data) =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await axiosConfig({
+          method: "POST",
+          url: "/store/payment",
+          data,
+        });
+        resolve(response);
+      } catch (error) {
+        console.log("Failed to get order", error);
+      }
+    });
+  export const apiAddToCartByStore = (data) =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await axiosConfig({
+          method: "POST",
+          url: "/store/addToCart",
+          data,
+        });
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    });
 export const apiDeletestoreById = (id) =>
   new Promise(async (resolve, reject) => {
     try {

@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getCurrent } from "@/stores/actions/userAction";
 import { apiGetProduct } from "@/services/productService";
-import { apiGetMyStore } from "@/services/storeService";
+import { apiGetMyStore, apiGetStore } from "@/services/storeService";
 import { pathImage } from "@/lib/helper";
 const Profile = () => {
   const [products, setProducts] = useState([])
@@ -33,7 +33,16 @@ const Profile = () => {
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
   const { isLoggedIn, token } = useSelector((state) => state.auth);
+  const [stores, setStores] = useState([])
   
+  const [visible, setVisible] = useState(false);
+
+
+
+  const getAllStore = async() => {
+    const res = await apiGetStore()
+    setStores(res)
+  }
   const getProduct = async() => {
     const res = await apiGetProduct()
     setProducts(res)
@@ -53,6 +62,7 @@ const Profile = () => {
   }, [isLoggedIn, token, dispatch]);
 
   useEffect(() => {
+    getAllStore()
     getProduct() 
     if(isLoggedIn && token) {
       getMyStore()
@@ -234,7 +244,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Card_Product profile products={products}/>
+      <Card_Product profile products={products} stores={stores}/>
     </div>
   );
 };

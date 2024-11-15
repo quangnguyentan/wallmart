@@ -82,7 +82,7 @@ const Cart = () => {
             <div key={product?._id} className="rounded-xl bg-white py-2 px-4 flex flex-col gap-2">
               <h3 className="max-sm:text-sm font-semibold">{product?.store?.inforByStore?.nameStore}</h3>
               <div className="flex items-center justify-between ">
-             <div className="flex items-center gap-8">
+             <div className="flex items-center gap-8 justify-between ">
              <input type="checkbox" id="checkbox"  checked={isChecked?.length === currentData?.cart?.length ? isChecked?.length === currentData?.cart?.length : isChecked?.some((item) => item?._id === product?._id)} onChange={() => onChangeChecked(product)} />
                 <img className="w-28 h-28 max-sm:w-20 max-sm:h-20" src={`${pathImage}/${product?.product?.photos[0]}`} alt="product" />
                 <div className="flex flex-col gap-2 ">
@@ -90,8 +90,8 @@ const Cart = () => {
                   <span>${product?.product?.price}</span>
                 </div>
              </div>
-                <div className="flex items-center gap-2 border rounded-[4px]">
-                   <div className="px-3 max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => {
+                <div className="flex items-center gap-2 border rounded-[4px] ">
+                   <div className="px-3 w-10 h-10 flex items-center justify-center  max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer" onClick={() => {
                       addToCart(product,"decrement")
                    }}>
                     <RemoveOutlinedIcon sx={{ fontSize : "15px" }} />
@@ -99,7 +99,7 @@ const Cart = () => {
                     <div className="px-2 max-sm:px-0">
                     <span>{product?.quantity}</span>
                     </div>
-                    <div className="px-3 max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer" onClick={() => {
+                    <div className="px-3 w-10 h-10 flex items-center justify-center max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer" onClick={() => {
                       addToCart(product,"increment")
                     
                     }

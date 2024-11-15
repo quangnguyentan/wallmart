@@ -3,7 +3,6 @@ import { pathImage } from "@/lib/helper"
 import { apiGetOrderById } from "@/services/orderServer"
 import { useEffect, useState } from "react"
 const Card_Order = ({hidden, type}) => {
-  console.log(type)
   const [order, setOrder] = useState("")
   const getMyOrder = async() => {
     const res = await apiGetOrderById()

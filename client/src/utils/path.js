@@ -23,5 +23,7 @@ const path = {
   BANK_LINK: "bank-link",
   UPDATE_ADDRESS: "update-address/:id",
   BUY_PRODUCT: "buy-product",
+  DETAIL_PRODUCT_AGENT: "detail-product-agent/:id",
+
 };
 export default path;

@@ -9,7 +9,7 @@ import SlickSlider from "@/components/SlickSlider";
 import HeadsetMicOutlinedIcon from '@mui/icons-material/HeadsetMicOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import img_demo_grey from "@/assets/img_demo_grey.jpg";
 import img_demo_black from "@/assets/img_demo_black.jpg";
@@ -68,7 +68,7 @@ const productColor = [
     name : "yellowdsadasdsadas"
   },
 ]
-const Detail_product = () => {
+const Detail_product = ({agent}) => {
   const { id } = useParams()
   const [dropDown, setDropDown] = useState(false);
   const [drawerBottom, setDrawerBottom] = useState(false)
@@ -77,7 +77,8 @@ const Detail_product = () => {
   const [isSelectedColor, setIsSelectedColor] = useState([])
   const [quantity, setQuantity] = useState(1)
   const { isLoggedIn, token } = useSelector((state) => state.auth);
-
+  const location = useLocation();
+  const store = location.state;
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
   const fetchProductById = async(id) => {
@@ -114,7 +115,7 @@ const Detail_product = () => {
       color : isSelectedColor[0],
       size : isSelectedSize[0],
       product : products?._id,
-      store : products?.store?._id
+      store : store?._id
     })
     if(res?.success) {
       setDrawerBottom(false)
@@ -223,8 +224,8 @@ const Detail_product = () => {
                <div className="flex items-center gap-4 justify-center">
                 <AccountCircleIcon sx={{ fontSize  :  `${isMobile ? "40px" : "70px"}`}} className="text-gray-300"/>
                     <div className="flex flex-col gap-1 ">
-                        <span className="text-xl max-sm:text-sm font-medium text-black">{products?.store?.inforByStore?.nameStore}</span>
-                        <span className="text-lg max-sm:text-sm font-medium">{products?.store?.industry}</span>
+                        <span className="text-xl max-sm:text-sm font-medium text-black">{store?.inforByStore?.nameStore}</span>
+                        <span className="text-lg max-sm:text-sm font-medium">{store?.industry}</span>
 
                     </div>
                </div>
