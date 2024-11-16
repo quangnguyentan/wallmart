@@ -186,6 +186,111 @@ const processPayment = async (req, res, next) => {
     next(e);
   }
 };
+const processPaymentBot = async (req, res, next) => {
+  const { selectedAddress, productsInCart, usersList, storeId } = req.body;
+
+  if (!selectedAddress || !productsInCart || !usersList || !storeId) {
+    return res.status(400).json({
+      err: 1,
+      msg: "Missing input data",
+    });
+  }
+
+  try {
+    // Lọc người dùng có role là "bot" từ mảng người dùng truyền vào
+    const botUsers = usersList.filter((user) => user.role === "bot");
+
+    if (!botUsers || botUsers.length === 0) {
+      return res.status(404).json({
+        err: 1,
+        msg: "Bạn chưa chọn bot để đặt hàng",
+      });
+    }
+
+    let totalPrice = 0;
+    productsInCart.forEach((item) => {
+      const productPrice = item.product?.price || 0;
+      totalPrice += productPrice * item?.quantity; // Tính tổng giá trị cần thanh toán
+    });
+
+    // Duyệt qua từng người dùng bot để tạo đơn hàng cho họ
+    for (const botUser of botUsers) {
+      // Kiểm tra xem bot có đủ tiền không
+      if (botUser?.deposit < totalPrice) {
+        return res.status(400).json({
+          err: 1,
+          msg: `Tài khoản bot ${botUser?.fullName} không đủ tiền để thanh toán`,
+        });
+      }
+
+      const newDeposit = botUser?.deposit - totalPrice;
+      console.log(productsInCart);
+      const orderData = productsInCart.map((item) => ({
+        user: botUser._id,
+        product: item.product._id,
+        store: storeId,
+        quantity: Number(item.quantity),
+        size: item?.product?.size[0],
+        color: item?.product?.color[0],
+        phone: selectedAddress.phone,
+        province: selectedAddress.province,
+        houseNumber: selectedAddress.houseNumber,
+        city: selectedAddress.city,
+        stress: selectedAddress.stress,
+        revicerName: selectedAddress.revicerName,
+        active: selectedAddress.active,
+        status: "waitDelivery", // Đặt trạng thái đơn hàng là "chờ giao hàng"
+      }));
+
+      // Lưu đơn hàng vào cơ sở dữ liệu
+      const orders = await Order.insertMany(orderData);
+
+      // Cập nhật lại số dư deposit cho bot
+      await users.findOneAndUpdate(
+        { _id: botUser._id },
+        { $set: { deposit: newDeposit } },
+        { new: true }
+      );
+
+      // Cập nhật inventory và sold của Product trong cơ sở dữ liệu (nếu cần)
+      for (const item of productsInCart) {
+        const productId = item?.product?._id;
+
+        // Cập nhật Product: giảm inventory, tăng sold
+        // await Product.findByIdAndUpdate(
+        //   productId,
+        //   {
+        //     $inc: { sold: Number(item.quantity) },
+        //     $inc: { inventory: -item.quantity },
+        //   },
+        //   { new: true }
+        // );
+
+        // Cập nhật Store: giảm số lượng đơn hàng đã bán
+
+        if (storeId) {
+          await Store.findOneAndUpdate(
+            {
+              _id: storeId,
+              "order.product": productId,
+            },
+            {
+              $inc: { "order.$.quantity": -item.quantityInit },
+            },
+            { new: true }
+          );
+        }
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: "Payment successful, orders created for bot users",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
 
 const GetMyOrders = async (req, res, next) => {
   const { id } = req.currentUser;
@@ -204,6 +309,7 @@ const deleteOrder = async (req, res, next) => {
   const { id } = req.params;
   try {
     const orders = await Order.findByIdAndDelete(id);
+    console.log(orders);
     res.json(orders);
   } catch (e) {
     next(e);
@@ -244,4 +350,5 @@ module.exports = {
   GetMyOrdersByShop,
   updateOrder,
   deleteOrder,
+  processPaymentBot,
 };

@@ -10,7 +10,9 @@ const depositSchema = new Schema(
     money: {
       type: String,
     },
-
+    reason: {
+      type: String,
+    },
     createdAt: {
       type: Date,
       default: Date.now,

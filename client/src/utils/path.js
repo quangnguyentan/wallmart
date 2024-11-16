@@ -26,5 +26,6 @@ const path = {
   DETAIL_PRODUCT_AGENT: "detail-product-agent/:id",
   WITHDRAW_ADMIN: "with-draw",
   TRANSFORM_HISTORY: "transform-history",
+  BOOK_PRODUCT: "book-product/:id/:userId",
 };
 export default path;

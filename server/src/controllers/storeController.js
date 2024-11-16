@@ -49,7 +49,7 @@ const GetStoreById = async (req, res, next) => {
     const products = await Store.findById(id).populate({
       path: "order",
       populate: [
-        { path: "product", select: "title price photos" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "product", select: "title price photos color size" }, // Lấy thông tin tên và ảnh sản phẩm
       ],
     });
     res.json(products);
@@ -416,7 +416,7 @@ const GetMyStore = async (req, res, next) => {
         path: "order",
         populate: {
           path: "product",
-          select: "title price priceOld photos", // Lấy thông tin tên và ảnh sản phẩm
+          select: "title price priceOld photos color size", // Lấy thông tin tên và ảnh sản phẩm
         },
       });
     res.json(orders);

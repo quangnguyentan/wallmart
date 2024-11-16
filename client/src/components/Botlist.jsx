@@ -39,7 +39,7 @@ function Botlist() {
       console.log(error);
     }
   };
-
+  
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -93,14 +93,14 @@ function Botlist() {
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         
                         <th className="flex flex-col gap-2">
-                        {/* <Link
+                        <Link
                             to={`/buy-product/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             Mua hàng
-                          </Link> */}
+                          </Link>
                           <Link
-                            to={`/bot-view/${product?._id}/${product?.store?._id}`}
+                            to={`/bot-view/${product?._id}/${currentData?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             Xem chi tiết

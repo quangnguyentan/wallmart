@@ -70,34 +70,34 @@ function StoreList() {
               >
                 <thead>
                   <tr>
+                  <th>Tên cửa hàng</th>
+
                     <th>Ngành</th>
                     <th>Tên người tạo cửa hàng</th>
                     <th>Số điện thoại người tạo cửa hàng</th>
-                    <th>Tên cửa hàng</th>
                     <th>Khu vực người đăng ký</th>
-                 
                     <th>Hành động</th>
-
                   </tr>
                 </thead>
                 
                 <tbody>
                   {productList.map((product) => {
+                   if(product?.active === "access") {
                     return (
                       <tr key={product?.id}>
+                        <td>{product?.inforByStore?.nameStore}</td>
                         <td>{product?.industry}</td>
                         <td>{product?.fullname}</td>
                         <td>{product?.phone}</td>
-                        <td>{product?.inforByStore?.nameStore}</td>
                         <td>{product?.address?.area}</td>
                         <th className="flex flex-col gap-2">
                           <Link
-                            to={`/store-view/${product?._id}`}
+                            to={`/book-product/${product?._id}/${product?.userId}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
-                            Xem chi tiết
+                            Đặt đơn ảo
                           </Link>
-                          <Link
+                          {/* <Link
                             to={`/store-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
@@ -108,10 +108,11 @@ function StoreList() {
                             className="btn btn-danger btn-sm mr-1"
                           >
                             Xóa
-                          </button>
+                          </button> */}
                         </th>
                       </tr>
                     );
+                   }
                   })}
                 </tbody>
               </table>
