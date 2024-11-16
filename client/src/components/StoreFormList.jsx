@@ -65,7 +65,7 @@ function StoreFormList() {
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800 w-full text-lg font-semibold flex items-center justify-center">Duyệt đơn của cửa hàng</h1>
+        {/* <h1 className="h3 mb-0 text-gray-800 w-full text-lg font-semibold flex items-center justify-center">Duyệt đơn của cửa hàng</h1> */}
         {/* <Link
           to="/create-store"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
@@ -77,7 +77,7 @@ function StoreFormList() {
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
         <div className="card-header py-3">
-          <h6 className="m-0 font-weight-bold text-primary">DataTables</h6>
+          <h6 className="m-0 font-weight-bold text-primary">Duyệt đơn của cửa hàng</h6>
         </div>
         <div className="card-body">
           {isLoading ? (

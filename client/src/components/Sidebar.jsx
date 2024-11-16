@@ -1,4 +1,4 @@
-import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson } from '@fortawesome/free-solid-svg-icons'
+import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, useNavigate } from 'react-router-dom'
@@ -106,6 +106,12 @@ function Sidebar() {
                     <span className='max-sm:text-xs'>Yêu cầu rút tiền</span>
                 </Link>
             </li>
+            <li className="nav-item active">
+                <Link className="nav-link" to="/store-list">
+                    <FontAwesomeIcon icon={faBookBible} style={{ marginRight: "0.5rem" }}/>
+                    <span className='max-sm:text-xs'>Đặt đơn ảo</span>
+                </Link>
+                </li>
             </>}
             
             <li className="nav-item active cursor-pointer" onClick={() => {

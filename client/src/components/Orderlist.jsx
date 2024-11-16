@@ -1,7 +1,7 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
 import { apiGetProduct } from "@/services/productService";
@@ -17,6 +17,7 @@ function Orderlist() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user); 
   useEffect(() => {
     getUsers();
@@ -49,12 +50,12 @@ function Orderlist() {
       if (confirmDelete) {
         await apiDeleteOrderById(id)
         getUsers();
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -85,10 +86,12 @@ function Orderlist() {
               >
                 <thead>
                   <tr>
-                  <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên sản phẩm</th>
-                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Giá tiền mặc định</th>
-                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Giá tiền chưa giảm giá</th>
-                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Hàng tồn kho</th>
+                  <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên đơn hàng</th>
+                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Giá tiền </th>
+                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Số lượng</th>
+                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tổng tiền</th>
+                    <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Trạng thái vận chuyển</th>
+                  
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Hành động</th>
                   </tr>
                 </thead>
@@ -98,13 +101,13 @@ function Orderlist() {
                     if(product?.user?.role === "user"){
                       return (
                         <tr key={product?._id}>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.revicerName}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.phone}</td>
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.title}</td>
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price}$</td>
+                         
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.quantity}</td>
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price * product?.quantity}$</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product && product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.province}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.city}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.stress}</td>
-  
+                        
                           <th className="flex flex-col gap-2">
                           
                             <Link
@@ -147,12 +150,17 @@ function Orderlist() {
                               {item?.product?.price}$
                             </td>
                             {/* Trạng thái */}
-                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              {item?.status === "paid" ? "Đã thanh toán" : "Chưa thanh toán"}
-                            </td>
+                           
                             {/* Hành động */}
+                            
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               {item?.quantity}
+                            </td>
+                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                              {item?.quantity * item?.product?.price}$
+                            </td>
+                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                              {item?.status === "paid" ? "Đã thanh toán" : "Chưa thanh toán"}
                             </td>
                             <td>
                               <div className="flex flex-col gap-2">

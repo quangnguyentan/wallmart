@@ -7,6 +7,7 @@ const {
   GetMyOrdersByShop,
   updateOrder,
   deleteOrder,
+  processPaymentBot,
 } = require("../controllers/orderController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 
@@ -21,6 +22,8 @@ router.put("/updateOrder/:id", [verifyToken], updateOrder);
 router.get("/myOrderByShop", [verifyToken], GetMyOrdersByShop);
 
 router.post("/payment", [verifyToken], processPayment);
+router.post("/paymentBot", [verifyToken], processPaymentBot);
+
 router.get("/getOrder/:id", [verifyToken], GetOrderById);
 
 module.exports = router;

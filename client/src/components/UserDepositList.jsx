@@ -45,13 +45,12 @@ function UserDepositList() {
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800">User-List</h1>
        
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
         <div className="card-header py-3">
-          <h6 className="m-0 font-weight-bold text-primary">DataTables</h6>
+          <h6 className="m-0 font-weight-bold text-primary">Quản lí nạp tiền</h6>
         </div>
         <div className="card-body">
           {isLoading ? (

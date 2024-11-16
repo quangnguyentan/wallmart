@@ -185,7 +185,7 @@ const DepositUser = async (req, res) => {
     let data;
     let createDeposit;
     const { id } = req.params;
-    const { deposit } = req.body;
+    const { deposit, reason } = req.body;
     if (!deposit) throw new Error("Vui lòng nhập số tiền");
     const user = await users.findById(id);
     if (user) {
@@ -194,6 +194,7 @@ const DepositUser = async (req, res) => {
       });
       createDeposit = await Deposit.create({
         money: Number(deposit),
+        reason: reason,
         user: id,
         createdAt: Date.now(),
       });

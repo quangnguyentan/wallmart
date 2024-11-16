@@ -5,6 +5,7 @@ import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import { Textarea } from './ui/textarea';
 
 function UserDepositCreate() {
   const [isLoading, setLoading] = useState(false);

@@ -62,6 +62,8 @@ import Botlist from "./components/Botlist";
 import BotCreate from "./components/BotCreate";
 import BotView from "./components/BotView";
 import BotEdit from "./components/BotEdit";
+import BookProductFromStore from "./pages/BookProductFromStore";
+import Order_Cart from "./pages/Order_cart";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -173,6 +175,9 @@ function App() {
                 <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
                 <Route path={path.WITHDRAW_ADMIN} element={<WithDrawByAdmin />} />
                 <Route path={path.TRANSFORM_HISTORY} element={<TransformHistory />} />
+                <Route path={path.BOOK_PRODUCT} element={<BookProductFromStore />} />
+                <Route path={path.ORDER_CART} element={<Order_Cart />} />
+
               </Route> : 
            <>
             { isMobile ?  <Route path={path.PUBLIC} element={<PublicResponsive />}>

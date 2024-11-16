@@ -4,12 +4,14 @@ import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { apiGetUserById, apiUpdatedDesposit } from '@/services/userService';
+import { Textarea } from './ui/textarea';
 
 function UserDepositEdit() {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [addNameColorField, setAddNameColorField] = useState([])
   const [addNameSizeField, setAddNameSizeField] = useState([])
+  const [reson, setReson] = useState(null)
 
   const { id} = useParams()
   const {
@@ -39,7 +41,7 @@ function UserDepositEdit() {
     try {
       
       setLoading(true);
-      const res = await apiUpdatedDesposit(id, { deposit : data?.title}); 
+      const res = await apiUpdatedDesposit(id, { deposit : data?.title, reason : reson}); 
       console.log(res)
       setLoading(false);
       if (res?.success) {
@@ -64,8 +66,8 @@ function UserDepositEdit() {
         <span>Số tiền còn lại: {productList?.deposit}</span>
 
       </div>
-      <div className='flex items-center justify-center'>
-      <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+      <div className='flex flex-col items-center justify-center'>
+      <div  className='flex flex-col gap-4 justify-between px-8 w-full'>
       <label htmlFor="photo " className='mx-auto text-xl font-semibold'>Nạp tiền</label>
       <input type="number" className='w-[50%] mx-auto py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên số tiền muốn nạp' {...register("title", {
                 required: "Trường này là bắt buộc",
@@ -76,7 +78,14 @@ function UserDepositEdit() {
           )}
      </div>
       </div>
-     
+      <div className="flex gap-2 px-8 w-full">
+                              
+                              <Textarea
+                                className="w-[50%] mx-auto shadow-md placeholder:text-base"
+                                placeholder="Nhập nội dung nạp tiền"
+                                onChange={(e) => setReson(e.target.value)}
+                              />
+        </div>
       </div>
       
       <div className="px-8 w-[30%] mx-auto py-10">
