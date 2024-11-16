@@ -74,7 +74,7 @@ const HomePage = () => {
               navigate("/register-store")
             }
             if(store && store?.active === "access") {
-              navigate("/dashboard")
+              navigate("/product-list")
             }
             if(!store) {
               navigate("/register-choose")

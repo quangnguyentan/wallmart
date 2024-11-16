@@ -1,24 +1,106 @@
 import { faBell, faCircleUser, faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+
 import "./sb-admin-2.min.css";
 
 import { Link } from 'react-router-dom'
+import Sidebar from './Sidebar';
+import { apiGetProduct } from '@/services/productService';
+import { apiGetMyStore } from '@/services/storeService';
+import { useSelector } from 'react-redux';
+import { pathImage } from '@/lib/helper';
 
 function Topbar() {
+    const [open, setOpen] = React.useState(false);
+    const [productList, setproductList] = useState([])
+    const [isLoading, setLoading] = useState(true);
+    const [value, setValue] = useState([])
+    const { currentData } = useSelector((state) => state.user); 
+    useEffect(() => {
+        fetchApi();
+    }, [window.location.pathname]);
+  
+    const toggleDrawer = (newOpen) => () => {
+      setOpen(newOpen);
+    };
+    const onChangeValue = (e) => {
+        setValue(e.target.value)
+    }
+    const fetchApi = async() => {
+        try {
+            if(window.location.pathname === "/product-list") {
+                if(currentData?.role === "admin"){
+                    const products = await apiGetProduct()
+                    setproductList(products);
+                    setLoading(false);
+                   }else{
+                    const products = await apiGetMyStore()
+                    setproductList(products[0]);
+                    setLoading(false);
+                   }
+            }
+           
+           } catch (error) {
+             console.log(error);
+           }
+      
+    }
+    const DrawerList = (
+        <Box sx={{ width: 250, height : "100%", overflow : "hidden" }} role="presentation" onClick={toggleDrawer(false)}>
+            <Sidebar/>
+          <Divider />
+          <List>
+           
+          </List>
+        </Box>
+      );
+    
     return (
         <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-            {/* <!-- Sidebar Toggle (Topbar) --> */}
             <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
-                <FontAwesomeIcon icon={faBars} />
+                <FontAwesomeIcon icon={faBars} onClick={toggleDrawer(true)}/>
+                <Drawer open={open} onClose={toggleDrawer(false)}>
+                        {DrawerList}
+                </Drawer>
             </button>
-
-            {/* <!-- Topbar Search --> */}
             <form
-                className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
+                {/* <div className='absolute top-10 overflow-y-scroll w-full h-[750px] scrollbar-hide bg-white shadow-sm z-50'>
+                    {productList?.order?.map((product) => (
+                         <div className="w-full h-fit scrollbar-hide overflow-y-scroll text-gray-500 flex flex-col gap-2" key={product?._id}>
+                     
+                         <div className="flex items-center w-full gap-12 bg-white px-8  rounded-xl justify-center">
+                           <div className="w-[80px] h-[80px] max-sm:w-[120px] max-sm:h-[150px]">
+                           <img src={`${pathImage}/${product?.product?.photos && product?.product?.photos[0]}`} alt="" className="w-full h-full mix-blend-darken" />
+                           </div>
+                           <div className="flex flex-col w-[50%] py-4 px-2 max-sm:px-0 gap-2 bg-white rounded-xl">
+                               <div className="flex items-center gap-4 ">
+                                   <span className="text-xl max-sm:text-xs text-[#fe5000]">${product?.product?.price}</span>
+                                  <div className="">
+                                   <span className="max-sm:text-xs">Giá cả </span>
+                                   <span className="line-through max-sm:text-xs">${product?.product?.priceOld}</span>
+                                  </div>
+                               </div>
+                               <span className="max-sm:text-xs line-clamp-4">
+                                 {product?.product?.title}
+                               </span>
+                            
+                           </div>
+                           
+                         </div>
+                        
+                       </div>
+                    ))}
+                </div> */}
                 <div className="input-group">
-                    <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..."
+                    <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..." 
                         aria-label="Search" aria-describedby="basic-addon2" />
                     <div className="input-group-append">
                         <button className="btn btn-primary" type="button">

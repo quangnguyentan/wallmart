@@ -29,16 +29,16 @@
     return (
       <div className="h-screen">
         <div className="relative w-full mx-auto">
-          <div className="sticky w-full top-0 ">
+          {/* <div className="sticky w-full top-0 ">
             <div className="w-full h-[50px] bg-profileColor">
               <span className=" text-xl text-black absolute top-2 left-[40%]">
                 Lịch sử giao dịch
               </span>
             </div>
-          </div>
+          </div> */}
           <div>
             {withDraw?.length > 0 ? (
-              <div className="bg-gray-200 h-fit">
+              <div className=" h-fit">
                 <div className="w-full px-2 py-4 ">
                   {withDraw
                     ?.filter(

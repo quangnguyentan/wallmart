@@ -10,25 +10,26 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { apiAddToCartByStore, apiGetMyStore, apiOrderPaymentByStore } from '@/services/storeService';
+import { apiAddToCartByStore, apiGetMyStore, apiGetstoreById, apiOrderPaymentByStore } from '@/services/storeService';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { pathImage } from '@/lib/helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiGetProduct } from '@/services/productService';
 import toast from 'react-hot-toast';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import { useMediaQuery } from '@mui/material';
 export default function DrawRight({ products }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [storeList, setstoreList] = useState([])
   const [productList, setproductList] = useState([])
   const { currentData } = useSelector((state) => state.user); 
   const dispatch = useDispatch()
-
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const { id } = useParams()
   
-
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -55,11 +56,20 @@ export default function DrawRight({ products }) {
  
   
   
-  
+  console.log(id)
   let fetchStore = async () => {
     try {
       const store = await apiGetMyStore()
       setstoreList(store[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  let fetchStoreById = async (id) => {
+    try {
+      const store = await apiGetstoreById(id)
+      console.log(store)
+      // setstoreList(store[0]);
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +79,11 @@ export default function DrawRight({ products }) {
       fetchStore();
     }
   }, [products]);
+  useEffect(() => {
+    if(id) {
+      fetchStoreById(id);
+    }
+  }, [id]);
   
   const onCreateAddressOrder = async () => {
     const res  = await apiOrderPaymentByStore({productsInCart : storeList?.cart})
@@ -87,7 +102,7 @@ export default function DrawRight({ products }) {
  
   const DrawerList = (
    <>
-    {products && storeList &&  <Box sx={{ width: 750 }} role="presentation" onClick={toggleDrawer(false)}>
+    {products && storeList &&  <Box className="w-[750px] max-sm:w-[250px]"  role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {storeList?.cart?.length > 0 ? storeList && storeList?.cart?.map((product) => (
           product?.status === "not_paid" && (
@@ -96,14 +111,14 @@ export default function DrawRight({ products }) {
               <div className='flex flex-col gap-2 px-4'>
                 <div className="px-2 bg-white flex flex-col gap-2 py-2">
                   <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-                    <span>Số thứ tự:</span>
-                    <span>{product?._id}</span>
+                    <span className='max-sm:text-xs line-clamp-1'>Mã đơn hàng:</span>
+                    <span className='max-sm:text-xs line-clamp-1'>{product?._id}</span>
                   </div>
-                  <h3 className="text-gray-600 text-lg max-sm:text-xs">{product?.store?.inforByStore?.nameStore}</h3>
+                  <h3 className="text-gray-600  text-lg max-sm:text-xs">{product?.store?.inforByStore?.nameStore}</h3>
                   <div className="flex justify-between gap-3 max-sm:text-xs">
                     <div className="flex gap-8">
                       <img
-                        className="w-32 h-32 max-sm:w-20 max-sm:h-20 mix-blend-darken rounded-xl border-none"
+                        className="w-32 h-32 max-sm:w-14 max-sm:h-14 mix-blend-darken rounded-xl border-none"
                         src={`${pathImage}/${product?.product?.photos[0]}`}
                         alt=""
                       />
@@ -111,27 +126,27 @@ export default function DrawRight({ products }) {
                         <span className="text-lg font-medium text-gray-800 max-sm:text-xs line-clamp-2">{product?.product?.title}</span>
                         <div className="flex items-center gap-2 border w-fit rounded-[4px]">
                           <div
-                            className="px-3 w-10 h-10 flex items-center justify-center max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer"
+                            className="px-3 w-10 h-10 max-sm:w-6 max-sm:h-6 flex items-center justify-center max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-l-[4px] bg-gray-100 cursor-pointer"
                             onClick={(e) => {
                               e.preventDefault()
                               addToCart(product, "decrement");
                               e.stopPropagation();
                             }}
                           >
-                            <RemoveOutlinedIcon sx={{ fontSize: "15px" }} />
+                            <RemoveOutlinedIcon sx={{ fontSize: `${isMobile ? "10px" : "15px"}` }} />
                           </div>
-                          <div className="px-2 max-sm:px-0">
+                          <div className="px-2 max-sm:px-0 max-sm:text-[9px]">
                             <span>{product?.quantity}</span>
                           </div>
                           <div
-                            className="px-3 w-10 h-10 flex items-center justify-center max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer"
+                            className="px-3 w-10 h-10 max-sm:w-6 max-sm:h-6 flex items-center justify-center max-sm:px-0.5 max-sm:py-0.5 py-1 rounded-r-[4px] bg-gray-100 cursor-pointer"
                             onClick={(e) => {
                               e.preventDefault()
                               addToCart(product, "increment");
                               e.stopPropagation();
                             }}
                           >
-                            <AddOutlinedIcon sx={{ fontSize: "15px" }} />
+                            <AddOutlinedIcon sx={{ fontSize: `${isMobile ? "10px" : "15px"}` }} />
                           </div>
                         </div>
                       </div>
@@ -151,7 +166,7 @@ export default function DrawRight({ products }) {
          
        
           )
-        )) : <div className='w-full h-screen flex items-center justify-center text-2xl font-semibold'>
+        )) : <div className='w-full h-screen flex items-center justify-center text-2xl font-semibold max-sm:text-sm'>
             Bạn chưa nhập đơn nào!
           </div>}
        
@@ -161,14 +176,15 @@ export default function DrawRight({ products }) {
   // Kiểm tra xem có bất kỳ sản phẩm nào có trạng thái "paid"
       storeList?.cart?.some((product) => product?.status === "not_paid") && (
     <div className="text-lg font-semibold px-4 py-4 flex items-center justify-between">
-     <div>
-      <span>Ví của bạn: </span>
-      <span className="max-sm:text-sm text-red-500 font-semibold">{currentData?.deposit}</span>
+     <div className='flex items-center justify-center flex-col gap-1'>
+      <span className='max-sm:text-xs'>Số tiền của bạn: </span>
+      <span className="max-sm:text-xs text-red-500 font-semibold">{currentData?.deposit}</span>
      </div>
 
-      <div className="text-lg font-semibold px-4 py-4">
-        <span>Tổng tiền: </span>
-        <span className="max-sm:text-sm text-red-500 font-semibold">
+      <div className="text-lg font-semibold px-4 py-4 max-sm:px-2 max-sm:py-2 flex flex-col gap-1">
+       <div className='flex items-center justify-center gap-2'>
+        <span className='max-sm:text-xs'>Tổng tiền: </span>
+        <span className="max-sm:text-xs text-red-500 font-semibold ">
           {/* Tính tổng tiền của các sản phẩm có trạng thái "paid" */}
           ${storeList?.cart?.reduce((total, currentValue) => {
             if (currentValue?.status === "not_paid") {
@@ -177,8 +193,17 @@ export default function DrawRight({ products }) {
             return total;
           }, 0)}
         </span>
+       </div>
+        {isMobile ? <div className="px-2 py-4 max-sm:py-0 max-sm:px-3 flex items-center justify-center  bg-[#362a89] rounded-xl ">
+                        <button className="max-sm:text-[8px] text-white"  onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              onCreateAddressOrder();  
+                            }}>
+                          Thanh toán
+                        </button>
 
-        <div className="px-2 py-4 max-sm:py-2">
+        </div> :  <div className="px-2 py-4 max-sm:py-2">
           <button
             className="button"
             onClick={(e) => {
@@ -198,7 +223,9 @@ export default function DrawRight({ products }) {
               </svg>
             </div>
           </button>
-        </div>
+        </div>}
+       
+        
       </div>
     </div>
   )
@@ -210,7 +237,7 @@ export default function DrawRight({ products }) {
   return (
     <div>
       <Button onClick={toggleDrawer(true)}>
-      <div className="shopping-bag">
+      <div className="shopping-bag max-sm:w-7 max-sm:h-7">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black">
           <path
             fillRule="evenodd"

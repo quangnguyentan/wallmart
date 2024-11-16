@@ -154,7 +154,7 @@ const updatedUser = async (req, res) => {
       creditCartOfBank,
     } = req.body;
     const findUser = await users.findById(id);
-    console.log(fullName);
+    console.log(deposit);
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -163,9 +163,9 @@ const updatedUser = async (req, res) => {
         nameOfBank,
         nameOfUser,
         creditCartOfBank,
-        deposit: deposit && findUser?.deposit + Number(deposit),
+        deposit: deposit && Number(deposit),
         role,
-        avatar: req?.files && req.files.images[0].filename,
+        avatar: req?.file && req.files.images[0].filename,
         gender,
       },
       { new: true }
@@ -361,7 +361,7 @@ const getAllWithDraw = async (req, res) => {
   try {
     const withDraw = await WithDraw.find().populate({
       path: "user",
-      select: "fullName deposit",
+      select: "fullName deposit nameOfBank nameOfUser creditCartOfBank",
     });
     return res.status(200).json({
       success: withDraw ? true : false,

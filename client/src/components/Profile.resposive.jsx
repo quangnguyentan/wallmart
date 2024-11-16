@@ -75,11 +75,11 @@ const Profile = () => {
         
           {currentData?.avatar ? <img className=" rounded-full w-20 h-20 max-sm:w-10 max-sm:h-10" src={`${pathImage}/${currentData?.avatar}`} alt="" /> :  <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />}
       <Link to="/login" >
-          {currentData && currentData?.role === "user" || currentData?.role === "agent" ? 
+          {currentData && currentData?.role === "user" || currentData?.role === "agent" || currentData && currentData?.role === "bot" || currentData?.role === "botAgent" ? 
             <div className="flex flex-col gap-2">
               <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>
               <div className={`${currentData?.role === "user" ? "w-40 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" : "w-48 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer"}`} >
-                {currentData?.role === "user" ? <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span> : <span className="text-[#f90] max-sm:text-xs">Người dùng bán hàng</span>}
+                {currentData?.role === "user" || currentData?.role === "bot" ? <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span> : <span className="text-[#f90] max-sm:text-xs">Người dùng bán hàng</span>}
                 
             </div>
             </div>
@@ -187,7 +187,7 @@ const Profile = () => {
            if(isLoggedIn && token && store ) {
             dispatch(getCurrent())
             if(store && store?.active === "access") {
-              navigate("/dashboard")
+              navigate("/product-list")
             }
             if(store && store?.active === "wait") {
               navigate("/register-store")

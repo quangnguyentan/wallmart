@@ -34,6 +34,7 @@
     useEffect(() => {
       getWithDrawalHistory();
     }, []);
+    console.log(withDraw)
     return (
       <div className="h-screen">
         <div className="relative w-full mx-auto">
@@ -45,8 +46,8 @@
             </div>
           </div>
           <div>
-            {withDraw.length > 0 ? (
-              <div className="bg-gray-200 h-fit">
+            {withDraw?.length > 0 ? (
+              <div className="h-fit">
                 <div className="w-full px-2 py-4 ">
                   {withDraw
                     ?.filter((fill) => fill?.status?.includes("Đợi duyệt"))
@@ -66,12 +67,36 @@
                               )}
                             </span>
                           </div>
-                          <div className="flex flex-col gap-2">
+                          {/* <div className="flex flex-col gap-2">
                             <span className="text-lg font-semibold text-gray-500">
                               Tên người muốn rút tiền
                             </span>
                             <span className="text-lg font-bold">
                               {el?.user?.fullName}
+                            </span>
+                          </div> */}
+                          <div className="flex flex-col gap-2">
+                            <span className="text-lg font-semibold text-gray-500">
+                              Tên người muốn rút tiền
+                            </span>
+                            <span className="text-lg font-bold">
+                              {el?.user?.nameOfBank}
+                            </span>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <span className="text-lg font-semibold text-gray-500">
+                              Tên tài khoản
+                            </span>
+                            <span className="text-lg font-bold">
+                              {el?.user?.nameOfUser}
+                            </span>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <span className="text-lg font-semibold text-gray-500">
+                              Số tài khoản
+                            </span>
+                            <span className="text-lg font-bold">
+                              {el?.user?.creditCartOfBank}
                             </span>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -160,7 +185,6 @@
               </div>
             )}
           </div>
-          ;
         </div>
       </div>
     );

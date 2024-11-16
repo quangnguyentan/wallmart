@@ -157,20 +157,20 @@ const Detail_product_agent = () => {
           />
         </div>
       </div> */}
-      <div className="flex w-full gap-12 bg-white px-8 py-12 rounded-xl  justify-center">
-        <div className="w-[40%} h-[320px]">
+      <div className="flex items-center w-full gap-12 bg-white px-8 py-12 rounded-xl  justify-center">
+        <div className="w-[40%} h-[320px] max-sm:w-[120px] max-sm:h-[150px]">
         <img src={`${pathImage}/${products?.photos && products?.photos[0]}`} alt="" className="w-full h-full mix-blend-darken" />
         {/* <SlickSlider detail products={products?.photos} /> */}
         </div>
-        <div className="flex flex-col w-[50%] py-4 px-2 gap-2 bg-white rounded-xl">
+        <div className="flex flex-col w-[50%] py-4 px-2 max-sm:px-0 gap-2 bg-white rounded-xl">
             <div className="flex items-center gap-4 ">
-                <span className="text-3xl max-sm:text-lg text-[#fe5000]">${products?.price}</span>
+                <span className="text-3xl max-sm:text-sm text-[#fe5000]">${products?.price}</span>
                <div className="">
                 <span className="max-sm:text-xs">Giá cả </span>
                 <span className="line-through max-sm:text-xs">${products?.priceOld}</span>
                </div>
             </div>
-            <span className="max-sm:text-xs">
+            <span className="max-sm:text-xs line-clamp-4">
               {products?.title}
             </span>
          
