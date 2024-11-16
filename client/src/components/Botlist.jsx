@@ -8,7 +8,7 @@ import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { apiDeleteUserById, apiGetAllUser } from "@/services/userService";
 
-function Userlist() {
+function Botlist() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
   const { currentData } = useSelector((state) => state.user); 
@@ -83,24 +83,31 @@ function Userlist() {
                 
                 <tbody>
                   {productList?.map((product) => {
-                     if((product?.role !== "admin" ) )  {
+                     if(product?.role === "bot" || product?.role === "botAgent") {
                     return (
                       <tr key={product?.id}>
                         <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
-                        <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
+                        <td>{product?.role} {`(${product?.role === "botAgent" ? "Người bán hàng - bot" : product?.role === "bot" ? "Người dùng - bot" : "Quản trị viên"})`}</td>
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         
                         <th className="flex flex-col gap-2">
+                        {/* <Link
+                            to={`/buy-product/${product?._id}`}
+                            className="btn btn-primary btn-sm mr-1"
+                          >
+                            Mua hàng
+                          </Link> */}
                           <Link
-                            to={`/user-view/${product?._id}/${currentData?._id}`}
+                            to={`/bot-view/${product?._id}/${product?.store?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             Xem chi tiết
                           </Link>
+                         
                           <Link
-                            to={`/user-edit/${product?._id}`}
+                            to={`/bot-edit/${product?._id}`}
                             className="btn btn-info btn-sm mr-1"
                           >
                             Chỉnh sửa
@@ -126,4 +133,4 @@ function Userlist() {
   );
 }
 
-export default Userlist;
+export default Botlist;

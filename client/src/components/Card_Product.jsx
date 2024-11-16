@@ -11,11 +11,13 @@ import DrawBottom from "./DrawBottom";
 import { useState } from "react";
 import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
+import { useMediaQuery } from "@mui/material";
 
 const Card_Product = ({ profile, hidden, products,agent, stores }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
   const [loadingData, setLoadingData] = useState(false);
   const [productList, setproductList] = useState([])
+  const isMobile = useMediaQuery("(max-width:600px)");
   
   useEffect(() => {
     getUsers()
@@ -75,7 +77,6 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
       e.preventDefault();
     }));
   }, [])
-  console.log(stores)
   return (
     <>
       {agent ? <div className="flex flex-col gap-2 bg-[#f5f5f5] pb-12">
@@ -94,7 +95,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
      <div className="flex items-center justify-end px-4">
       <DrawRight products={productList}/>
      </div>
-     <div className="grid grid-cols-5 gap-2 px-4">
+     <div className="grid grid-cols-5 gap-2 px-4 max-sm:grid max-sm:grid-cols-2">
         {products &&
           products?.map((product) => (
             product && product?.store && (
@@ -103,29 +104,36 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
                   to={`/detail-product-agent/${product?._id}`}
                   onClick={(e) => handleProductClick(e, product)} // Ngừng click nếu Drawer mở
                 >
-                  <span className="absolute top-0 right-0 px-2 py-2 text-sm font-semibold text-white bg-[#6435bb]">Hàng tồn kho: {product?.inventory}</span>
+                  <span className="absolute top-0 right-0 px-2 py-2 text-sm font-semibold text-white bg-[#6435bb] max-sm:text-[10px]">Hàng tồn kho: {product?.inventory}</span>
                   <img
                     src={`${pathImage}/${product?.photos[0]}`}
                     alt="product_test"
-                    className="h-[256px] max-sm:h-[180px] w-full object-cover"
+                    className="h-[256px] max-sm:h-[120px] w-full object-cover"
                   />
                   <div className="flex flex-col gap-2 px-2">
                     <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
                       {product?.title}
                     </span>
-                    <div className="flex items-center justify-between px-2 py-2">
-                      <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base max-sm:font-semibold">
+                    <div className="flex items-center  justify-between px-0 py-2">
+                      <span className="text-[#ed5435] font-semibold text-2xl max-sm:font-semibold max-sm:text-xs">
                         ${product?.price}
                       </span>
-                      <div className="px-2 py-4 max-sm:py-2">
+                     {isMobile ?  <div className="px-2 py-4 flex items-center justify-center max-sm:py-2 max-sm:px-1 max-sm bg-[#362a89] rounded-xl o">
+                        <button className="px-2 flex items-center justify-center gap-1"  onClick={(e) => {
+                              e.preventDefault()
+                              fetchAddToCart(product)
+                            
+                            }}>
+                            <span className="max-sm:text-[10px] text-white">Nhập hàng</span> 
+                        </button>
+
+                      </div> :  <div className="px-2 py-4 max-sm:py-2 max-sm:px-0 max-sm">
                         <button className="button"  onClick={(e) => {
                               e.preventDefault()
                               fetchAddToCart(product)
-                              // setTimeout(() => {
-                              //   window.location.reload()
-                              // }, 1000)
+                            
                             }}>
-                            <span>Nhập hàng</span>
+                            <span className="max-sm:text-xs">Nhập hàng</span>
                             <div className="cart">
                                 <svg viewBox="0 0 36 26">
                                     <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
@@ -134,7 +142,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
                             </div>
                         </button>
 
-                      </div>
+                      </div>}
                       
                     </div>
                   </div>

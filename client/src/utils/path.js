@@ -22,7 +22,7 @@ const path = {
   WITHDRAW_WALLET: "withdraw-wallet",
   UPDATE_BANK: "update-bank",
   UPDATE_ADDRESS: "update-address/:id",
-  BUY_PRODUCT: "buy-product",
+  BUY_PRODUCT: "buy-product/:id",
   DETAIL_PRODUCT_AGENT: "detail-product-agent/:id",
   WITHDRAW_ADMIN: "with-draw",
   TRANSFORM_HISTORY: "transform-history",

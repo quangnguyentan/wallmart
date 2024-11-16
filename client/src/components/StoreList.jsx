@@ -1,10 +1,7 @@
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
-import { apiGetProduct } from "@/services/productService";
 import { apiGetStore } from "@/services/storeService";
 
 function StoreList() {
@@ -46,7 +43,7 @@ function StoreList() {
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800">User-List</h1>
+        {/* <h1 className="h3 mb-0 text-gray-800">User-List</h1> */}
         {/* <Link
           to="/create-store"
           className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
@@ -58,7 +55,7 @@ function StoreList() {
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
         <div className="card-header py-3">
-          <h6 className="m-0 font-weight-bold text-primary">DataTables</h6>
+          <h6 className="m-0 font-weight-bold text-primary">Người dùng</h6>
         </div>
         <div className="card-body">
           {isLoading ? (

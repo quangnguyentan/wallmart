@@ -7,7 +7,7 @@ function Portal() {
   return (
     <>
       <div id="wrapper" className="scrollbar-hide h-screen">
-        <div className="overflow-y-scroll h-screen scrollbar-hide">
+        <div className="overflow-y-scroll h-screen scrollbar-hide max-sm:hidden">
           <Sidebar />
         </div>
         <div id="content-wrapper" className="d-flex flex-column">

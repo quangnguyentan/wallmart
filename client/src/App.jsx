@@ -58,11 +58,15 @@ import DepositHistory from "./components/DepositHistory";
 import UpdateBank from "./pages/UpdateBank";
 import WithDrawByAdmin from "./pages/WithDrawByAdmin";
 import TransformHistory from "./pages/TransformHistory";
+import Botlist from "./components/Botlist";
+import BotCreate from "./components/BotCreate";
+import BotView from "./components/BotView";
+import BotEdit from "./components/BotEdit";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
   const { isLoggedIn, token } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentData } = useSelector((state) => state.user);
    useEffect(() => {
@@ -72,6 +76,7 @@ function App() {
         dispatch(getCurrent());
         setLoading(false);
       }, 500);
+     
     } 
   }, [isLoggedIn, token, dispatch]);
   function clearIndexedDB() {
@@ -137,11 +142,15 @@ function App() {
 
       <Routes>
       {isLoggedIn && token && currentData && currentData?.role === "admin" ? <Route path='/' element={<Portal />}>
-                <Route path='/' element={<Dashboard />} />
+               {/* {!isMobile &&  <Route  path='/' element={<Dashboard />} />} */}
                 <Route path='user-list' element={<Userlist />} />
                 <Route path='create-user' element={<UserCreate />} />
                 <Route path='user-view/:id/:userId' element={<UserView />} />
                 <Route path='user-edit/:id' element={<UserEdit />} />
+                <Route path='bot-list' element={<Botlist />} />
+                <Route path='create-bot' element={<BotCreate />} />
+                <Route path='bot-view/:id/:userId' element={<BotView />} />
+                <Route path='bot-edit/:id' element={<BotEdit />} />
                 <Route path='product-list' element={<ProductList />} />
                 <Route path='create-product/:userId' element={<ProductCreate />} />
                 <Route path='product-view/:id/:userId' element={<ProductView />} />
@@ -164,8 +173,6 @@ function App() {
                 <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
                 <Route path={path.WITHDRAW_ADMIN} element={<WithDrawByAdmin />} />
                 <Route path={path.TRANSFORM_HISTORY} element={<TransformHistory />} />
-
-                
               </Route> : 
            <>
             { isMobile ?  <Route path={path.PUBLIC} element={<PublicResponsive />}>
@@ -218,7 +225,6 @@ function App() {
          
         </Route>}
         {isLoggedIn && token && currentData && currentData?.role === "agent" && <Route path='/'   element={<Portal />}>
-            <Route path='/dashboard'  element={<Dashboard />} />
                 <Route index path='user-list' element={<Userlist />} />
                 <Route index path='create-user' element={<UserCreate />} />
                 <Route index path='user-view/:id/:userId' element={<UserView />} />

@@ -50,14 +50,14 @@ const WithDrawalHistory = () => {
                         Khoảng thời gian
                       </span>
                       <span className="text-lg max-sm:text-xs font-bold">
-                        {moment(el?.craetedAt).format("YYYY-MM-DD HH:mm:ss")}
+                        {moment(el?.updatedAt).format("YYYY-MM-DD HH:mm:ss")}
                       </span>
                     </div>
                     <div className="flex flex-col gap-2">
                       <span className="text-lg max-sm:text-xs font-semibold text-gray-500">
                         Số tiền
                       </span>
-                      <span className="text-lg max-sm:text-xs font-bold">{el?.withDraw}</span>
+                      <span className="text-lg max-sm:text-xs font-bold">{el?.money}</span>
                     </div>
                     <div className="flex flex-col gap-2">
                       <span className="text-lg max-sm:text-xs font-semibold text-gray-500">

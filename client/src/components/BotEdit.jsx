@@ -27,7 +27,7 @@ const list_role = [
     name : "botAgent"
   },
 ]
-function UserEdit() {
+function BotEdit() {
   const [values, setValues] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [postMultipleFile, setPostMultipleFile] = useState([])
@@ -165,4 +165,4 @@ function UserEdit() {
   );
 }
 
-export default UserEdit;
+export default BotEdit;
