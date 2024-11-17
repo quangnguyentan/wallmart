@@ -74,7 +74,6 @@ export default function DrawRightAdmin({ productItem, userId }) {
     fetchGetByUserId(userId)
   },[])
   const onChangeQuantity = (product, type) => {
-    console.log(type)
     const updatedProducts = products.map((item) => {
       if (item._id === product._id) {
         if (item.quantityInit >= item.quantity) {

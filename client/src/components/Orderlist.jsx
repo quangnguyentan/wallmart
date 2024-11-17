@@ -29,7 +29,8 @@ function Orderlist() {
     try {
       if(currentData?.role === "agent"){
         const user = await apiGetOrderByShop()
-        setproductList(user);
+        const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
+        setproductList(filterOrderUser);
         setLoading(false);
       }else{
         const store = await apiGetStore()
@@ -56,6 +57,7 @@ function Orderlist() {
       console.log(error);
     }
   };
+  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -86,6 +88,7 @@ function Orderlist() {
               >
                 <thead>
                   <tr>
+                  <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Số thứ tự</th>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên đơn hàng</th>
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Giá tiền </th>
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Số lượng</th>
@@ -97,13 +100,14 @@ function Orderlist() {
                 </thead>
                 
                 <tbody>
-                  {currentData?.role === "agent" && productList?.map((product) => {
+                  {currentData?.role === "agent" && productList?.map((product, index) => {
                     if(product?.user?.role === "user"){
                       return (
                         <tr key={product?._id}>
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{index + 1}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.title}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price}$</td>
-                         
+
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.quantity}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price * product?.quantity}$</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product && product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
@@ -114,7 +118,7 @@ function Orderlist() {
                               to={`/order-view/${product?._id}`}
                               className="btn btn-primary btn-sm mr-1"
                             >
-                              <span className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">  Xem chi tiết</span>
+                              <span className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Xem chi tiết</span>
                             
                             </Link>
                             <Link
@@ -137,11 +141,12 @@ function Orderlist() {
                     }
                   })}
                  {currentData?.role === "admin" &&
-                    productList?.flatMap((product) =>
-                      product?.order?.map((item) => {
+                    productList?.map((product ) =>
+                      product?.order?.map((item, index) => {
                         return (
                           <tr key={item?._id}>
                             {/* Tên sản phẩm */}
+                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{index + 1}</td>
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               {item?.product?.title}
                             </td>
@@ -165,7 +170,8 @@ function Orderlist() {
                             <td>
                               <div className="flex flex-col gap-2">
                                 <Link
-                                  to={`/order-view/${item?._id}`}
+                                  to={`/order-view/${product?._id}`}
+                                  state={product}
                                   className="btn btn-primary btn-sm"
                                 >
                                   Xem chi tiết

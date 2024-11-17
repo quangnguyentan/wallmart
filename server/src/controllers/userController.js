@@ -152,9 +152,9 @@ const updatedUser = async (req, res) => {
       nameOfBank,
       nameOfUser,
       creditCartOfBank,
+      password,
     } = req.body;
-    const findUser = await users.findById(id);
-    console.log(deposit);
+
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -167,9 +167,11 @@ const updatedUser = async (req, res) => {
         role,
         avatar: req?.file && req.files.images[0].filename,
         gender,
+        password: hashPassword(password),
       },
       { new: true }
     );
+
     return res.status(200).json({
       success: user ? true : false,
       user,

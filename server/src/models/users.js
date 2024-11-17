@@ -44,7 +44,6 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    createdAt: Array,
     deposit: {
       type: Number,
       default: 0,

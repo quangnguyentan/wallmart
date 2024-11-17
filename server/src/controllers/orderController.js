@@ -39,8 +39,29 @@ const updateOrder = async (req, res, next) => {
   const { id } = req.params;
   const { stress, phone, province, houseNumber, city, revicerName, status } =
     req.body;
-  console.log(status);
+
   try {
+    const findOrder = await Order.findById(id);
+    console.log(findOrder);
+
+    if (findOrder) {
+      const findProduct = await Product.findById(findOrder.product._id);
+      if (findProduct) {
+        const findUser = users.findById(findOrder.user._id);
+        if (findUser && status === "Bị hủy") {
+          const updateUser = users.findByIdAndUpdate(
+            findUser._id,
+            {
+              deposit:
+                findUser.deposit +
+                Number(findProduct?.price) * Number(findOrder.quantity),
+            },
+            { new: true }
+          );
+          console.log(updateUser);
+        }
+      }
+    }
     const order = await Order.findByIdAndUpdate(
       id,
       {
@@ -307,10 +328,29 @@ const GetMyOrders = async (req, res, next) => {
 };
 const deleteOrder = async (req, res, next) => {
   const { id } = req.params;
+  console.log();
   try {
-    const orders = await Order.findByIdAndDelete(id);
-    console.log(orders);
-    res.json(orders);
+    const store = await Store.findOne({
+      "order._id": id,
+    });
+    if (!store) {
+      console.log("Order ID không tồn tại trong Store.");
+      return res.status(404).json({
+        msg: "Không tìm thấy ID",
+      });
+    }
+    // const updatedStore = await Store.findByIdAndUpdate(
+    //   { $inc: id }, // The store's ID
+    //   { $pull: { order: { _id: id } } }, // Pull the order with the specified _id
+    //   { new: true } // Return the updated document
+    // );
+    // if (updatedStore) {
+    //   console.log("Updated store:", updatedStore);
+    // } else {
+    //   console.log("Store not found.");
+    // }
+    // console.log(updatedStore);
+    // res.json(updatedStore);
   } catch (e) {
     next(e);
   }

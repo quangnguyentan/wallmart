@@ -28,7 +28,7 @@ function Sidebar() {
         >
 
             {/* <!-- Sidebar - Brand --> */}
-            <Link to="/product-list" className={`${isMobile ? "sidebar-brand d-flex align-items-center px-3 py-2" : "sidebar-brand d-flex align-items-center "} `}>
+            <Link to={currentData?.role === "admin" ? "/product-list" : "/"} className={`${isMobile ? "sidebar-brand d-flex align-items-center px-3 py-2" : "sidebar-brand d-flex align-items-center "} `}>
                 <div className="sidebar-brand-icon rotate-n-15">
                     <FontAwesomeIcon icon={faFaceLaughWink} size={"2x"} />
                 </div>

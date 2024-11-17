@@ -1,26 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import "./sb-admin-2.min.css";
 import { apiGetProductById } from '@/services/productService';
 import { apiGetUserById } from '@/services/userService';
 import { pathImage } from '@/lib/helper';
 import { apiGetOrderById, apiGetOrderByIdOrder } from '@/services/orderServer';
+import { apiGetstoreById } from '@/services/storeService';
 
 function OrderView() {
     const { id } = useParams();
     const [productList, setproductList] = useState([])
     const [storeList, setStoreList] = useState([])
     const [isLoading, setLoading] = useState(true);
+    const location = useLocation(); // Lấy thông tin về state từ URL
+    // const productList = location.state;
 
     useEffect(() => {
         getUsers(id);
     }, []);
-    console.log(id)
 
     let getUsers = async (id) => {
         try {
-            const products = await apiGetOrderByIdOrder(id)
+            const products = await apiGetstoreById(id)
             setproductList(products);
             setLoading(false);
         } catch (error) {
@@ -32,10 +34,10 @@ function OrderView() {
 
     return (
         <>
-            <div>UserView - {id}</div>
+           { 
             <div className="card shadow mb-4">
                 <div className="card-header py-3">
-                    <h6 className="m-0 font-weight-bold text-primary">UserView</h6>
+                    <h6 className="m-0 font-weight-bold text-primary">Xem chi tiết đơn h</h6>
                 </div>
                 <div className="card-body">
                     {
@@ -45,22 +47,25 @@ function OrderView() {
                                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                                     <thead>
                                         <tr>
-                                        <th>Tên người nhận hàng</th>
-                                        <th>Số điện thoại đăng nhập</th>
-                                        <th>Đường phố </th>
-                                        <th>Tỉnh</th>
-                                        <th>Thành phố</th>
+                                        <th>Tên người mở cửa hàng</th>
+                                        <th>Số điện thoại </th>
+                                        <th>Email </th>
+                                        <th>Loại kinh doanh</th>
+                                        <th>Tên cửa hàng</th>
+                                        <th>Ảnh cửa hàng</th>
 
                                         </tr>
                                     </thead>
                                    
                                     <tbody>
                                         <tr>
-                                        <td>{productList?.revicerName}</td>
+                                        <td>{productList?.fullname}</td>
                                         <td>{productList?.phone}</td>
-                                        <td>{productList?.stress}</td>
-                                        <td>{productList?.province}</td>
-                                        <td>{productList?.city}</td>
+                                        <td>{productList?.emailYourself}</td>
+                                        <td>{productList?.industry}</td>
+                                        <td>{productList?.inforByStore?.nameStore}</td>
+                                        <td><img className='h-8 w-8' src={`${pathImage}/${productList?.logoStore}`} alt="" /></td>
+                                       
                                        
                                         
                                         
@@ -70,7 +75,7 @@ function OrderView() {
                             </div>
                     }
                 </div>
-            </div>
+            </div>}
         </>
 
     )

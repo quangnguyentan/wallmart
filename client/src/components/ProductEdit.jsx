@@ -4,7 +4,7 @@ import { apiCreateProduct, apiGetProductByShop, apiUpdateProduct } from '@/servi
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Autocomplete, TextField, useMediaQuery } from '@mui/material';
-import { listLeftCategories } from '@/lib/helper';
+import { listLeftCategories, pathImage } from '@/lib/helper';
 
 function ProductEdit() {
   const [isLoading, setLoading] = useState(false);
@@ -148,12 +148,18 @@ function ProductEdit() {
         <div className='grid grid-cols-2 gap-4'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Tên sản phẩm</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên sản phẩm' {...register("title")} />
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập tên sản phẩm' {...register("title")} />
       
         </div>
         <div  className='flex gap-4 items-center  px-8 w-full'>
          <label htmlFor="photo" {...register("photo")} className=''>Ảnh sản phẩm: <span className='text-lg px-4 bg-white shadow-sm py-4'>Chọn ảnh</span></label>
+        
         <input type="file" title='Chọn ảnh' id='photo' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} style={{ visibility : "hidden" }} placeholder='Chọn ảnh' accept='image/*' />
+        {product?.photos?.map((pt, index) => (
+          <div key={index} className='flex '>
+             <img src={`${pathImage}/${pt}`} className='w-12 h-12' alt="photo" />
+          </div>
+        ))}
         </div>
         {/* <div className="px-8">
       <Autocomplete
@@ -197,12 +203,12 @@ function ProductEdit() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền sau khi giảm giá</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", )} />
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", )} />
         
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Giá tiền mặc định</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền mặc định (vd:50000$)' {...register("priceOld", {
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá tiền mặc định (vd:50000$)' {...register("priceOld", {
                   validate: (value) => {
                     if (value < 0 ) {
                       return "Vui lòng nhập số tiền lớn hơn hoặc bằng 0";
@@ -214,7 +220,7 @@ function ProductEdit() {
 
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Hàng tồn kho</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập hàng tồn kho' {...register("inventory",)} />
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập hàng tồn kho' {...register("inventory",)} />
        
         </div>
         {/* <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
@@ -224,7 +230,7 @@ function ProductEdit() {
           <span key={el} className='text-red-500'>[{el}]</span>
         ))}</div>
         </div>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập màu sắc' {...register("color")} onKeyDown={handleKeyDownColor}/>
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập màu sắc' {...register("color")} onKeyDown={handleKeyDownColor}/>
        
         </div>
 
@@ -235,7 +241,7 @@ function ProductEdit() {
           <span key={el} className='text-red-500'>[{el}]</span>
         ))}</div>
         </div>
-        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập kích thước' {...register("size")} onKeyDown={handleKeyDownSize}  />
+        <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập kích thước' {...register("size")} onKeyDown={handleKeyDownSize}  />
       
         </div> */}
        
@@ -249,7 +255,7 @@ function ProductEdit() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Sản phẩm đã bán</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập số sản phẩm đã bán'  {...register("sold", )} />
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập số sản phẩm đã bán'  {...register("sold", )} />
         
         </div>
         </div>

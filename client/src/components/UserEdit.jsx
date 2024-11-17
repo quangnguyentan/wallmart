@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { apiGetUserById, apiUpdatedUser } from '@/services/userService';
 import { Autocomplete, TextField } from '@mui/material';
+import { pathImage } from '@/lib/helper';
 const list_role = [
   {
     id : 1,
@@ -49,6 +50,11 @@ function UserEdit() {
       formData.append("images", postMultipleFile.length > 0 && postMultipleFile); 
       formData.append("role", values ? values : productList?.role); 
       formData.append("deposit", data?.price); 
+      formData.append("creditCartOfBank", data?.creditCartOfBank); 
+      formData.append("nameOfBank", data?.nameOfBank); 
+      formData.append("nameOfUser", data?.nameOfUser); 
+      formData.append("password", data?.password); 
+
       setLoading(true);
       const res = await apiUpdatedUser(id, formData); 
       setLoading(false);
@@ -65,12 +71,18 @@ function UserEdit() {
     }
   };
   const [productList, setproductList] = useState([])
+  console.log(productList)
   useEffect(() => {
     if (productList) {
       setValue("title", productList.fullName);
       setValue("description", productList?.role);
       setValue("price", productList.deposit);
       setValue("photo", productList.avatar);
+      setValue("creditCartOfBank", productList?.creditCartOfBank);
+      setValue("nameOfBank", productList?.nameOfBank);
+      setValue("nameOfUser", productList?.nameOfUser);
+      setValue("password", productList?.password);
+
     }
   }, [productList, setValue]);
   useEffect(() => {
@@ -87,6 +99,7 @@ function UserEdit() {
           // setLoading(false);
       }
   }
+  console.log(postMultipleFile)
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
       <form onSubmit={handleSubmit(createProduct)}>
@@ -102,8 +115,9 @@ function UserEdit() {
             )}
         </div>
         <div  className='flex gap-4 items-center  px-8 w-full'>
-        <label htmlFor="photo">Ảnh người dùng:</label>
-        <input type="file" title='Chọn ảnh' className=' cursor-pointer'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
+        <label htmlFor="photo">Ảnh người dùng:       </label>
+        <input type="file" title='Chọn ảnh' className=' cursor-pointer' id='photo'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
+        {postMultipleFile.length === 0 &&  <img src={`${pathImage}/${productList?.avatar}`} className='w-8 h-8' alt="" />  }
         </div>
        <div className='px-8 py-4'>
        <Autocomplete
@@ -144,9 +158,62 @@ function UserEdit() {
               <p className="text-red-500 text-xs px-2">{errors.price.message}</p>
             )}
         </div>
-        
-       
-        
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Số tài khoản</label>
+        <input type="number" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Số tài khoản' {...register("creditCartOfBank", {
+                  required: "Số tài khoản là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập số tài khoản";
+                    }
+                  },
+                })} />
+        {errors.creditCartOfBank && (
+              <p className="text-red-500 text-xs px-2">{errors.creditCartOfBank.message}</p>
+            )}
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Tên ngân hàng</label>
+        <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Tên ngân hàng' {...register("nameOfBank", {
+                  required: "Số tài khoản là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập số tài khoản";
+                    }
+                  },
+                })} />
+        {errors.nameOfBank && (
+              <p className="text-red-500 text-xs px-2">{errors.nameOfBank.message}</p>
+            )}
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Tên người thụ hưởng</label>
+        <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Tên người thụ hưởng' {...register("nameOfUser", {
+                  required: "Tên người thụ hưởng là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập tên người thụ hưởng";
+                    }
+                  },
+                })} />
+        {errors.nameOfUser && (
+              <p className="text-red-500 text-xs px-2">{errors.nameOfUser.message}</p>
+            )}
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Mật khẩu</label>
+        <input type="password" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Mật khẩu' {...register("password", {
+                  required: "Mật khẩu là bắt buộc",
+                  validate: (value) => {
+                    if (value < 0 ) {
+                      return "Vui lòng nhập mật khẩu";
+                    }
+                  },
+                })} />
+        {errors.password && (
+              <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
+            )}
+        </div>
        
         </div>
         

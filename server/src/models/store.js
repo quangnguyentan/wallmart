@@ -4,87 +4,92 @@ const Order = require("./order");
 
 const Schema = mongoose.Schema;
 
-const StoreSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-
-  active: {
-    type: String,
-  },
-  follow: Number,
-  industry: {
-    type: String,
-  },
-  catergory: {
-    type: String,
-  },
-  logoStore: {
-    type: String,
-  },
-  fullname: {
-    type: String,
-  },
-  phone: {
-    type: String,
-  },
-  idYourself: {
-    type: String,
-  },
-  service: String,
-  emailYourself: {
-    type: String,
-  },
-  identification: {
-    front: String,
-    backside: String,
-    yourFace: String,
-  },
-
-  businessLicense: String,
-  cart: [
-    {
-      product: { type: Schema.Types.ObjectId, ref: "product" },
-      quantity: Number,
-      color: String,
-      size: String,
-      status: {
-        type: String,
-        default: "not_paid",
-      },
+const StoreSchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-  ],
-  order: [
-    {
-      product: { type: Schema.Types.ObjectId, ref: "product" },
-      quantity: Number,
-      color: String,
-      size: String,
-      status: {
-        type: String,
-        default: "paid",
-      },
+
+    active: {
+      type: String,
     },
-  ],
-  inforByStore: {
-    nameStore: String,
-    descriptionStore: String,
-  },
+    follow: Number,
+    industry: {
+      type: String,
+    },
+    catergory: {
+      type: String,
+    },
+    logoStore: {
+      type: String,
+    },
+    fullname: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    idYourself: {
+      type: String,
+    },
+    service: String,
+    emailYourself: {
+      type: String,
+    },
+    identification: {
+      front: String,
+      backside: String,
+      yourFace: String,
+    },
 
-  address: {
-    province: String,
-    city: String,
-    area: String,
-    street: String,
-  },
+    businessLicense: String,
+    cart: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: "product" },
+        quantity: Number,
+        color: String,
+        size: String,
+        status: {
+          type: String,
+          default: "not_paid",
+        },
+      },
+    ],
+    order: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: "product" },
+        quantity: Number,
+        color: String,
+        size: String,
+        status: {
+          type: String,
+          default: "paid",
+        },
+      },
+    ],
+    inforByStore: {
+      nameStore: String,
+      descriptionStore: String,
+    },
 
-  codeByFriend: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    address: {
+      province: String,
+      city: String,
+      area: String,
+      street: String,
+    },
+
+    codeByFriend: String,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 StoreSchema.pre("remove", async function (next) {
   try {
     await Order.deleteMany({ store: this._id });

@@ -19,7 +19,8 @@ function UserDepositList() {
   let getUsers = async () => {
     try {
       const user = await apiGetAllUser()
-      setproductList(user?.user);
+      const filterRole = user?.user?.filter((rs) => rs?.role !== "admin")
+      setproductList(filterRole);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -69,22 +70,21 @@ function UserDepositList() {
                     <th>Số điện thoại đăng nhập</th>
                     <th>Email đăng nhập </th>
                     <th>Số tiền của khách</th>
-                    <th>Hành động</th>
-                    
+                    <th>Vai trò</th>
 
+                    <th>Hành động</th>
                   </tr>
                 </thead>
                 
                 <tbody>
                   {productList?.map((product) => {
-                    if(product?.role !== "admin") {
                       return (
                         <tr key={product?.id}>
                           <td>{product?.fullName}</td>
                           <td>{product?.phone}</td>
                           <td>{product?.email}</td>
                           <td>{product?.deposit}</td>
-                          
+                          <td>{product?.role}</td>
                           <th className="flex flex-col gap-2">
                             <Link
                               to={`/deposit-user-view/${product?._id}`}
@@ -107,7 +107,6 @@ function UserDepositList() {
                           </th>
                         </tr>
                       );
-                    }
                    
                   })}
                 </tbody>
