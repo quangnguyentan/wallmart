@@ -14,7 +14,6 @@ import Store from "./pages/Store";
 import Store_detail from "./pages/Store_detail";
 import Order from "./pages/Order";
 import Portal from "./components/Portal";
-import Dashboard from "./components/Dashboard";
 import Userlist from "./components/Userlist";
 import UserCreate from "./components/UserCreate";
 import UserView from "./components/UserView";
@@ -63,7 +62,7 @@ import BotCreate from "./components/BotCreate";
 import BotView from "./components/BotView";
 import BotEdit from "./components/BotEdit";
 import BookProductFromStore from "./pages/BookProductFromStore";
-import Order_Cart from "./pages/Order_cart";
+import Order_Cart from "./pages/Order_Cart";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
