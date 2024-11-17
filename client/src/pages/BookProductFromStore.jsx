@@ -70,7 +70,6 @@ const BookProductFromStore = () => {
    }
   
   }
-  console.log(product)
 
   // Hàm điều khiển khi click vào sản phẩm
   

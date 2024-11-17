@@ -21,11 +21,13 @@ function Topbar() {
     const [open, setOpen] = React.useState(false);
     const [productList, setproductList] = useState([])
     const [isLoading, setLoading] = useState(true);
-    const [value, setValue] = useState([])
+    const [value, setValue] = useState(null)
     const { currentData } = useSelector((state) => state.user); 
     useEffect(() => {
-        fetchApi();
-    }, [window.location.pathname]);
+        if(value?.length > 0) {
+            fetchApi();
+        }
+    }, [window.location.pathname, value]);
   
     const toggleDrawer = (newOpen) => () => {
       setOpen(newOpen);
@@ -72,8 +74,35 @@ function Topbar() {
             </button>
             <form
                 className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
-                {/* <div className='absolute top-10 overflow-y-scroll w-full h-[750px] scrollbar-hide bg-white shadow-sm z-50'>
-                    {productList?.order?.map((product) => (
+                {value?.length > 0 && <div className='absolute top-10 overflow-y-scroll w-full h-[750px] scrollbar-hide bg-white shadow-sm z-50'>
+                    {currentData?.role === "admin" && productList?.map((product) => {
+                        if(typeof product?.title === "string" && typeof value === "string" && product.title.toUpperCase().includes(value.toUpperCase())){
+                            return <div className="w-full h-fit scrollbar-hide overflow-y-scroll text-gray-500 flex flex-col gap-2" key={product?._id}>
+                     
+                            <div className="flex items-center w-full gap-12 bg-white px-8  rounded-xl justify-center">
+                              <div className="w-[80px] h-[80px] max-sm:w-[120px] max-sm:h-[150px]">
+                              <img src={`${pathImage}/${product?.photos && product?.photos[0]}`} alt="" className="w-full h-full mix-blend-darken" />
+                              </div>
+                              <div className="flex flex-col w-[50%] py-4 px-2 max-sm:px-0 gap-2 bg-white rounded-xl">
+                                  <div className="flex items-center gap-4 ">
+                                      <span className="text-xl max-sm:text-xs text-[#fe5000]">${product?.price}</span>
+                                     <div className="">
+                                      <span className="max-sm:text-xs">Giá cũ </span>
+                                      <span className="line-through max-sm:text-xs">${product?.priceOld}</span>
+                                     </div>
+                                  </div>
+                                  <span className="max-sm:text-xs line-clamp-4">
+                                    {product?.title}
+                                  </span>
+                               
+                              </div>
+                              
+                            </div>
+                           
+                          </div>
+                        }
+                    })}
+                      {currentData?.role === "agent" && productList?.order?.map((product) => (
                          <div className="w-full h-fit scrollbar-hide overflow-y-scroll text-gray-500 flex flex-col gap-2" key={product?._id}>
                      
                          <div className="flex items-center w-full gap-12 bg-white px-8  rounded-xl justify-center">
@@ -98,9 +127,9 @@ function Topbar() {
                         
                        </div>
                     ))}
-                </div> */}
+                </div>}
                 <div className="input-group">
-                    <input type="text" className="form-control bg-light border-0 small" placeholder="Search for..." 
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Search for..." 
                         aria-label="Search" aria-describedby="basic-addon2" />
                     <div className="input-group-append">
                         <button className="btn btn-primary" type="button">
@@ -137,131 +166,12 @@ function Topbar() {
                     </div>
                 </li>
 
-                {/* <!-- Nav Item - Alerts --> */}
-                <li className="nav-item dropdown no-arrow mx-1">
-                    <a className="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <FontAwesomeIcon icon={faBell} />
-                        {/* <!-- Counter - Alerts --> */}
-                        <span className="badge badge-danger badge-counter">3+</span>
-                    </a>
-                    {/* <!-- Dropdown - Alerts --> */}
-                    <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="alertsDropdown">
-                        <h6 className="dropdown-header">
-                            Alerts Center
-                        </h6>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="mr-3">
-                                <div className="icon-circle bg-primary">
-                                    <i className="fas fa-file-alt text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="small text-gray-500">December 12, 2019</div>
-                                <span className="font-weight-bold">A new monthly report is ready to download!</span>
-                            </div>
-                        </a>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="mr-3">
-                                <div className="icon-circle bg-success">
-                                    <i className="fas fa-donate text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="small text-gray-500">December 7, 2019</div>
-                                $290.29 has been deposited into your account!
-                            </div>
-                        </a>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="mr-3">
-                                <div className="icon-circle bg-warning">
-                                    <i className="fas fa-exclamation-triangle text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="small text-gray-500">December 2, 2019</div>
-                                Spending Alert: We've noticed unusually high spending for your account.
-                            </div>
-                        </a>
-                        <a className="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                    </div>
-                </li>
-
-                {/* <!-- Nav Item - Messages --> */}
-                <li className="nav-item dropdown no-arrow mx-1">
-                    <a className="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <FontAwesomeIcon icon={faEnvelope} />
-                        {/* <!-- Counter - Messages --> */}
-                        <span className="badge badge-danger badge-counter">7</span>
-                    </a>
-                    {/* <!-- Dropdown - Messages --> */}
-                    <div className="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="messagesDropdown">
-                        <h6 className="dropdown-header">
-                            Message Center
-                        </h6>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <img className="rounded-circle" src="img/undraw_profile_1.svg"
-                                    alt="..." />
-                                <div className="status-indicator bg-success"></div>
-                            </div>
-                            <div className="font-weight-bold">
-                                <div className="text-truncate">Hi there! I am wondering if you can help me with a
-                                    problem I've been having.</div>
-                                <div className="small text-gray-500">Emily Fowler · 58m</div>
-                            </div>
-                        </a>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <img className="rounded-circle" src="img/undraw_profile_2.svg"
-                                    alt="..." />
-                                <div className="status-indicator"></div>
-                            </div>
-                            <div>
-                                <div className="text-truncate">I have the photos that you ordered last month, how
-                                    would you like them sent to you?</div>
-                                <div className="small text-gray-500">Jae Chun · 1d</div>
-                            </div>
-                        </a>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <img className="rounded-circle" src="img/undraw_profile_3.svg"
-                                    alt="..." />
-                                <div className="status-indicator bg-warning"></div>
-                            </div>
-                            <div>
-                                <div className="text-truncate">Last month's report looks great, I am very happy with
-                                    the progress so far, keep up the good work!</div>
-                                <div className="small text-gray-500">Morgan Alvarez · 2d</div>
-                            </div>
-                        </a>
-                        <a className="dropdown-item d-flex align-items-center" href="#">
-                            <div className="dropdown-list-image mr-3">
-                                <img className="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                    alt="..." />
-                                <div className="status-indicator bg-success"></div>
-                            </div>
-                            <div>
-                                <div className="text-truncate">Am I a good boy? The reason I ask is because someone
-                                    told me that people say this to all dogs, even if they aren't good...</div>
-                                <div className="small text-gray-500">Chicken the Dog · 2w</div>
-                            </div>
-                        </a>
-                        <a className="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                    </div>
-                </li>
-
-                <div className="topbar-divider d-none d-sm-block"></div>
-
                 {/* <!-- Nav Item - User Information --> */}
                 <li className="nav-item dropdown no-arrow">
-                    <Link className="nav-link dropdown-toggle" to="/" id="userDropdown" role="button"
+                    <Link className="nav-link dropdown-toggle" to={currentData?.role === "admin" ? "product-list" : "/"} id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                        <FontAwesomeIcon icon={faCircleUser} size={"xl"} />
+                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{currentData?.fullName}</span>
+                        {currentData?.avatar ?  <img src={`${pathImage}/${currentData?.avatar}`} className='w-6 h-6 rounded-full' alt="" /> :  <FontAwesomeIcon icon={faCircleUser} size={"xl"} />}
                     </Link>
                     {/* <!-- Dropdown - User Information --> */}
                     <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"

@@ -54,7 +54,9 @@ function OrderEdit() {
       // formData.append("inventory", data?.inventory); 
       // formData.append("stockOff", Boolean(data?.stock)); 
       setLoading(true);
+      console.log(id)
       const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : "canceled" : order?.status }); 
+      console.log(res)
       if(res) {
         setLoading(false);
         toast.success("Đăng kí thành công");
@@ -89,10 +91,10 @@ function OrderEdit() {
                         <Autocomplete
                               disablePortal
                               options={list_status?.map((option) => option.name)}
-                              // defaultValue={setValue("title", order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy")}
+                              defaultValue={setValue("title", order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy")}
                             
                               className="w-full h-[40px] outline-none border-none"
-                              value={order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  : "Đơn hàng bị hủy"}
+                              value={values ? values :  order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  : "Đơn hàng bị hủy"}
                              
                               onChange={(event, newValue) => {
                                 setValues(newValue);

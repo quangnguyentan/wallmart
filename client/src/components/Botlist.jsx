@@ -19,7 +19,8 @@ function Botlist() {
   let getUsers = async () => {
     try {
       const user = await apiGetAllUser()
-      setproductList(user?.user);
+      const filterRole = user?.user?.filter((rs) => rs?.role === "bot" || user?.role === "botAgent" )
+      setproductList(filterRole);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -39,7 +40,7 @@ function Botlist() {
       console.log(error);
     }
   };
-  
+  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -70,6 +71,7 @@ function Botlist() {
               >
                 <thead>
                   <tr>
+                  <th>Số thứ tự</th>
                     <th>Tên người dùng</th>
                     <th>Số điện thoại đăng nhập</th>
                     <th>Email đăng nhập </th>
@@ -82,10 +84,11 @@ function Botlist() {
                 </thead>
                 
                 <tbody>
-                  {productList?.map((product) => {
-                     if(product?.role === "bot" || product?.role === "botAgent") {
+                  {productList?.map((product, index) => {
                     return (
-                      <tr key={product?.id}>
+                      <tr key={product?._id}>
+                        <td>{index + 1}</td>
+
                         <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
@@ -93,12 +96,12 @@ function Botlist() {
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         
                         <th className="flex flex-col gap-2">
-                        <Link
+                        {/* <Link
                             to={`/buy-product/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
                             Mua hàng
-                          </Link>
+                          </Link> */}
                           <Link
                             to={`/bot-view/${product?._id}/${currentData?._id}`}
                             className="btn btn-primary btn-sm mr-1"
@@ -121,7 +124,6 @@ function Botlist() {
                         </th>
                       </tr>
                     );
-                  }
                   })}
                 </tbody>
               </table>

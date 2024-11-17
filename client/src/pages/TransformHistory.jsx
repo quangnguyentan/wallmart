@@ -46,7 +46,8 @@
             </div>
           </div>
           <div>
-            {withDraw?.length > 0 ? (
+            {withDraw?.length && withDraw
+                    ?.filter((fill) => fill?.status?.includes("Đợi duyệt")) > 0 ? (
               <div className="h-fit">
                 <div className="w-full px-2 py-4 ">
                   {withDraw
@@ -180,7 +181,7 @@
               <div className="w-full h-screen flex flex-col items-center justify-start">
                 <img src={noCart} />
                 <span className="text-xl font-semibold text-gray-500">
-                  Chưa có giao dịch nào !
+                  Không có yêu cầu nào !
                 </span>
               </div>
             )}

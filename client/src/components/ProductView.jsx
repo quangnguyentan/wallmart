@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import "./sb-admin-2.min.css";
 import { apiGetProductById } from '@/services/productService';
+import { pathImage } from '@/lib/helper';
 
 function ProductView() {
     const { id, userId } = useParams();
@@ -48,7 +49,7 @@ function ProductView() {
                                         <th>Hàng tồn kho</th>
                                         <th>Kích thước sản phẩm</th>
                                         <th>Màu sắc sản phẩm</th>
-                                        <th>Tên cửa hàng</th>
+                                        <th>Ảnh sản phẩm</th>
 
                                         </tr>
                                     </thead>
@@ -61,7 +62,13 @@ function ProductView() {
                                         <td>{productList?.inventory} sản phẩm</td>
                                         <td>{productList?.size?.join(",")}</td>
                                         <td>{productList?.color?.join(",")}</td>
-                                        <td>{productList?.store?.inforByStore?.nameStore}</td>
+                                        <td className='flex items-center gap-4'>
+
+                                        {productList?.photos?.map((photo, index) => (
+                                            <img key={index} src={`${pathImage}/${photo}`} alt="photo" className='w-10 h-10' />
+                                        ))}
+                                        </td>
+                                     
                                         </tr>
                                     </tbody>
                                 </table>

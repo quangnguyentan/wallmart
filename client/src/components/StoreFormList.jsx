@@ -77,7 +77,7 @@ function StoreFormList() {
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
         <div className="card-header py-3">
-          <h6 className="m-0 font-weight-bold text-primary">Duyệt đơn của cửa hàng</h6>
+          <h6 className="m-0 font-weight-bold text-primary">Yêu cầu duyệt đơn mở cửa hàng</h6>
         </div>
         <div className="card-body">
           {isLoading ? (
