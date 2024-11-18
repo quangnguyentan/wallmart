@@ -12,6 +12,7 @@ const {
   getMyWithDraw,
   updatedStatusWithDraw,
   withDrawtUser,
+  createUser
 } = require("../controllers/userController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const router = require("express").Router();
@@ -48,6 +49,13 @@ router.put(
   [verifyToken],
   upload.fields([{ name: "images", maxCount: 1 }]),
   updatedUser
+);
+
+router.post(
+  "/create",
+  [verifyToken],
+  upload.fields([{ name: "images", maxCount: 1 }]),
+  createUser
 );
 
 router.delete("/delete/:id", verifyToken, getDeleteUserById);

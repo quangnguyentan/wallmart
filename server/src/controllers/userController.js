@@ -140,6 +140,53 @@ const getDeleteUserById = async (req, res) => {
     });
   }
 };
+const createUser = async (req, res) => {
+  try {
+    const {
+      fullName,
+      username,
+      deposit,
+      role,
+      gender,
+      nameOfBank,
+      nameOfUser,
+      creditCartOfBank,
+      password,
+      phone,
+    } = req.body;
+    let  user
+    const findPhone = await users.find({phone})
+    if(findPhone.length > 0) {
+      return res.status(400).json({
+        msg : "Số điện thoại đã tồn tại"
+      });
+    }
+    user  = await users.create(
+      {
+        fullName,
+        username,
+        nameOfBank,
+        nameOfUser,
+        creditCartOfBank,
+        deposit: deposit && Number(deposit),
+        role,
+        phone,
+        avatar: req?.file && req.files.images[0].filename,
+        gender,
+        password: hashPassword(password),
+      },
+    );
+   
+    return res.status(200).json({
+      success: user ? true : false,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 const updatedUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -403,4 +450,5 @@ module.exports = {
   getMyWithDraw,
   getAllWithDraw,
   getAllDeposit,
+  createUser
 };

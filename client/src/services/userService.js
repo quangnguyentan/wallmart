@@ -100,6 +100,19 @@ export const apiUpdatedStatusWithDraw = (id, data) =>
       reject(error);
     }
   });
+  export const apiCreateUser = (data) =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await axiosConfig({
+          method: "POST",
+          url: `/users/create`,
+          data,
+        });
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    });
 export const apiUpdateWithDraw = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {

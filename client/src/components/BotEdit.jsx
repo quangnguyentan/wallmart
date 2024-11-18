@@ -6,24 +6,13 @@ import toast from 'react-hot-toast';
 import { apiGetUserById, apiUpdatedUser } from '@/services/userService';
 import { Autocomplete, TextField } from '@mui/material';
 const list_role = [
+  
   {
     id : 1,
-    name : "admin"
-  },
-  {
-    id : 2,
-    name : "user"
-  },
-  {
-    id : 3,
-    name : "agent"
-  },
-  {
-    id : 4,
     name : "bot"
   },
   {
-    id : 4,
+    id : 2,
     name : "botAgent"
   },
 ]
@@ -92,9 +81,9 @@ function BotEdit() {
       <form onSubmit={handleSubmit(createProduct)}>
         <div className='grid grid-cols-2 gap-4'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Tên người dùng</label>
-        <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none'   placeholder='Nhập tên người dùng' {...register("title", {
-                  required: "Tên người dùng là bắt buộc",
+        <label htmlFor="photo">Tên bot</label>
+        <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none'   placeholder='Nhập tên bot' {...register("title", {
+                  required: "Tên bot là bắt buộc",
                  
                 })} />
         {errors.title && (
@@ -102,7 +91,7 @@ function BotEdit() {
             )}
         </div>
         <div  className='flex gap-4 items-center  px-8 w-full'>
-        <label htmlFor="photo">Ảnh người dùng:</label>
+        <label htmlFor="photo">Ảnh bot:</label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
         </div>
        <div className='px-8 py-4'>

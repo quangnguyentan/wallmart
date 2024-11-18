@@ -10,18 +10,17 @@ import { apiGetAllUser } from "@/services/userService";
 import { apiDeleteOrderById, apiGetOrder, apiGetOrderByShop } from "@/services/orderServer";
 import { apiGetMyStore, apiGetStore } from "@/services/storeService";
 import { getCurrent } from "@/stores/actions/userAction";
+import toast from "react-hot-toast";
 
 
 
 function Orderlist() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user); 
   useEffect(() => {
     getUsers();
-    dispatch(getCurrent())
   }, []);
   
  
@@ -31,11 +30,9 @@ function Orderlist() {
         const user = await apiGetOrderByShop()
         const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
         setproductList(filterOrderUser);
-        console.log(productList)
         setLoading(false);
       }else{
         const store = await apiGetOrder()
-        console.log(store)
         setproductList(store);
         setLoading(false);
       }
@@ -46,19 +43,16 @@ function Orderlist() {
   };
   let handleDelete = async (id) => {
     try {
-      const confirmDelete = window.confirm(
+      window.confirm(
         "Are you sure do you want to delete the data?"
       );
-      if (confirmDelete) {
         await apiDeleteOrderById(id)
-        getUsers();
-        window.location.reload();
-      }
+        toast.success("Xóa đơn hàng thành công")
+        navigate("/product-list")
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">

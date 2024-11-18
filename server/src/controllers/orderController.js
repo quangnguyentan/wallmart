@@ -331,9 +331,8 @@ const deleteOrder = async (req, res, next) => {
   const { id } = req.params;
   console.log();
   try {
-    const store = await Store.findOne({
-      "order._id": id,
-    });
+    const store = await Order.findByIdAndDelete(id)
+    console.log(store)
     if (!store) {
       console.log("Order ID không tồn tại trong Store.");
       return res.status(404).json({
