@@ -15,8 +15,10 @@ const List_product = () => {
     const [activeTab, setActiveTab] = useState('all');
     const location = useLocation();
     const  productName   = location.state 
+    console.log(productName)
     const getProduct = async (productName) => {
       const res = await apiGetProductByCategory(productName)
+      console.log(res)
       if(res?.success) {
       setProducts(res?.products)
       }
@@ -116,7 +118,7 @@ const List_product = () => {
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Product products={products} hidden/>
+        <Card_Product listProduct={products} hidden/>
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

@@ -80,7 +80,6 @@ function ProductCreate() {
       formData.append("stockOff", Boolean(data?.stock)); 
       formData.append("userId", userId); 
       formData.append("sold", data?.sold);
-      formData.append("store", store?._id); 
       setLoading(true);
       const res = await apiCreateProduct(formData); 
       setLoading(false);

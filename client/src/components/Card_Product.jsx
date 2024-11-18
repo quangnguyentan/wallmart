@@ -13,7 +13,7 @@ import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 
-const Card_Product = ({ profile, hidden, products,agent, stores }) => {
+const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
   const [loadingData, setLoadingData] = useState(false);
   const [productList, setproductList] = useState([])
@@ -98,7 +98,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
      <div className="grid grid-cols-5 gap-2 px-4 max-sm:grid max-sm:grid-cols-2">
         {products &&
           products?.map((product) => (
-            product && product?.store && (
+            product  && (
               <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">
                 <Link
                   to={`/detail-product-agent/${product?._id}`}
@@ -218,6 +218,36 @@ const Card_Product = ({ profile, hidden, products,agent, stores }) => {
           ) : null
         )
         )}
+      </div>
+      <div className="grid grid-cols-2 gap-2 px-4">
+      {listProduct && listProduct?.map((product) => (
+    product  && (
+      <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">
+         <Link
+              state={product}
+              to={`/detail-product/${product?._id}`}
+              key={product._id}
+            >
+              <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2">
+                <img
+                  src={`${pathImage}/${product?.photos?.[0]}`}
+                  alt="product_test"
+                  className="h-[256px] max-sm:h-[180px] w-full object-cover rounded-lg"
+                />
+                <div className="flex flex-col gap-2 px-2">
+                  <span className="line-clamp-2 break-words font-medium text-[18px] max-sm:text-sm text-gray-800">
+                    {product?.title}
+                  </span>
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base">
+                    ${product?.price}
+                  </span>
+                </div>
+              </div>
+            </Link>
+      </div>
+    )
+    )
+      )  }
       </div>
       
       <div

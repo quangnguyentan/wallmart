@@ -160,6 +160,8 @@ const UpdateProduct = async (req, res, next) => {
       color,
       size,
       stockOff,
+      industry,
+      category,
       store,
     } = req.body;
     console.log(priceOld);
@@ -176,6 +178,8 @@ const UpdateProduct = async (req, res, next) => {
       {
         photos: arrayFiles,
         title,
+        industry,
+        category,
         description,
         price,
         priceOld,

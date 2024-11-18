@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema(
       default: 0,
       required: true,
     },
-
+    createdAt : [],
     role: {
       type: String,
       enum: ["user", "admin", "agent", "bot", "botAgent"],

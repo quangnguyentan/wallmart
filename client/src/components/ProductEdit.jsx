@@ -14,15 +14,15 @@ function ProductEdit() {
   const [addNameSizeField, setAddNameSizeField] = useState([])
   const [product, setProduct] = useState(null)
   const { id } = useParams()
-  const [values, setValues] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [values, setValues] = useState("");
+
   const {
     register,
     handleSubmit,
     resetField,
     formState: { errors },
-    getValues,
     setValue
   } = useForm();
  
@@ -72,6 +72,8 @@ function ProductEdit() {
       formData.append("priceOld", data?.priceOld); 
       formData.append("inventory", data?.inventory); 
       formData.append("stockOff", Boolean(data?.stock)); 
+      formData.append("industry", values)
+      formData.append("category", selectedCategory)
       // formData.append("industry", values)
       // formData.append("category", selectedCategory)
       setLoading(true);
@@ -104,6 +106,7 @@ function ProductEdit() {
       setValue("inventory", product.inventory);
       setValue("sold", product.sold);
       setValue("stock", product.stockOff);
+    
       // setValue("color", product.color?.join(", "));
       // setValue("size", product.size?.join(", "));
       setValue("photo", product.photos[0]);
@@ -114,34 +117,8 @@ function ProductEdit() {
   useEffect(() => {
     fetchGetProduct(id)
   }, [id])
-  const handleKeyDownSize = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
-
-     if(addNameSizeField.includes(e.target.value) ){
-      setAddNameSizeField(addNameSizeField.filter(item => item !== e.target.value));
-      resetField("size")
-     }else{
-      setAddNameSizeField([...addNameSizeField, e.target.value])
-      resetField("size")
-     }
-    }
-
-  }
-  const handleKeyDownColor = (e) => {
-    if(e.key === "Enter") {
-      e.preventDefault()
-
-     if(addNameColorField.includes(e.target.value)){
-      setAddNameColorField(addNameColorField.filter(item => item !== e.target.value));
-      resetField("color")
-     }else{
-      setAddNameColorField([...addNameColorField, e.target.value])
-      resetField("color")
-     }
-    }
-
-  }
+ 
+  console.log(postMultipleFile)
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
       <form onSubmit={handleSubmit(updateProduct)}>
@@ -149,19 +126,17 @@ function ProductEdit() {
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Tên sản phẩm</label>
         <input type="text" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập tên sản phẩm' {...register("title")} />
-      
         </div>
         <div  className='flex gap-4 items-center  px-8 w-full'>
-         <label htmlFor="photo" {...register("photo")} className=''>Ảnh sản phẩm: <span className='text-lg px-4 bg-white shadow-sm py-4'>Chọn ảnh</span></label>
-        
-        <input type="file" title='Chọn ảnh' id='photo' className=' cursor-pointer' multiple onChange={(e) => setPostMultipleFile(e.target.files)} style={{ visibility : "hidden" }} placeholder='Chọn ảnh' accept='image/*' />
-        {product?.photos?.map((pt, index) => (
+         <label htmlFor="photo" {...register("photo")} className=''>Ảnh sản phẩm: {postMultipleFile[0]?.name ? postMultipleFile[0]?.name : <span className='text-lg px-4 bg-white shadow-sm py-4'>Chọn ảnh</span>} </label>
+        <input type="file" title='Chọn ảnh' id='photo' className=' cursor-pointer' multiple  onChange={(e) => setPostMultipleFile(e.target.files)} style={{ visibility : "hidden" }} placeholder='Chọn ảnh' accept='image/*' />
+        {!postMultipleFile[0]?.name && product?.photos?.map((pt, index) => (
           <div key={index} className='flex '>
              <img src={`${pathImage}/${pt}`} className='w-12 h-12' alt="photo" />
           </div>
         ))}
         </div>
-        {/* <div className="px-8">
+        <div className="px-8">
       <Autocomplete
             disablePortal
             options={listLeftCategories.map((option) => option.name)}
@@ -190,7 +165,8 @@ function ProductEdit() {
               disabled={!values}
             
           />
-        </div> */}
+        </div>
+        
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mô tả sản phẩm</label>
         <input type="text" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập mô tả sản phẩm' {...register("description", {

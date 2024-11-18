@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 
 
 const Category_Info = ({ category, mainCategory }) => {
-  
+  console.log(category)
   return (
     <div className="px-2 pb-28">
                 <div className="grid grid-cols-3 gap-4 " >
