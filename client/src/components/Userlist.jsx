@@ -117,7 +117,49 @@ function Userlist() {
                 </thead>
                 
                 <tbody>
-                  {productList?.map((product, index) => {
+                  {value?.length > 0 ? productList?.map((product, index) => {
+                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName.toUpperCase().includes(value.toUpperCase())) {
+                      return (
+                        <tr key={product?.id}>
+                          <td>{index + 1}</td>
+                          <td>{product?.fullName}</td>
+                          <td>{product?.phone}</td>
+                          <td>{product?.email}</td>
+                          <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
+                          <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
+                          <td>{product?.deposit}</td>
+                          <td>{product?.creditCartOfBank}</td>
+                          <td>{product?.nameOfUser}</td>
+                          <td>{product?.nameOfBank}</td>
+                          <td>{product?.createdAt &&product?.createdAt }</td>
+                          <td>{product?.updatedAt &&product?.updatedAt }</td>
+  
+  
+                          <th className="flex flex-col gap-2">
+                            <Link
+                              to={`/user-view/${product?._id}/${currentData?._id}`}
+                              className="btn btn-primary btn-sm mr-1"
+                            >
+                              Xem chi tiết
+                            </Link>
+                            <Link
+                              to={`/user-edit/${product?._id}`}
+                              className="btn btn-info btn-sm mr-1"
+                            >
+                              Chỉnh sửa
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(product?._id)}
+                              className="btn btn-danger btn-sm mr-1"
+                            >
+                              Xóa
+                            </button>
+                          </th>
+                        </tr>
+                      )
+                     }
+                    ;
+                  }) : productList?.map((product, index) => {
                     return (
                       <tr key={product?.id}>
                         <td>{index + 1}</td>

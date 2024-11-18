@@ -77,6 +77,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
       e.preventDefault();
     }));
   }, [])
+  console.log(listProduct)
   return (
     <>
       {agent ? <div className="flex flex-col gap-2 bg-[#f5f5f5] pb-12">
@@ -170,7 +171,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
       <React.Fragment key={product._id}>
         {product.order.map((item) => (
           item.status === "paid" && (
-            <Link state={product} to={`/detail-product/${item?.product?._id}/${product?._id}`} key={product._id}>
+            <Link state={product} to={`/detail-product/${item?.product?._id}`} key={product._id}>
             <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
               <img
                 src={`${pathImage}/${item?.product?.photos && item?.product?.photos[0]}`}

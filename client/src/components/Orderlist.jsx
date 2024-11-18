@@ -31,9 +31,11 @@ function Orderlist() {
         const user = await apiGetOrderByShop()
         const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
         setproductList(filterOrderUser);
+        console.log(productList)
         setLoading(false);
       }else{
-        const store = await apiGetStore()
+        const store = await apiGetOrder()
+        console.log(store)
         setproductList(store);
         setLoading(false);
       }
@@ -42,7 +44,6 @@ function Orderlist() {
       console.log(error);
     }
   };
-
   let handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
@@ -141,8 +142,7 @@ function Orderlist() {
                     }
                   })}
                  {currentData?.role === "admin" &&
-                    productList?.map((product ) =>
-                      product?.order?.map((item, index) => {
+                      productList?.map((item, index) => {
                         return (
                           <tr key={item?._id}>
                             {/* Tên sản phẩm */}
@@ -165,13 +165,13 @@ function Orderlist() {
                               {item?.quantity * item?.product?.price}$
                             </td>
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              {item?.status === "paid" ? "Đã thanh toán" : "Chưa thanh toán"}
+                            {item && item?.status === "waitDelivery" ? "Đợi giao hàng" : item?.status === "delivering" ? "Đang giao hàng" : item?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}
                             </td>
                             <td>
                               <div className="flex flex-col gap-2">
                                 <Link
-                                  to={`/order-view/${product?._id}`}
-                                  state={product}
+                                  to={`/order-view/${item?._id}`}
+                                  state={item}
                                   className="btn btn-primary btn-sm"
                                 >
                                   Xem chi tiết
@@ -192,7 +192,7 @@ function Orderlist() {
                             </td>
                           </tr>
                         );
-                      })
+                      }
                     )}
 
                 </tbody>

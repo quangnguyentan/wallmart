@@ -42,8 +42,6 @@ const updateOrder = async (req, res, next) => {
 
   try {
     const findOrder = await Order.findById(id);
-    console.log(findOrder);
-
     if (findOrder) {
       const findProduct = await Product.findById(findOrder.product._id);
       if (findProduct) {
@@ -83,7 +81,10 @@ const updateOrder = async (req, res, next) => {
 };
 const List = async (req, res, next) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find().populate({
+      path: "product",
+      select: "title price",
+    });;
     res.json(orders);
   } catch (e) {
     next(e);
@@ -375,6 +376,7 @@ const GetMyOrdersByShop = async (req, res, next) => {
 const GetOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log(id)
     const products = await Order.findById(id);
     res.json(products);
   } catch (e) {

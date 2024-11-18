@@ -2,7 +2,7 @@ const path = {
   PUBLIC: "/",
   HOME: "",
   SEARCH: "search",
-  DETAIL_PRODUCT: "detail-product/:id/:storeId",
+  DETAIL_PRODUCT: "detail-product/:id",
   LIST_PRODUCT: "list-product",
   LOGIN: "login",
   SETTING: "setting",

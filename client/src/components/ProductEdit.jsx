@@ -33,11 +33,7 @@ function ProductEdit() {
   };
 
   const handleCategoryChange = (event, newValue) => {
-    if (values.length < 1) {
-      toast.error("Vui lòng chọn ngành kinh doanh");
-    } else {
-      setSelectedCategory(newValue);
-    }
+    setSelectedCategory(newValue);
   };
   const updateProduct = async (data) => {
     try {
@@ -104,6 +100,8 @@ function ProductEdit() {
       setValue("price", product.price);
       setValue("priceOld", product.priceOld);
       setValue("inventory", product.inventory);
+      setValue("priceOld", product.priceOld);
+      setValue("inventory", product.inventory);
       setValue("sold", product.sold);
       setValue("stock", product.stockOff);
     
@@ -141,7 +139,7 @@ function ProductEdit() {
             disablePortal
             options={listLeftCategories.map((option) => option.name)}
             className="w-full h-[40px] outline-none"
-            value={values}
+            value={product?.industry ? product?.industry : values}
             onChange={(event, newValue) => {
               setValues(newValue);
             }}
@@ -162,7 +160,8 @@ function ProductEdit() {
               }, }}
               onChange={handleCategoryChange}
               renderInput={(params) => <TextField {...params} label="Mục kinh doanh" />}
-              disabled={!values}
+              // disabled={!values}
+              value={product?.category ? product?.category : values}
             
           />
         </div>

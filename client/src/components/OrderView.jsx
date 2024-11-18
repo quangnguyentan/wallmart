@@ -7,6 +7,7 @@ import { apiGetUserById } from '@/services/userService';
 import { pathImage } from '@/lib/helper';
 import { apiGetOrderById, apiGetOrderByIdOrder } from '@/services/orderServer';
 import { apiGetstoreById } from '@/services/storeService';
+import { useSelector } from 'react-redux';
 
 function OrderView() {
     const { id } = useParams();
@@ -15,6 +16,7 @@ function OrderView() {
     const [isLoading, setLoading] = useState(true);
     const location = useLocation(); // Lấy thông tin về state từ URL
     // const productList = location.state;
+    const { currentData } = useSelector((state) => state.user); 
 
     useEffect(() => {
         getUsers(id);
@@ -22,9 +24,16 @@ function OrderView() {
 
     let getUsers = async (id) => {
         try {
-            const products = await apiGetstoreById(id)
+           if(currentData?.role === "agent"){
+            const products = await apiGetOrderByIdOrder(id)
             setproductList(products);
             setLoading(false);
+           }else{
+            const products = await apiGetOrderByIdOrder(id)
+            console.log(products)
+            setproductList(products);
+            setLoading(false);
+           }
         } catch (error) {
             console.log(error);
             // setLoading(false);
@@ -46,30 +55,48 @@ function OrderView() {
                             <div className="table-responsive">
                                 <table className="table table-bordered" id="dataTable" width="100%" cellSpacing="0">
                                     <thead>
-                                        <tr>
-                                        <th>Tên người mở cửa hàng</th>
+                                       {currentData?.role === "admin" ?  <tr>
+                                        <th>Tên người nhận hàng</th>
                                         <th>Số điện thoại </th>
-                                        <th>Email </th>
-                                        <th>Loại kinh doanh</th>
-                                        <th>Tên cửa hàng</th>
-                                        <th>Ảnh cửa hàng</th>
+                                        <th>Thành phố </th>
+                                        <th>Tỉnh</th>
+                                        <th>Số nhà, tên đường</th>
+                                        <th>Trạng thái nhận hàng</th>
 
-                                        </tr>
+                                        </tr> :  <tr>
+                                        <th>Tên người nhận hàng</th>
+                                        <th>Số điện thoại </th>
+                                        <th>Thành phố </th>
+                                        <th>Tỉnh</th>
+                                        <th>Số nhà, tên đường</th>
+                                        <th>Trạng thái nhận hàng</th>
+
+                                        </tr>}
                                     </thead>
                                    
                                     <tbody>
-                                        <tr>
-                                        <td>{productList?.fullname}</td>
+                                        {currentData?.role === "admin" ? <tr>
+                                        <td>{productList?.revicerName}</td>
                                         <td>{productList?.phone}</td>
-                                        <td>{productList?.emailYourself}</td>
-                                        <td>{productList?.industry}</td>
-                                        <td>{productList?.inforByStore?.nameStore}</td>
-                                        <td><img className='h-8 w-8' src={`${pathImage}/${productList?.logoStore}`} alt="" /></td>
+                                        <td>{productList?.city}</td>
+                                        <td>{productList?.province}</td>
+                                        <td>{productList?.stress}</td>
+                                       <td> {productList && productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
+                                       
+                                        
+                                        
+                                        </tr> : <tr>
+                                        <td>{productList?.revicerName}</td>
+                                        <td>{productList?.phone}</td>
+                                        <td>{productList?.city}</td>
+                                        <td>{productList?.province}</td>
+                                        <td>{productList?.stress}</td>
+                                       <td> {productList && productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
                                        
                                        
                                         
                                         
-                                        </tr>
+                                        </tr>}
                                     </tbody>
                                 </table>
                             </div>

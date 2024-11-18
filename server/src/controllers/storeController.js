@@ -416,7 +416,7 @@ const GetMyStore = async (req, res, next) => {
         path: "order",
         populate: {
           path: "product",
-          select: "title price priceOld photos color size", // Lấy thông tin tên và ảnh sản phẩm
+          select: "title price priceOld photos color size createdAt updatedAt", // Lấy thông tin tên và ảnh sản phẩm
         },
       });
     res.json(orders);

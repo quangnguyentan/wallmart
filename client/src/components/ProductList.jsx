@@ -10,6 +10,7 @@ import { apiGetMyStore } from "@/services/storeService";
 import { faBell, faCircleUser, faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { pathImage } from "@/lib/helper";
+import moment from "moment";
 function ProductList() {
   const [productList, setproductList] = useState([])
   const [product, setProduct] = useState(null)
@@ -75,7 +76,6 @@ function ProductList() {
       console.log(error);
     }
   };
-
   return (
     <>
       <div className="d-sm-flex align-items-center mb-4 flex items-center justify-end max-sm:justify-between">
@@ -153,7 +153,7 @@ function ProductList() {
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">${product?.priceOld}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.inventory} sản phẩm</td>
                           <td>{product?.createdAt &&product?.createdAt }</td>
-                          <td>{product?.updatedAt &&product?.updatedAt }</td>
+                          <td>{product?.updatedAt &&  moment(product?.updatedAt )}</td>
                           <th className="flex flex-col gap-2">
                             <Link
                               to={`/product-view/${product?._id}/${currentData?._id}`}
@@ -197,8 +197,8 @@ function ProductList() {
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words ">${product?.price}</td>
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">${product?.priceOld}</td>
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.inventory} sản phẩm</td>
-                        <td>{product?.createdAt &&product?.createdAt }</td>
-                        <td>{product?.updatedAt &&product?.updatedAt }</td>
+                        <td>{product?.createdAt && product?.createdAt }</td>
+                        <td>{product?.updatedAt && product?.updatedAt }</td>
                         <th className="flex flex-col gap-2">
                           <Link
                             to={`/product-view/${product?._id}/${currentData?._id}`}
@@ -291,8 +291,8 @@ function ProductList() {
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words ">${product?.product?.price}</td>
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words ">${product?.product?.priceOld}</td>
                         <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words ">{product?.quantity} sản phẩm</td>
-                        <td>{product?.createdAt &&product?.createdAt }</td>
-                        <td>{product?.updatedAt &&product?.updatedAt }</td>
+                        <td>{product?.product?.createdAt &&product?.product?.createdAt }</td>
+                        <td>{product?.product?.updatedAt &&product?.product?.updatedAt }</td>
                         <th className="flex flex-col gap-2">
                           <Link
                             to={`/product-view/${product?.product?._id}/${currentData?._id}`}
