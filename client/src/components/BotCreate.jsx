@@ -72,7 +72,7 @@ function BotCreate() {
       <form onSubmit={handleSubmit(createProduct)}>
         <div className='grid grid-cols-2 gap-4'>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Tên bot</label>
+        <label>Tên bot</label>
         <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none'   placeholder='Nhập tên bot' {...register("title", {
                   required: "Tên bot là bắt buộc",
                  
@@ -81,10 +81,10 @@ function BotCreate() {
               <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
             )}
         </div>
-        <div  className='flex gap-4 items-center  px-8 w-full'>
-        <label htmlFor="photo">Ảnh bot:       </label>
+        {/* <div  className='flex gap-4 items-center  px-8 w-full'>
+        <label>Ảnh bot:       </label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer' id='photo'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
-        </div>
+        </div> */}
        <div className='px-8 py-4'>
        <Autocomplete
             disablePortal
@@ -101,7 +101,7 @@ function BotCreate() {
         />
        </div>
         {/* <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Vai trò</label>
+        <label>Vai trò</label>
         <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập vai trò' {...register("description", {
                   required: "Vai trò là bắt buộc",
                  
@@ -111,7 +111,7 @@ function BotCreate() {
             )}
         </div> */}
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Nạp tiền</label>
+        <label>Nạp tiền</label>
         <input type="number" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='(vd : 30000$)' {...register("price", {
                   required: "Tiền nạp là bắt buộc",
                   validate: (value) => {
@@ -125,7 +125,7 @@ function BotCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Số điện thoại đăng nhập</label>
+        <label>Số điện thoại đăng nhập</label>
         <input type="tel" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none'  {...register("phone", {
                   required: "Số điện thoại đăng nhập là bắt buộc",
                   validate: (value) => {
@@ -139,7 +139,7 @@ function BotCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Số tài khoản</label>
+        <label>Số tài khoản</label>
         <input type="number" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Số tài khoản' {...register("creditCartOfBank", {
                   required: "Số tài khoản là bắt buộc",
                   validate: (value) => {
@@ -153,7 +153,7 @@ function BotCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Tên ngân hàng</label>
+        <label>Tên ngân hàng</label>
         <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Tên ngân hàng' {...register("nameOfBank", {
                   required: "Số tài khoản là bắt buộc",
                   validate: (value) => {
@@ -167,7 +167,7 @@ function BotCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Tên người thụ hưởng</label>
+        <label>Tên người thụ hưởng</label>
         <input type="text" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Tên người thụ hưởng' {...register("nameOfUser", {
                   required: "Tên người thụ hưởng là bắt buộc",
                   validate: (value) => {
@@ -181,7 +181,7 @@ function BotCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Mật khẩu</label>
+        <label>Mật khẩu</label>
         <input type="password" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Mật khẩu' {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
@@ -203,7 +203,7 @@ function BotCreate() {
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Chỉnh sửa người dùng"}
+            {isLoading ? "Đang tải..." : "Thêm bot"}
           </button>
         </div>
       </form>

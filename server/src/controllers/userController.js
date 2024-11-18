@@ -154,29 +154,27 @@ const createUser = async (req, res) => {
       password,
       phone,
     } = req.body;
-    let  user
-    const findPhone = await users.find({phone})
-    if(findPhone.length > 0) {
+    let user;
+    const findPhone = await users.find({ phone });
+    if (findPhone.length > 0) {
       return res.status(400).json({
-        msg : "Số điện thoại đã tồn tại"
+        msg: "Số điện thoại đã tồn tại",
       });
     }
-    user  = await users.create(
-      {
-        fullName,
-        username,
-        nameOfBank,
-        nameOfUser,
-        creditCartOfBank,
-        deposit: deposit && Number(deposit),
-        role,
-        phone,
-        avatar: req?.file && req.files.images[0].filename,
-        gender,
-        password: hashPassword(password),
-      },
-    );
-   
+    user = await users.create({
+      fullName,
+      username,
+      nameOfBank,
+      nameOfUser,
+      creditCartOfBank,
+      deposit: deposit && Number(deposit),
+      role,
+      phone,
+      avatar: req?.file && req.files.images[0].filename,
+      gender,
+      password: hashPassword(password),
+    });
+
     return res.status(200).json({
       success: user ? true : false,
       user,
@@ -201,7 +199,6 @@ const updatedUser = async (req, res) => {
       creditCartOfBank,
       password,
     } = req.body;
-
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -212,13 +209,13 @@ const updatedUser = async (req, res) => {
         creditCartOfBank,
         deposit: deposit && Number(deposit),
         role,
-        avatar: req?.file && req.files.images[0].filename,
+        avatar: req.files.images[0].filename && req.files.images[0].filename,
         gender,
-        password: hashPassword(password),
+        password: password && hashPassword(password),
       },
       { new: true }
     );
-
+    console.log(user);
     return res.status(200).json({
       success: user ? true : false,
       user,
@@ -450,5 +447,5 @@ module.exports = {
   getMyWithDraw,
   getAllWithDraw,
   getAllDeposit,
-  createUser
+  createUser,
 };
