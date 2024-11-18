@@ -68,8 +68,8 @@ function ProductEdit() {
       formData.append("priceOld", data?.priceOld); 
       formData.append("inventory", data?.inventory); 
       formData.append("stockOff", Boolean(data?.stock)); 
-      formData.append("industry", values)
-      formData.append("category", selectedCategory)
+      formData.append("industry", values ? values : product?.industry)
+      formData.append("category", selectedCategory ? selectedCategory : product?.category)
       // formData.append("industry", values)
       // formData.append("category", selectedCategory)
       setLoading(true);
@@ -115,8 +115,8 @@ function ProductEdit() {
   useEffect(() => {
     fetchGetProduct(id)
   }, [id])
- 
-  console.log(postMultipleFile)
+  console.log(product)
+ console.log(postMultipleFile)
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
       <form onSubmit={handleSubmit(updateProduct)}>

@@ -90,10 +90,10 @@ function BotEdit() {
               <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
             )}
         </div>
-        <div  className='flex gap-4 items-center  px-8 w-full'>
+        {/* <div  className='flex gap-4 items-center  px-8 w-full'>
         <label htmlFor="photo">Ảnh bot:</label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
-        </div>
+        </div> */}
        <div className='px-8 py-4'>
        <Autocomplete
             disablePortal

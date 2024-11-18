@@ -203,7 +203,7 @@ function BotCreate() {
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Chỉnh sửa người dùng"}
+            {isLoading ? "Đang tải..." : "Thêm bot"}
           </button>
         </div>
       </form>

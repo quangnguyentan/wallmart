@@ -215,7 +215,7 @@ function UserCreate() {
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Chỉnh sửa người dùng"}
+            {isLoading ? "Đang tải..." : "Tạo người dùng"}
           </button>
         </div>
       </form>
