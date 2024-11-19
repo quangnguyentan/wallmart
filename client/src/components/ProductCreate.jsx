@@ -85,7 +85,7 @@ function ProductCreate() {
       setLoading(false);
       if (res?.success) {
         toast.success("Tạo sản phẩm thành công");
-        navigate("/product-list")
+        // navigate("/product-list")
        
       } else {
         toast.error(res.message || "Đã xảy ra lỗi");
