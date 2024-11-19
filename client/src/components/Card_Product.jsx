@@ -77,7 +77,6 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
       e.preventDefault();
     }));
   }, [])
-  
   return (
     <>
       {agent ? <div className="flex flex-col gap-2 bg-[#f5f5f5] pb-12">
@@ -177,7 +176,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
       {product.order.map((item) => {
         // Kiểm tra xem có category và sản phẩm có category đó không
         const isCategoryMatch = category && item?.product?.category === category;
-
+        console.log(item?.product?.category)
         // Kiểm tra nếu sản phẩm đã thanh toán
         if (item.status === "paid" && (!category || isCategoryMatch)) {
           return (
