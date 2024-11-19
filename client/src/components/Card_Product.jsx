@@ -13,7 +13,7 @@ import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 
-const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) => {
+const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, category }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
   const [loadingData, setLoadingData] = useState(false);
   const [productList, setproductList] = useState([])
@@ -77,7 +77,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
       e.preventDefault();
     }));
   }, [])
-  console.log(listProduct)
+  
   return (
     <>
       {agent ? <div className="flex flex-col gap-2 bg-[#f5f5f5] pb-12">
@@ -166,33 +166,46 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
         </div>
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4">
-      {stores?.length > 0 ? stores?.map((product) => (
-    product?.order?.some(item => item.status === "paid") && (
-      <React.Fragment key={product._id}>
-        {product.order.map((item) => (
-          item.status === "paid" && (
-            <Link state={product} to={`/detail-product/${item?.product?._id}`} key={product._id}>
-            <div className="w-full h-full bg-white cursor-pointe flex flex-col gap-2">
-              <img
-                src={`${pathImage}/${item?.product?.photos && item?.product?.photos[0]}`}
-                alt="product_test"
-                className="h-[256px] max-sm:h-[180px] w-full object-cover"
-              />
-              <div className="flex flex-col gap-2 px-2">
-                <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
-                  {item?.product?.title}
-                </span>
-                <span className="text-[#ed5435] font-semibold text-2xl  max-sm:text-base max-sm:font-semibold">
+      {stores?.length > 0 ? stores?.map((product) => {
+  // Kiểm tra nếu có đơn hàng đã thanh toán
+  const hasPaidOrder = product?.order?.some(item => item.status === "paid");
+
+  if (!hasPaidOrder) return null; // Nếu không có đơn hàng đã thanh toán, bỏ qua
+
+  return (
+    <React.Fragment key={product._id}>
+      {product.order.map((item) => {
+        // Kiểm tra xem có category và sản phẩm có category đó không
+        const isCategoryMatch = category && item?.product?.category === category;
+
+        // Kiểm tra nếu sản phẩm đã thanh toán
+        if (item.status === "paid" && (!category || isCategoryMatch)) {
+          return (
+            <Link state={product} to={`/detail-product/${item?.product?._id}`} key={item?.product?._id}>
+              <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2">
+                <img
+                  src={`${pathImage}/${item?.product?.photos?.[0]}`}
+                  alt="product_test"
+                  className="h-[256px] max-sm:h-[180px] w-full object-cover"
+                />
+                <div className="flex flex-col gap-2 px-2">
+                  <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
+                    {item?.product?.title}
+                  </span>
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base max-sm:font-semibold">
                     ${item?.product?.price}
-                </span>
+                  </span>
+                </div>
               </div>
-            </div>
-           </Link>
-          )
-        ))}
-      </React.Fragment>
-    )
-      )) : stores?.order &&
+            </Link>
+          );
+        }
+        return null;
+      })}
+    </React.Fragment>
+  );
+})
+ : stores?.order &&
         stores?.order?.map((item) => (
           item.status === "paid" ? (
             <Link
@@ -220,7 +233,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
         )
         )}
       </div>
-      <div className="grid grid-cols-2 gap-2 px-4">
+      {/* <div className="grid grid-cols-2 gap-2 px-4">
       {listProduct && listProduct?.map((product) => (
     product  && (
       <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">
@@ -249,7 +262,34 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct }) 
     )
     )
       )  }
-      </div>
+      {category && stores?.order &&
+        stores?.order?.map((item) => (
+          item.status === "paid" && category  === item?.product?.category ? (
+            <Link
+              state={item}
+              to={`/detail-product/${item?.product?._id}`}
+              key={item._id}
+            >
+              <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <img
+                  src={`${pathImage}/${item?.product?.photos?.[0]}`}
+                  alt="product_test"
+                  className="h-[256px] max-sm:h-[180px] w-full object-cover rounded-lg"
+                />
+                <div className="flex flex-col gap-2 px-2">
+                  <span className="line-clamp-2 break-words font-medium text-[18px] max-sm:text-sm text-gray-800">
+                    {item?.product?.title}
+                  </span>
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base">
+                    ${item?.product?.price}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ) : null
+        )
+        )}
+      </div> */}
       
       <div
         className={

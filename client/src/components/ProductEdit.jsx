@@ -38,10 +38,22 @@ function ProductEdit() {
   const updateProduct = async (data) => {
     try {
       const formData = new FormData();
-      for(let index = 0; index < postMultipleFile.length; index++) {
-        const file = postMultipleFile[index]
-        formData.append("photos", file); 
+      if(postMultipleFile?.length > 0){
+        console.log("abc")
+
+        for(let index = 0; index < postMultipleFile.length; index++) {
+          const file = postMultipleFile[index]
+          formData.append("photos", file ); 
+        }
+      }else{
+        for(let index = 0; index < product?.photos?.length; index++) {
+          const file = product?.photos[index]
+
+          console.log(file)
+          formData.append("photos", file ); 
+        }
       }
+      
       // if(addNameColorField.length > 0 || addNameSizeField.length > 0) {
       //   for(let index = 0; index < addNameColorField.length; index++) {
       //     const file = addNameColorField[index]
@@ -62,7 +74,6 @@ function ProductEdit() {
       // }
       formData.append("title", data?.title); 
       formData.append("description", data?.description); 
-
       formData.append("sold", data?.sold);
       formData.append("price", data?.price); 
       formData.append("priceOld", data?.priceOld); 
@@ -115,8 +126,6 @@ function ProductEdit() {
   useEffect(() => {
     fetchGetProduct(id)
   }, [id])
-  console.log(product)
- console.log(postMultipleFile)
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
       <form onSubmit={handleSubmit(updateProduct)}>

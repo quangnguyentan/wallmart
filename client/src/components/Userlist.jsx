@@ -9,7 +9,6 @@ import "./sb-admin-2.min.css";
 import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { apiDeleteUserById, apiGetAllUser } from "@/services/userService";
-import moment from "moment";
 
 function Userlist() {
   const [value, setValue] = useState(null)

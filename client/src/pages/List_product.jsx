@@ -10,9 +10,12 @@ import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import Card_Product from "@/components/Card_Product";
 import { apiGetProduct, apiGetProductByCategory } from "@/services/productService";
 import { useLocation } from "react-router-dom";
+import { apiGetStore } from "@/services/storeService";
 const List_product = () => {
     const [products, setProducts] = useState([])
     const [activeTab, setActiveTab] = useState('all');
+    const [stores, setStores] = useState([])
+
     const location = useLocation();
     const  productName   = location.state 
     console.log(productName)
@@ -23,7 +26,13 @@ const List_product = () => {
       setProducts(res?.products)
       }
     }
-   
+  const getAllStore = async() => {
+    const res = await apiGetStore()
+    setStores(res)
+  }
+  useEffect(() => {
+    getAllStore()
+  },[])
   useEffect(() => {
     if (productName) {
       getProduct(productName);
@@ -118,7 +127,7 @@ const List_product = () => {
       </div>
       <div >
       <TabsContent value="all">
-        <Card_Product listProduct={products} hidden/>
+        <Card_Product listProduct={products} stores={stores} category={productName} hidden/>
         <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -140,7 +149,7 @@ const List_product = () => {
       </TabsContent>
       </div>
       <TabsContent value="sell">
-      <Card_Product products={products} hidden/>
+      <Card_Product listProduct={products} stores={stores} category={productName} hidden/>
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon
@@ -162,7 +171,7 @@ const List_product = () => {
       </TabsContent>
       
       <TabsContent  value="price"> 
-      <Card_Product hidden products={products} />
+      <Card_Product hidden listProduct={products} stores={stores} category={productName} />
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

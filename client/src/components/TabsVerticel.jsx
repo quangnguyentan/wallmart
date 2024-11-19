@@ -1,14 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import "video-react/dist/video-react.css";
 import SlickSlider from "./SlickSlider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { listLeftCategories } from "@/lib/helper";
 import Category_Info from "./Category_Info";
+import { apiGetStore } from "@/services/storeService";
 
 
 const TabsVerticel = () => {
+
   const [activeTab, setActiveTab] = useState(1);
-  
+ 
   return (
     <div className="w-full h-screen overflow-hidden overflow-y-hidden border-none ">
       <h3 className="text-center py-2 text-gray-500">Phân loại</h3>
