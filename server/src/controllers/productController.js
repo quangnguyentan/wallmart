@@ -163,8 +163,9 @@ const UpdateProduct = async (req, res, next) => {
       industry,
       category,
       store,
+      photos,
     } = req.body;
-    console.log(priceOld);
+    console.log(photos);
     const files = req.files;
     let arrayFiles = [];
     if (files) {
@@ -172,14 +173,20 @@ const UpdateProduct = async (req, res, next) => {
       for (index = 0, len = files.length; index < len; ++index) {
         arrayFiles.push(files[index].filename);
       }
+    } else {
+      let index, len;
+      for (index = 0, len = photos?.length; index < len; ++index) {
+        arrayFiles.push(photos[index]);
+      }
     }
+    console.log(arrayFiles);
     const products = await Product.findByIdAndUpdate(
       id,
       {
-        photos: arrayFiles,
+        photos: arrayFiles.length > 0 ? arrayFiles : photos,
         title,
-        industry,
-        category,
+        industry: industry && industry,
+        category: category && category,
         description,
         price,
         priceOld,

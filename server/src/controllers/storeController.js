@@ -35,7 +35,7 @@ const GetAllStore = async (req, res, next) => {
     const products = await Store.find().populate({
       path: "order",
       populate: [
-        { path: "product", select: "title price photos" }, // Lấy thông tin tên và ảnh sản phẩm
+        { path: "product", select: "title price photos industry category" }, // Lấy thông tin tên và ảnh sản phẩm
       ],
     });
     res.json(products);
@@ -49,7 +49,11 @@ const GetStoreById = async (req, res, next) => {
     const products = await Store.findById(id).populate({
       path: "order",
       populate: [
-        { path: "product", select: "title price photos color size" }, // Lấy thông tin tên và ảnh sản phẩm
+        {
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt updatedAt category industry",
+        }, // Lấy thông tin tên và ảnh sản phẩm
       ],
     });
     res.json(products);
@@ -416,7 +420,8 @@ const GetMyStore = async (req, res, next) => {
         path: "order",
         populate: {
           path: "product",
-          select: "title price priceOld photos color size createdAt updatedAt", // Lấy thông tin tên và ảnh sản phẩm
+          select:
+            "title price priceOld photos color size createdAt updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
         },
       });
     res.json(orders);
