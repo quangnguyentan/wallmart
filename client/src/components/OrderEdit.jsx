@@ -9,18 +9,22 @@ import Autocomplete from '@mui/material/Autocomplete';
 const list_status = [
   {
     id : 1,
-    name : "Đợi giao hàng"
+    name : "Chưa thanh toán"
   },
   {
     id : 2,
-    name : "Đang giao hàng"
+    name : "Đợi giao hàng"
   },
   {
     id : 3,
-    name : "Giao hàng thành công"
+    name : "Đang giao hàng"
   },
   {
     id : 4,
+    name : "Giao hàng thành công"
+  },
+  {
+    id : 5,
     name : "Đơn hàng bị hủy"
   },
 ]
@@ -55,8 +59,7 @@ function OrderEdit() {
       // formData.append("stockOff", Boolean(data?.stock)); 
       setLoading(true);
       console.log(id)
-      const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : "canceled" : order?.status }); 
-      console.log(res)
+      const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : values === "Chưa thanh toán" ? "waitPay" : "canceled" : order?.status }); 
       if(res) {
         setLoading(false);
         toast.success("Đăng kí thành công");
@@ -94,7 +97,7 @@ function OrderEdit() {
                               defaultValue={setValue("title", order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy")}
                             
                               className="w-full h-[40px] outline-none border-none"
-                              value={values ? values :  order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  : "Đơn hàng bị hủy"}
+                              value={values ? values :  order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  order?.status === "waitPay" ? "Chưa thanh toán"  :  "Đơn hàng bị hủy"}
                              
                               onChange={(event, newValue) => {
                                 setValues(newValue);

@@ -184,14 +184,12 @@ const Profile = () => {
       <div className="px-4">
         <div className="grid grid-cols-4 bg-white rounded-2xl px-4 py-8 gap-4 max-sm:text-xs">
           <div className="flex flex-col items-center gap-3 cursor-pointer " onClick={() => {
-           if(isLoggedIn && token && store ) {
+           if(isLoggedIn && token ) {
             dispatch(getCurrent())
             if(store && store?.active === "access") {
-              navigate("/product-list")
+              navigate("/home")
             }
-            if(store && store?.active === "wait") {
-              navigate("/register-store")
-            }
+           
             if(!store) {
               navigate("/register-choose")
             }

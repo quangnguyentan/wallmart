@@ -7,39 +7,93 @@ import Divider from '@mui/material/Divider';
 import noCart from "@/assets/noCart.png"
 import { pathImage } from "@/lib/helper"
 import { getCurrent } from "@/stores/actions/userAction"
-import { useMediaQuery } from "@mui/material"
+import { Autocomplete, TextField, useMediaQuery } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { apiAddToCart, apiGetUserById } from "@/services/userService"
+import { apiGetAllUser, apiGetUserById } from "@/services/userService"
 import toast from "react-hot-toast"
-import { apiAddToCartByStore, apiGetMyStore, apiGetstoreById, apiOrderPaymentByStore } from '@/services/storeService';
-import { Link, useParams } from 'react-router-dom';
-import { apiGetProduct } from '@/services/productService';
-export default function DrawRightAdmin({ productItem, userId }) {
+import { useParams } from 'react-router-dom';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import hr from "@/assets/hr.png"
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { apiCreateAddresById, apiCreateAddress, apiGetAddressByUserId } from '@/services/addressService';
+import Switch from '@mui/material/Switch';
+import { useForm } from "react-hook-form"
+import { apiOrderPaymentBot } from '@/services/orderServer';
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
+export default function DrawRightAdmin({ productItem }) {
   const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false)
   const [products, setProducts] = useState(productItem || [])
-  const [storeList, setstoreList] = useState([])
-  const [productList, setproductList] = useState([])
-  const [quantity, setQuantity] = useState(1)
+  const [isAddOpen, setIsAddOpen] = useState(false)
   const { isLoggedIn, token } = useSelector((state) => state.auth);
   const isMobile = useMediaQuery("(max-width:600px)");
   const navigate = useNavigate()
- 
-    const [currentData, setCurrentData] = useState(null)
+  const [userList, setUserList] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [values, setValues] = useState(null)
+  const [currentData, setCurrentData] = useState(null)
+  const [address, setAddress] = useState([])
+  const [selectAddress, setSelectAddress] = useState(null)
   const dispatch = useDispatch()
-
-  const { id } = useParams()
-
+  const { id, userId } = useParams()
   const [activeSwitchText, setActiveSwitchText] = useState(false)
-
-
   const [isChecked, setIsChecked] = useState([])
-  const [isCheckedAll, setIsCheckedAll] = useState(false)
-
-
+  const [isCheckedAll, setIsCheckedAll] = useState(true)
+  const [ids, setIds] = useState(null)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    getValues
+  } = useForm();
+  const [checked, setChecked] = useState(false);
+  const hanleChange = (e) => {
+    setChecked(e.target.checked);
+  }
+  const createOrderByBot = async () => {
+    
+    const res  = await apiOrderPaymentBot({productsInCart : isChecked, selectedAddress: selectAddress || address[0] , usersList: ids , storeId : userId})
+    if(res?.success) {
+      toast.success("Đặt đơn cho cửa hàng thành công")
+      navigate("/order-list")
+    }
+    if(res?.err === 1) {
+      toast.error(res?.msg)
+    }
+    
+  }
+  const onCreateAddressOrder = async (id) => {
+    await apiCreateAddresById(id, {revicerName :getValues("revicerName"),phone :getValues("phone"), city : getValues("city"), province : getValues("province"),stress : getValues("stress"), active: checked ? true : false})
+    toast.success("Thêm địa chỉ thành công")
+    getAddress(id)
+    setIsAddOpen(false);
+    reset()
+  }
+  const getAddress = async(userId) => {
+    const res = await apiGetAddressByUserId(userId)
+    setAddress(res)
+  }
+  let getUsers = async () => {
+    try {
+      const userResponse = await apiGetAllUser(); 
+      const findRole = userResponse?.user?.filter(user => 
+        user?.role === "bot"
+      );
+      setUserList(findRole);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);  // Đảm bảo setLoading là false ngay cả khi có lỗi
+    }
+  };
   const onChangeChecked = ( product) => {
  
     const check = isChecked?.some((item) => item?._id === product?._id)
@@ -50,7 +104,6 @@ export default function DrawRightAdmin({ productItem, userId }) {
      }
    
   }
-  
   useEffect(() => {
     if (productItem) {
       setProducts(productItem);
@@ -70,19 +123,22 @@ export default function DrawRightAdmin({ productItem, userId }) {
         setCurrentData(res?.user)
     }
   }
-  useEffect(() => {
-    fetchGetByUserId(userId)
-  },[])
+ 
   const onChangeQuantity = (product, type) => {
     const updatedProducts = products.map((item) => {
       if (item._id === product._id) {
-        if (item.quantityInit >= item.quantity) {
+        if (item.quantityInit >= item.product?.inventory) {
             toast.error("Sản phẩm đã hết hàng! Không thể tăng thêm số lượng");
             return item; 
         }
         const newQuantity = type === "increment" 
           ? item.quantityInit + 1 
           : Math.max(1, item.quantityInit - 1);
+          // if(newQuantity === 1) {
+          //   // console.log(item)
+          //   const filterProduct = products?.filter((product) => product?._id !== item?._id)
+          //   return filterProduct[0]
+          // }
         return { ...item, quantityInit: newQuantity };
       }
       return item;
@@ -90,56 +146,277 @@ export default function DrawRightAdmin({ productItem, userId }) {
   
     setProducts(updatedProducts); // Cập nhật state để giao diện re-render
   };
+ 
+  // const addToCart = async(product, type) => {
   
-  const addToCart = async(product, type) => {
-  
-    if(type === "increment") {
-        const res = await apiAddToCart({
-            quantity : 1,
-            product : product?.product?._id,
-            store : product?.store?._id,
-            color : product?.color,
-            size : product?.size
-          })
-          if(res?.success) {
-            toast.success("Cập nhật giỏ hàng thành công")
-            dispatch(getCurrent())
-        }
-    }else{
-      const res = await apiAddToCart({
-        quantity : -1,
-        product : product?.product?._id,
-        store : product?.store?._id,
-        color : product?.color,
-        size : product?.size
-      })
-      if(res?.success) {
-        toast.success("Cập nhật giỏ hàng thành công")
-        dispatch(getCurrent())
+  //   if(type === "increment") {
+  //       const res = await apiAddToCart({
+  //           quantity : 1,
+  //           product : product?.product?._id,
+  //           store : product?.store?._id,
+  //           color : product?.color,
+  //           size : product?.size
+  //         })
+  //         if(res?.success) {
+  //           toast.success("Cập nhật giỏ hàng thành công")
+  //           dispatch(getCurrent())
+  //       }
+  //   }else{
+  //     const res = await apiAddToCart({
+  //       quantity : -1,
+  //       product : product?.product?._id,
+  //       store : product?.store?._id,
+  //       color : product?.color,
+  //       size : product?.size
+  //     })
+  //     if(res?.success) {
+  //       toast.success("Cập nhật giỏ hàng thành công")
+  //       dispatch(getCurrent())
 
-    }
-    }
+  //   }
+  //   }
     
-  }
-  useEffect(() => {
-   if(isLoggedIn && token)  dispatch(getCurrent())
-  },[isLoggedIn, token, dispatch])
+  // }
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+  const handleClickOpen = () => {
+    setIsOpen(true);
+  };
 
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handleClickAddOpen = () => {
+    setIsAddOpen(true);
+  };
+
+  const handleAddClose = () => {
+    setIsAddOpen(false);
+  };
+  useEffect(() => {
+    if(isLoggedIn && token)  dispatch(getCurrent())
+   },[isLoggedIn, token, dispatch])
  
+  useEffect(() => {
+    fetchGetByUserId(userId) && getUsers()
+  },[userId])
+
   const DrawerList = (
    <>
-     {products && productItem &&  <Box className="w-[750px] max-sm:w-[250px]"  role="presentation" onClick={toggleDrawer(false)}>
+     {products && productItem &&  <Box className="w-[750px] max-sm:w-[250px]"  role="presentation" onClick={(e) => {
+      e.stopPropagation()
+      toggleDrawer(false)
+     }}>
       <List>
       <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
-      <h3 className="w-full text-center text-gray-600 bg-white py-2 shadow-sm">Giỏ hàng</h3>
-        <div className='flex items-center justify-between px-2'>
-            <span className="text-xl max-sm:text-sm">Tổng cộng {products?.length}</span>
-            <span className="text-xl cursor-pointer max-sm:text-sm" onClick={() => setActiveSwitchText(!activeSwitchText)}>{activeSwitchText ? "Hoàn thành" : "Bỏ sản phẩm"}</span>
-        </div>
+      <h3 className="w-full text-center text-gray-600 bg-white py-2 shadow-sm">Đặt đơn ảo cửa hàng</h3>
+      <div className='flex flex-col gap-8'>
+        <React.Fragment>
+        {address && address?.length > 0 ? <div className="flex flex-col gap-2 bg-white px-4" key={address[0]?._id} >
+          <div className="flex items-center gap-1 w-full py-4 justify-between">
+            <div className='flex items-center gap-2 cursor-pointer' onClick={handleClickOpen}>
+            <LocationOnOutlinedIcon sx={{ fontSize: isMobile ? "20px" : "25px" }} />
+           {selectAddress ?  <div className="flex flex-col gap-1 py-2">
+              <div className="flex gap-1 items-center">
+                <span className="max-sm:text-xs text-black font-semibold text-base">{selectAddress?.revicerName}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base">{selectAddress?.phone}</span>
+              </div>
+              <div className="flex items-center gap-1 pb-2">
+                <span className="max-sm:text-xs text-black font-semibold text-base">{selectAddress?.province}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base"> {selectAddress?.city}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base">{selectAddress?.stress}</span>
+              </div>
+            </div> : <div className="flex flex-col gap-1 py-2">
+              <div className="flex gap-1 items-center">
+                <span className="max-sm:text-xs text-black font-semibold text-base">{address[0]?.revicerName}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base">{address[0]?.phone}</span>
+              </div>
+              <div className="flex items-center gap-1 pb-2">
+                <span className="max-sm:text-xs text-black font-semibold text-base">{address[0]?.province}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base"> {address[0]?.city}</span>
+                <span className="max-sm:text-xs text-black font-semibold text-base">{address[0]?.stress}</span>
+              </div>
+            </div>}
+            </div>
+            <div className='w-1/2'>
+              <Autocomplete
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                    disablePortal
+                    value={values}
+                    options={userList?.map((option) => option.fullName)}    
+                    className="w-full h-[40px] outline-none border-none"           
+                    onChange={(event, newValue) => {
+                      const selectedUser = userList?.find((user) => user?.fullName === newValue);
+                      if (selectedUser) {
+                        setIds(selectedUser?._id); 
+                        getAddress(selectedUser?._id)
+                      }
+                      setValues(newValue); 
+                    }}
+                    renderInput={(params) => <TextField {...params} label="Chọn bot" />}
+              />
+            </div>
+          </div>
+          <img src={hr} alt="hr" className="py-2" />
+        </div> : <div className="flex items-center justify-between px-4 gap-1 w-full cursor-pointer">
+      <div onClick={() => {
+        if(values) {
+          handleClickOpen()
+        }else{
+          toast.error("Vui lòng chọn bot trước khi thêm địa chỉ")
+        }
+      }} className='flex items-center gap-2'>
+      <LocationOnOutlinedIcon sx={{ fontSize: isMobile ? "20px" : "30px" }} />
+      <div className='flex flex-col'>
+      <span className="max-sm:text-xs text-black font-semibold text-base">Chưa có địa chỉ</span>
+      <span className="max-sm:text-xs text-black font-semibold text-base">Thêm địa chỉ</span>
+      </div>
+      </div>
+
+      <div className='w-1/2'>
+              <Autocomplete
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                    disablePortal
+                    value={values}
+                    options={userList?.map((option) => option.fullName)}    
+                    className="w-full h-[40px] outline-none border-none"           
+                    onChange={(event, newValue) => {
+                      console.log(newValue)
+                      const selectedUser = userList?.find((user) => user?.fullName === newValue);
+                      if (selectedUser) {
+                        setIds(selectedUser?._id); 
+                        getAddress(selectedUser?._id)
+                      }
+                      setValues(newValue); 
+                    }}
+                    renderInput={(params) => <TextField {...params} label="Chọn bot" />}
+              />
+            </div>
+    </div>}
+       
+        <Dialog
+          open={isOpen}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+           Địa chỉ giao hàng
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description" className='flex flex-col gap-4'>
+              {address?.map((add) => (
+                <div className="flex flex-col gap-1 cursor-pointer py-4 rounded-xl border-[1px] px-4 border-[#25bcf1]" key={add?._id} onClick={(e) => {
+                  e.preventDefault()
+                  setSelectAddress(add)
+                  toast.success("Chọn địa chỉ thành công")
+                  setIsOpen(false)
+                }}>
+                  <div className="flex gap-2 items-center">
+                    <span className="max-sm:text-xs text-black text-base">Tên người nhận hàng:</span>
+                    <span className="max-sm:text-xs text-black text-base">{add?.revicerName}</span>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <span className="max-sm:text-xs text-black text-base">Số điện thoại: </span>
+                    <span className="max-sm:text-xs text-black text-base">{add?.phone}</span>
+                  </div>
+                  <div className="flex items-center gap-2 pb-2">
+                    <span className="max-sm:text-xs text-black text-base">Địa chỉ người nhận hàng:</span>
+                    <div className='flex items-center gap-1'>
+                      <span className="max-sm:text-xs text-black text-base">{add?.stress},</span>
+                      <span className="max-sm:text-xs text-black text-base">{add?.province},</span>
+                      <span className="max-sm:text-xs text-black text-base"> {add?.city}</span>
+                      
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              <React.Fragment>
+                <div className='flex items-center px-40 py-10 hover:shadow-xl justify-center gap-2 cursor-pointer' onClick={handleClickAddOpen} >
+                <LocationOnOutlinedIcon sx={{ fontSize: isMobile ? "20px" : "25px" }} />
+                <span className="max-sm:text-xs text-black text-base">Thêm địa chỉ</span>
+                </div>
+                <Dialog
+                  open={isAddOpen}
+                  onClose={handleAddClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">
+                    Thêm địa chỉ giao hàng
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      <div className='flex flex-col gap-4 w-full relative'>
+                          <form onSubmit={(e) => {
+                            e.preventDefault();
+                            handleSubmit(onCreateAddressOrder(ids))
+                          }}>
+                          <div>
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Người nhận hàng</span>
+                                <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên người nhận hàng"  {...register("revicerName")} />
+                            
+                            </div>
+                            
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Số điện thoại</span>
+                                <input type="number" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại liên hệ" {...register("phone")}/>
+                            </div>
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Tỉnh</span>
+                                <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tỉnh" {...register("province")}/>
+                            </div>
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Thành phố</span>
+                                <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập thành phố" {...register("city")}/>
+                            </div>
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Tên đường, Tòa nhà, Số nhà</span>
+                                <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên đường, tòa nhà, số nhà" {...register("stress")}/>
+                            </div>
+                            <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
+                                <span className="w-[30%]">Địa chỉ mặc định</span>
+                                <Switch {...label} onChange={hanleChange} />
+                            </div>
+                          </div>
+                          <div className="py-4">
+                          <button className="px-8 py-4 max-sm:text-xs w-full rounded-full bg-red-500 text-white"  type="submit">Lưu dịa chỉ</button>
+                          </div>
+                          </form>
+                      </div>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleAddClose}>Hủy bỏ</Button>
+                    {/* <Button onClick={handleAddClose} autoFocus>
+                      Agree
+                    </Button> */}
+                  </DialogActions>
+                </Dialog>
+              </React.Fragment>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Hủy bỏ</Button>
+            {/* <Button onClick={handleClose} autoFocus>
+              Đồng Ý
+            </Button> */}
+          </DialogActions>
+        </Dialog>
+        </React.Fragment>
+      </div>
+      <div className='flex items-center justify-between px-2'>
+            <span className="text-base max-sm:text-sm">Tổng cộng {products?.length}</span>
+            <span className="text-base cursor-pointer max-sm:text-sm" onClick={() => setActiveSwitchText(!activeSwitchText)}>{activeSwitchText ? "Hoàn thành" : "Bỏ sản phẩm"}</span>
+      </div>
        {products && products?.length> 0 ? <div className="px-4 flex flex-col gap-4 pb-40">
          {products?.map((product) => (
             <div key={product?._id} className="rounded-xl bg-white py-2 px-4 flex flex-col gap-2">
@@ -201,23 +478,28 @@ export default function DrawRightAdmin({ productItem, userId }) {
           </div>
          <div className="flex flex-col items-center line-clamp-1  ">
           <span className="max-sm:text-xs">Tổng tiền</span>
-         <span className="max-sm:text-sm text-red-500 font-semibold">${isChecked?.length === products?.length  ?  products?.reduce((initValue, currentValue) => {
-            const totalProductPrice = currentValue?.product?.price * currentValue?.quantity;
+         <span className="max-sm:text-sm text-red-500 font-semibold">${isChecked?.length === products?.length ?  products?.reduce((initValue, currentValue) => {
+            const totalProductPrice = currentValue?.product?.price * currentValue?.quantityInit;
             return initValue + totalProductPrice;
           },0) : isChecked?.reduce((initValue, currentValue) => {
-            const totalProductPrice = currentValue?.product?.price * currentValue?.quantity;
+            const totalProductPrice = currentValue?.product?.price * currentValue?.quantityInit;
             return initValue + totalProductPrice;
           },0)}</span>
          </div>
           <button className="px-4 py-2 max-sm:text-xs rounded-xl bg-red-500 text-white" onClick={(e) => {
             e.stopPropagation()
             if(isChecked?.length > 0) {
-              navigate("/order-cart", {state : {isChecked, id }})
-
-            }else{
-              toast.error("Vui lòng chọn sản phẩm để thanh toán")
+             createOrderByBot()
             }
-          }} >Thanh toán</button>
+            if(!address && !selectAddress){
+              toast.error("Chưa có địa chỉ giao hàng")
+              return
+            }
+            if(isChecked?.length <= 0){
+              toast.error("Vui lòng chọn sản phẩm để thanh toán")
+              return
+            }
+          }} >Đặt đơn cho cửa hàng</button>
           </div>
          </div>}
     </div>
@@ -225,8 +507,7 @@ export default function DrawRightAdmin({ productItem, userId }) {
        
       </List>
       <Divider />
-      {storeList && storeList?.cart?.length > 0 && (
-  // Kiểm tra xem có bất kỳ sản phẩm nào có trạng thái "paid"
+      {/* {storeList && storeList?.cart?.length > 0 && (
       storeList?.cart?.some((product) => product?.status === "not_paid") && (
     <div className="text-lg font-semibold px-4 py-4 flex items-center justify-between">
      <div className='flex items-center justify-center flex-col gap-1'>
@@ -238,10 +519,10 @@ export default function DrawRightAdmin({ productItem, userId }) {
        <div className='flex items-center justify-center gap-2'>
         <span className='max-sm:text-xs'>Tổng tiền: </span>
         <span className="max-sm:text-xs text-red-500 font-semibold ">
-          {/* Tính tổng tiền của các sản phẩm có trạng thái "paid" */}
-          ${storeList?.cart?.reduce((total, currentValue) => {
+          ${products?.reduce((total, currentValue) => {
+            console.log(currentValue)
             if (currentValue?.status === "not_paid") {
-              return total + (currentValue?.product?.price * currentValue?.quantity);
+              return total + (currentValue?.product?.price * currentValue?.quantityInit);
             }
             return total;
           }, 0)}
@@ -250,7 +531,7 @@ export default function DrawRightAdmin({ productItem, userId }) {
       </div>
     </div>
   )
-)}
+      )} */}
     </Box>}
    </>
   );

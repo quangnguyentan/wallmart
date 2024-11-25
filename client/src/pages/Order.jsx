@@ -44,7 +44,6 @@ const Order = () => {
     useEffect(() => {
       getMyOrder()
     },[])
-    console.log(order)
   return (
     <div className="bg-[#f5f5f5] h-screen overflow-x-scroll scrollbar-hide">
         <div className="w-full flex items-center bg-white py-2">

@@ -49,12 +49,38 @@ export const apiGetAddress = (id) =>
       console.log("Failed to get order", error);
     }
   });
+export const apiGetAddressByUserId = (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "GET",
+        url: `/address/userId/` + userId,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get order", error);
+    }
+  });
 export const apiCreateAddress = (data) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await axiosConfig({
         method: "POST",
         url: "/address",
+        data,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get order", error);
+    }
+  });
+
+export const apiCreateAddresById = (id, data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: "/address/create/" + id,
         data,
       });
       resolve(response);

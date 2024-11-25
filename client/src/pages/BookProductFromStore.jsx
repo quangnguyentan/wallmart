@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import DrawRight from "@/components/DrawRight";
 import DrawRightAdmin from "@/components/DrawRightAdmin";
+import { apiGetAllUser } from "@/services/userService";
 
 const BookProductFromStore = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
@@ -18,14 +19,14 @@ const BookProductFromStore = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [product, setProduct] = useState([])
   const { id, userId } = useParams()
+  
   useEffect(() => {
-    getUsers()
+    getProducts()
   }, []);
 
-  let getUsers = async () => {
+  let getProducts = async () => {
     try {
       const products = await apiGetstoreById(id)
-      console.log(products)
       setStores(products);
     } catch (error) {
       console.log(error);
@@ -86,19 +87,18 @@ const BookProductFromStore = () => {
       e.preventDefault();
     }));
   }, [])
-  
   return (
     <div className="flex flex-col gap-2 bg-[#f5f5f5]">
       <div className="w-full justify-end flex px-4 py-2">
       <DrawRightAdmin productItem={product}  userId={userId}/>
       </div>
       <div className="grid grid-cols-5 gap-2 px-4">
-      {stores?.order &&
-        stores?.order?.map((item) => (
-          item.status === "paid" ? (
+      {stores?.cart &&
+        stores?.cart?.map((item) => (
+          item.status === "not_paid" ? (
             <Link
               state={item}
-              to={`/detail-product/${item?.product?._id}`}
+              // to={`/detail-product/${item?.product?._id}`}
               key={item._id}
             >
               <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 shadow-lg hover:shadow-2xl transition-shadow duration-300">

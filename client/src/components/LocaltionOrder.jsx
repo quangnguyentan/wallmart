@@ -27,6 +27,7 @@ const LocationOrder = () => {
   const  isChecked  = location.state 
   const fetchOrder = async() => {
     const res = await apiGetAddressById()
+    console.log(res)
     setOrder(res)
   }
   

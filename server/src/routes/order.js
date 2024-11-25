@@ -8,6 +8,7 @@ const {
   updateOrder,
   deleteOrder,
   processPaymentBot,
+  processPaymentStore,
 } = require("../controllers/orderController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 
@@ -23,6 +24,7 @@ router.get("/myOrderByShop", [verifyToken], GetMyOrdersByShop);
 
 router.post("/payment", [verifyToken], processPayment);
 router.post("/paymentBot", [verifyToken], processPaymentBot);
+router.post("/paymentStore", [verifyToken], processPaymentStore);
 
 router.get("/getOrder/:id", [verifyToken], GetOrderById);
 

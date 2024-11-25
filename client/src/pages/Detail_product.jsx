@@ -264,7 +264,7 @@ const Detail_product = ({agent}) => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 w-full h-16 bg-white left-0 right-0 flex items-center justify-center">
+      {/* <div className="fixed bottom-0 w-full h-16 bg-white left-0 right-0 flex items-center justify-center">
            <div className="flex items-center justify-center gap-4 max-sm:gap-4">
            <div className="flex items-center justify-center gap-4 max-sm:gap-2">
                 <div className="flex flex-col gap-1 justify-center items-center">
@@ -549,7 +549,7 @@ const Detail_product = ({agent}) => {
 
            </div>
           
-      </div>
+      </div> */}
     </div>
   )
 }

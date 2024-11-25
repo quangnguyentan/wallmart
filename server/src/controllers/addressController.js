@@ -40,6 +40,46 @@ const Create = async (req, res, next) => {
     next(e);
   }
 };
+const CreateUserById = async (req, res, next) => {
+  const { id } = req.params;
+  const { stress, phone, province, houseNumber, city, revicerName, active } =
+    req.body;
+  try {
+    const getAddress = await Address.find({ user: id });
+    for (let address of getAddress) {
+      const isDuplicateAddress =
+        address.phone === phone &&
+        address.province === province &&
+        address.houseNumber === houseNumber &&
+        address.city === city &&
+        address.stress === stress &&
+        address.revicerName === revicerName;
+
+      if (isDuplicateAddress) {
+        await Address.findByIdAndDelete(address._id);
+      }
+
+      // Kiểm tra trạng thái active
+      if (active === true && address.active === true) {
+        await Address.findByIdAndUpdate(address._id, { active: false });
+      }
+    }
+    const order = new Address({
+      user: id,
+      phone,
+      province,
+      houseNumber,
+      city,
+      stress,
+      revicerName,
+      active,
+    });
+    const savedData = await order.save();
+    res.json(savedData);
+  } catch (e) {
+    next(e);
+  }
+};
 const updateAddress = async (req, res, next) => {
   const { id } = req.params;
   console.log(id);
@@ -92,8 +132,17 @@ const deleteAddress = async (req, res, next) => {
 const GetMyAddress = async (req, res, next) => {
   const { id } = req.currentUser;
   try {
-    const orders = await Address.find({ user: id }).populate([]);
+    const orders = await Address.find({ user: id });
     res.json(orders);
+  } catch (e) {
+    next(e);
+  }
+};
+const getAddressByUserId = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const address = await Address.find({ user: userId });
+    res.json(address);
   } catch (e) {
     next(e);
   }
@@ -113,4 +162,6 @@ module.exports = {
   deleteAddress,
   updateAddress,
   GetAddressById,
+  getAddressByUserId,
+  CreateUserById,
 };

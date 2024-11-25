@@ -1,4 +1,11 @@
-
+.css-item {
+  font-weight: 600 !important;
+  font-size: 30px !important;
+}
+.MuiTreeItem-label {
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+}
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;

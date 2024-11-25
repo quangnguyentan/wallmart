@@ -58,6 +58,14 @@ const RegisterStore = () => {
     }
   };
   const createStore = async (data) => {
+    if(!imageStore || !fontId || !backId || !yourFace ){
+      toast.error("Vui lòng chọn đủ ảnh")
+      return
+    }
+    if(!value || !selectedCategory){
+      toast.error("Vui lòng chọn ngành và mục kinh doanh")
+      return
+    }
     try {
       const formData = new FormData();
       formData.append("industry", value)
@@ -78,7 +86,7 @@ const RegisterStore = () => {
       const res = await apiCreatestore(formData)
       console.log(res)
        if(res?.success) {
-        toast.success("Đã đăng kí thành công! Vui lòng đợi quản trị viên duyệt.")
+        toast.success("Đã đăng kí cửa hàng thành công")
         localStorage.setItem("page", 0)
         navigate("/")
        }
@@ -157,7 +165,7 @@ const RegisterStore = () => {
           <span>
           {imageStore?.name ? `${imageStore?.name}` : "  Chọn ảnh"}
         </span>
-          <input type="file" accept="image/*" name="uploadfile" id="fileUpload"  style={{visibility:"hidden"}} onChange={(e) => (setImageStore(e.target.files[0]))}/>
+          <input type="file"  accept="image/*" name="uploadfile" id="fileUpload"  style={{visibility:"hidden"}} onChange={(e) => (setImageStore(e.target.files[0]))}/>
           
           </label >
       </div>
@@ -166,16 +174,16 @@ const RegisterStore = () => {
         <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Thông tin chứng nhận</span>
       </div> 
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên thật" {...register("fullname")}/>
+            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên thật" {...register("fullname")} required/>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại" {...register("phone")}/>
+            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại" {...register("phone")} required/>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số căn cước" {...register("idYourself")}/>
+            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số căn cước" {...register("idYourself")} required/>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập email" {...register("emailYourself")}/>
+            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập email" {...register("emailYourself")} required/>
         </div>
      
         <div className="w-full h-12 bg-[#eee] py-2">
@@ -185,35 +193,35 @@ const RegisterStore = () => {
      <div className="w-[30%] flex flex-col gap-2 items-center max-sm:text-xs ">
           <AddOutlinedIcon sx={{ fontSize : `${isMobile ? "15px" : "35px"}` }}/>
           <label htmlFor="fileFront" className="text-center">{fontId?.name ? `${fontId?.name}` : "Mặt trước căn cước công dân"}</label>
-          <input type="file" accept="image/*" name="uploadfile" id="fileFront" style={{visibility:"hidden"}} onChange={(e) => (setFontId(e.target.files[0]))}/>
+          <input type="file"  accept="image/*" name="uploadfile" id="fileFront" style={{visibility:"hidden"}} onChange={(e) => (setFontId(e.target.files[0]))}/>
       </div>
       <div className="w-[30%] flex flex-col gap-2 items-center max-sm:text-xs">
       <AddOutlinedIcon sx={{ fontSize : `${isMobile ? "15px" : "35px"}` }}/>
 
           <label htmlFor="fileBack" className="text-center">{backId?.name ? `${backId?.name}` : "Mặt sau căn cước công dân"}</label>
-          <input type="file" accept="image/*" name="uploadfile" id="fileBack" style={{visibility:"hidden"}} onChange={(e) => (setBackId(e.target.files[0]))}/>
+          <input type="file"  accept="image/*" name="uploadfile" id="fileBack" style={{visibility:"hidden"}} onChange={(e) => (setBackId(e.target.files[0]))}/>
       </div>
       <div className="w-[30%] flex flex-col gap-2 items-center max-sm:text-xs">
       <AddOutlinedIcon sx={{ fontSize : `${isMobile ? "15px" : "35px"}` }}/>
 
-          <label htmlFor="fileFace" className="text-center">{yourFace?.name ? `${yourFace?.name}` : "Ảnh chân dung"}</label>
-          <input type="file" accept="image/*" name="uploadfile" id="fileFace" style={{visibility:"hidden"}} onChange={(e) => (setYourFace(e.target.files[0]))}/>
+          <label htmlFor="fileFace" aria-required className="text-center">{yourFace?.name ? `${yourFace?.name}` : "Ảnh chân dung"}</label>
+          <input type="file"  accept="image/*" name="uploadfile" id="fileFace" style={{visibility:"hidden"}} onChange={(e) => (setYourFace(e.target.files[0]))}/>
       </div>
      </div>
      <div className="w-full h-12 bg-[#eee] ">
         <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Thông tin chứng nhận</span>
       </div> 
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên cửa hàng" {...register("nameStore")}/>
+            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập tên cửa hàng" {...register("nameStore")} required/>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-          <textarea name="" id="" className="w-full py-2 outline-none bg-transparent scrollbar-hide" placeholder="Vui lòng nhập mô tả" {...register("descriptionStore")}></textarea>
+          <textarea name="" id="" className="w-full py-2 outline-none bg-transparent scrollbar-hide" required placeholder="Vui lòng nhập mô tả" {...register("descriptionStore")}></textarea>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập khu vực" {...register("area")}/>
+            <input type="text" required className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập khu vực" {...register("area")}/>
         </div>
         <div className="flex items-center px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
-            <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Tên đường, tòa nhà, số nhà" {...register("street")}/>
+            <input type="text" required className="w-full py-2 outline-none bg-transparent" placeholder="Tên đường, tòa nhà, số nhà" {...register("street")}/>
         </div>
         <div className="flex flex-col gap-2 px-4 max-sm:text-xs">
           <span className="max-sm:text-xs text-black font-medium">1.Vui lòng điền đầy đủ thông tin trước khi gửi. Sau khi gửi đi không thể thay đổi thông tin.</span>

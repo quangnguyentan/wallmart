@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiGetStore, apiGetstoreFromShop } from "@/services/storeService";
 import { pathImage } from "@/lib/helper";
 import { apiGetProduct } from "@/services/productService";
+import { apiOrderPaymentStore } from "@/services/orderServer";
 const Store = () => {
     const [dropDown, setDropDown] = useState(false);
     const [store, setStore] = useState([])
@@ -26,6 +27,7 @@ const Store = () => {
       const res = await apiGetProduct()
       setProducts(res)
     }
+    
     useEffect(() => {
       setIsLoading(true)
       fetchStore() && fetchProduct()

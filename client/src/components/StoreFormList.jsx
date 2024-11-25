@@ -97,7 +97,7 @@ function StoreFormList() {
                     <th>Số điện thoại người tạo cửa hàng</th>
                     <th>Tên cửa hàng</th>
                     <th>Khu vực người đăng ký</th>
-                    <th>Trạng thái cửa hàng</th>
+                    {/* <th>Trạng thái cửa hàng</th> */}
                     <th>Hành động</th>
 
                   </tr>
@@ -112,15 +112,15 @@ function StoreFormList() {
                         <td>{product?.phone}</td>
                         <td>{product?.inforByStore?.nameStore}</td>
                         <td>{product?.address?.area}</td>
-                        <td>{product?.active === "wait" ? "Đang đợi duyệt" : "Đã duyệt"}</td>
+                        {/* <td>{product?.active === "wait" ? "Đang đợi duyệt" : "Đã duyệt"}</td> */}
                         <th className="flex flex-col gap-2">
                         <Link
                             to={`/store-view-form/${product?._id}`}
                             className="btn btn-primary btn-sm mr-1"
                           >
-                           Xem chi tiết đơn của cửa hàng
+                           Xem chi tiết  cửa hàng
                           </Link>
-                         {product?.active === "wait" && <>
+                         {/* {product?.active === "wait" && <>
                           <div
                             className="btn btn-primary btn-sm mr-1"
                             onClick={() => hanleUpdateStore(product, "accept")}
@@ -140,7 +140,7 @@ function StoreFormList() {
                           >
                             Xóa
                           </button>
-                         </>}
+                         </>} */}
                         </th>
                       </tr>
                     );

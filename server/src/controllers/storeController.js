@@ -35,7 +35,11 @@ const GetAllStore = async (req, res, next) => {
     const products = await Store.find().populate({
       path: "order",
       populate: [
-        { path: "product", select: "title price photos industry category" }, // Lấy thông tin tên và ảnh sản phẩm
+        {
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry",
+        }, // Lấy thông tin tên và ảnh sản phẩm
       ],
     });
     res.json(products);
@@ -46,16 +50,23 @@ const GetAllStore = async (req, res, next) => {
 const GetStoreById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const products = await Store.findById(id).populate({
-      path: "order",
-      populate: [
-        {
+    const products = await Store.findById(id)
+      .populate({
+        path: "cart",
+        populate: {
           path: "product",
           select:
-            "title price priceOld photos color size createdAt updatedAt category industry",
-        }, // Lấy thông tin tên và ảnh sản phẩm
-      ],
-    });
+            "title price priceOld photos color size createdAt inventory updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
+        },
+      })
+      .populate({
+        path: "order",
+        populate: {
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
+        },
+      });
     res.json(products);
   } catch (e) {
     next(e);
@@ -63,7 +74,13 @@ const GetStoreById = async (req, res, next) => {
 };
 const addToCart = async (req, res, next) => {
   const { id } = req.currentUser;
-  const { product, quantity, status } = req.body;
+  const { productsInCart } = req.body;
+  if (!productsInCart || productsInCart.length === 0) {
+    return res.status(400).json({
+      err: 1,
+      msg: "Vui lòng chọn sản phẩm",
+    });
+  }
   if (!id)
     res.status(400).json({
       err: 1,
@@ -72,58 +89,87 @@ const addToCart = async (req, res, next) => {
   try {
     const findUser = await Store.find({ userId: id }).populate({
       path: "cart",
-      populate: [{ path: "product", select: "title price stockOff " }],
-    });
-    const findProduct = await Product.findById(product);
-    if (!findUser[0]) {
-      return res.status(404).json({
-        err: 1,
-        msg: "Chưa đăng nhập",
-      });
-    }
-    if (findProduct.inventory === 0) {
-      return res.status(400).json({
-        err: 1,
-        msg: "Hết hàng",
-      });
-    }
-    let cartUpdated = false;
-    findUser[0]?.cart?.forEach((cartItem) => {
-      if (
-        cartItem.product._id.toString() === product &&
-        cartItem.status === status
-      ) {
-        cartItem.quantity += Number(quantity);
-        cartUpdated = true;
-      }
-    });
-
-    findUser[0].cart = findUser[0]?.cart?.filter(
-      (cartItem) => cartItem.quantity > 0
-    );
-    if (!cartUpdated) {
-      findUser[0]?.cart?.push({
-        product,
-        quantity,
-      });
-    }
-    const updatedUser = await Store.findOneAndUpdate(
-      { _id: findUser[0]?._id },
-      { $set: { cart: findUser[0].cart } }, // Cập nhật giỏ hàng
-      { new: true } // Trả về đối tượng người dùng mới sau khi cập nhật
-    );
-    if (updatedUser) {
-      await Product.findByIdAndUpdate(
-        product,
+      populate: [
         {
-          inventory: findProduct.inventory - quantity,
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry",
         },
-        { new: true }
+      ],
+    });
+    // const findProduct = await Product.findById(product);
+    // if (!findUser[0]) {
+    //   return res.status(404).json({
+    //     err: 1,
+    //     msg: "Chưa đăng nhập",
+    //   });
+    // }
+    // if (findProduct.inventory === 0) {
+    //   return res.status(400).json({
+    //     err: 1,
+    //     msg: "Hết hàng",
+    //   });
+    // }
+    let existingOrder;
+    for (const item of productsInCart) {
+      existingOrder = findUser[0].cart.find(
+        (orderItem) => orderItem.product?._id?.toString() === item?.toString()
       );
+      if (existingOrder) {
+        findUser[0].cart = findUser[0].cart.filter(
+          (orderItem) => orderItem.product?._id?.toString() !== item?.toString()
+        );
+        findUser[0].cart.push({
+          product: item,
+        });
+        return res.status(200).json({
+          success: true,
+        });
+      } else {
+        findUser[0].cart.push({
+          product: item,
+        });
+      }
     }
+    await findUser[0].save();
+
+    // let cartUpdated = false;
+    // findUser[0]?.cart?.forEach((cartItem) => {
+    //   if (
+    //     cartItem.product._id.toString() === product &&
+    //     cartItem.status === status
+    //   ) {
+    //     cartItem.quantity += Number(quantity);
+    //     cartUpdated = true;
+    //   }
+    // });
+
+    // findUser[0].cart = findUser[0]?.cart?.filter(
+    //   (cartItem) => cartItem.quantity > 0
+    // );
+    // if (!cartUpdated) {
+    //   findUser[0]?.cart?.push({
+    //     product,
+    //     quantity,
+    //   });
+    // }
+    // const updatedUser = await Store.findOneAndUpdate(
+    //   { _id: findUser[0]?._id },
+    //   { $set: { cart: findUser[0].cart } }, // Cập nhật giỏ hàng
+    //   { new: true } // Trả về đối tượng người dùng mới sau khi cập nhật
+    // );
+    // if (updatedUser) {
+    //   await Product.findByIdAndUpdate(
+    //     product,
+    //     {
+    //       inventory: findProduct.inventory - quantity,
+    //     },
+    //     { new: true }
+    //   );
+    // }
     return res.status(200).json({
-      success: updatedUser ? true : false,
-      updatedUser,
+      success: !existingOrder ? true : false,
+      existingOrder,
     });
   } catch (e) {
     next(e);
@@ -218,7 +264,11 @@ const processPayment = async (req, res, next) => {
     // Tìm thông tin người dùng và giỏ hàng
     const findUser = await users.findById(id).populate({
       path: "cart",
-      populate: { path: "product", select: "title price photos" },
+      populate: {
+        path: "product",
+        select:
+          "title price priceOld photos color size createdAt inventory updatedAt category industry",
+      },
     });
 
     if (!findUser) {
@@ -320,6 +370,16 @@ const CreateNewStore = async (req, res, next) => {
       street,
       descriptionStore,
     } = req.body;
+    const findUser = await users.findById(id);
+    if (findUser) {
+      await users.findByIdAndUpdate(
+        findUser._id,
+        {
+          role: "agent",
+        },
+        { new: true }
+      );
+    }
     const products = await Store.create({
       follow,
       industry,
@@ -328,7 +388,7 @@ const CreateNewStore = async (req, res, next) => {
       logoStore: req.files.images[0].filename,
       phone,
       fullname,
-      active: "wait",
+      active: "access",
       service,
       idYourself,
       emailYourself,
@@ -413,7 +473,8 @@ const GetMyStore = async (req, res, next) => {
         path: "cart",
         populate: {
           path: "product",
-          select: "title price photos", // Lấy thông tin tên và ảnh sản phẩm
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
         },
       })
       .populate({
@@ -421,7 +482,7 @@ const GetMyStore = async (req, res, next) => {
         populate: {
           path: "product",
           select:
-            "title price priceOld photos color size createdAt updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
+            "title price priceOld photos color size createdAt inventory updatedAt category industry", // Lấy thông tin tên và ảnh sản phẩm
         },
       });
     res.json(orders);

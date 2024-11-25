@@ -16,7 +16,7 @@ const OrderSchema = new Schema({
   },
   color: String,
   size: String,
-  quantity: String,
+  quantity: Number,
   revicerName: String,
   phone: String,
   province: String,

@@ -101,6 +101,19 @@ export const apiOrderPaymentBot = (data) =>
       console.log("Failed to get order", error);
     }
   });
+export const apiOrderPaymentStore = (data) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "POST",
+        url: "/order/paymentStore",
+        data,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get order", error);
+    }
+  });
 export const apiUpdateOrder = (id, data) =>
   new Promise(async (resolve, reject) => {
     try {
