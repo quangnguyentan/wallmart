@@ -81,7 +81,7 @@ function OrderView() {
                                         <td>{productList?.city}</td>
                                         <td>{productList?.province}</td>
                                         <td>{productList?.stress}</td>
-                                       <td> {productList && productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
+                                       <td>  {productList &&  productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  productList?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}</td>
                                        
                                         
                                         
@@ -91,7 +91,7 @@ function OrderView() {
                                         <td>{productList?.city}</td>
                                         <td>{productList?.province}</td>
                                         <td>{productList?.stress}</td>
-                                       <td> {productList && productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
+                                       <td>  {productList &&  productList?.status === "waitDelivery" ? "Đợi giao hàng" : productList?.status === "delivering" ? "Đang giao hàng" : productList?.status === "successfull" ? "Giao hàng thành công"  :  productList?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}</td>
                                        
                                        
                                         

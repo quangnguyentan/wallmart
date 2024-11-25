@@ -9,13 +9,14 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
 import "./sb-admin-2.min.css";
-
+import cskh from "@/assets/cskh.png"
 import { Link } from 'react-router-dom'
 import Sidebar from './Sidebar';
 import { apiGetProduct } from '@/services/productService';
 import { apiGetMyStore } from '@/services/storeService';
 import { useSelector } from 'react-redux';
 import { pathImage } from '@/lib/helper';
+import { AlignLeft, Globe } from 'lucide-react';
 
 function Topbar() {
     const [open, setOpen] = React.useState(false);
@@ -74,7 +75,7 @@ function Topbar() {
             </button>
             <form
                 className="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
-                {value?.length > 0 && <div className='absolute top-10 overflow-y-scroll w-full h-[750px] scrollbar-hide bg-white shadow-sm z-50'>
+                {/* {value?.length > 0 && <div className='absolute top-10 overflow-y-scroll w-full h-[750px] scrollbar-hide bg-white shadow-sm z-50'>
                     {currentData?.role === "admin" && productList?.map((product) => {
                         if(typeof product?.title === "string" && typeof value === "string" && product.title.toUpperCase().includes(value.toUpperCase())){
                             return <div className="w-full h-fit scrollbar-hide overflow-y-scroll text-gray-500 flex flex-col gap-2" key={product?._id}>
@@ -127,15 +128,18 @@ function Topbar() {
                         
                        </div>
                     ))}
-                </div>}
-                <div className="input-group">
-                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Search for..." 
+                </div>} */}
+                <div className="input-group flex items-center gap-6">
+                    <AlignLeft className='cursor-pointer' />
+                    <Globe className='cursor-pointer'/>
+                    <img src={cskh} alt="cskh" className='w-7 h-7 cursor-pointer' />
+                    {/* <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Search for..." 
                         aria-label="Search" aria-describedby="basic-addon2" />
                     <div className="input-group-append">
                         <button className="btn btn-primary" type="button">
                             <FontAwesomeIcon icon={faSearch} />
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </form>
 
@@ -167,14 +171,19 @@ function Topbar() {
                 </li>
 
                 {/* <!-- Nav Item - User Information --> */}
-                <li className="nav-item dropdown no-arrow">
+                <li className="nav-item dropdown no-arrow flex items-center">
+                    <div className='flex flex-col gap-1'>
+                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{currentData?.fullName}</span>
+                        <span className='mr-2 text-[10px] d-none d-lg-inline text-gray-600'>
+                            {currentData?.role === "agent" ? "Người bán hàng" : "Quản trị"}
+                        </span>
+                    </div>
                     <Link className="nav-link dropdown-toggle" to={currentData?.role === "admin" ? "product-list" : "/"} id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{currentData?.fullName}</span>
                         {currentData?.avatar ?  <img src={`${pathImage}/${currentData?.avatar}`} className='w-6 h-6 rounded-full' alt="" /> :  <FontAwesomeIcon icon={faCircleUser} size={"xl"} />}
                     </Link>
                     {/* <!-- Dropdown - User Information --> */}
-                    <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    {/* <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
                         <a className="dropdown-item" href="#">
                             <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -193,7 +202,7 @@ function Topbar() {
                             <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                             Logout
                         </a>
-                    </div>
+                    </div> */}
                 </li>
 
             </ul>

@@ -63,6 +63,11 @@ import BotView from "./components/BotView";
 import BotEdit from "./components/BotEdit";
 import BookProductFromStore from "./pages/BookProductFromStore";
 import Order_Cart from "./pages/Order_Cart";
+import Home from "./pages/Home";
+import ProductAgent from "./pages/ProductAgent";
+import StoreHouse from "./pages/StoreHouse";
+import Order_Store from "./pages/Order_Store";
+import Order_Store_Detail from "./pages/Order_Store_Detail";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -225,11 +230,15 @@ function App() {
           <Route path={path.WITHDRAW_WALLET} element={<WithDrawalHistory />} />
           <Route path={path.DEPOSIT_WALLET} element={<DepositHistory />} />
           <Route path={path.UPDATE_BANK} element={<UpdateBank />} />
-
          
         </Route>}
         {isLoggedIn && token && currentData && currentData?.role === "agent" && <Route path='/'   element={<Portal />}>
-                <Route index path='user-list' element={<Userlist />} />
+                <Route path={path.HOME_AGENT} element={<Home />} />
+                <Route path="/products" element={<ProductAgent />} />
+                <Route path="/storehouse" element={<StoreHouse />} />
+                <Route path="/order_store" element={<Order_Store />} />
+                <Route path="/order_store/:id" element={<Order_Store_Detail />} />
+                {/* <Route index path='user-list' element={<Userlist />} />
                 <Route index path='create-user' element={<UserCreate />} />
                 <Route index path='user-view/:id/:userId' element={<UserView />} />
                 <Route index path='user-edit/:id' element={<UserEdit />} />
@@ -241,13 +250,13 @@ function App() {
                 <Route index path='create-store' element={<StoreCreate />} />
                 <Route index path='store-view/:id' element={<StoreView />} />
                 <Route index path='store-edit/:id' element={<StoreEdit />} />
-                <Route index path='order-list' element={<Orderlist />} />
+                // <Route index path='order-list' element={<Orderlist />} />
                 <Route index path='create-order' element={<OrderCreate />} />
                 <Route index path='order-view/:id' element={<OrderView />} />
                 <Route index path='order-edit/:id' element={<OrderEdit />} />
                 <Route path={path.UPDATE_ADDRESS} element={<Edit_Address />} />     
                 <Route path={path.BUY_PRODUCT} element={<Buy_Product_From_Admin />} />
-                <Route path={path.DETAIL_PRODUCT_AGENT} element={<Detail_product_agent />} />
+                <Route path={path.DETAIL_PRODUCT_AGENT} element={<Detail_product_agent />} /> */}
 
         </Route>}  
                 

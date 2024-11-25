@@ -18,7 +18,7 @@ const Card_Order = ({hidden, type}) => {
         {type === "all" &&  <>
           {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
         <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-            <span>Số thứ tự:</span>
+            <span>Mã đơn hàng:</span>
             <span>{ord?._id}</span>
         </div>
         <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
@@ -45,7 +45,7 @@ const Card_Order = ({hidden, type}) => {
       {type === "wait" && ord?.status === "waitPay" &&  <>
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Số thứ tự:</span>
+          <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
@@ -73,7 +73,7 @@ const Card_Order = ({hidden, type}) => {
       {type === "waitDelivery" && ord?.status === "waitDelivery" &&  <>
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Số thứ tự:</span>
+          <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
@@ -101,7 +101,7 @@ const Card_Order = ({hidden, type}) => {
       {type === "delivering" && ord?.status === "delivering" &&  <>
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Số thứ tự:</span>
+          <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
@@ -129,7 +129,7 @@ const Card_Order = ({hidden, type}) => {
       {type === "successfull" && ord?.status === "successfull" &&  <>
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Số thứ tự:</span>
+          <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
@@ -157,7 +157,7 @@ const Card_Order = ({hidden, type}) => {
       {type === "canceled" && ord?.status === "canceled" &&  <>
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Số thứ tự:</span>
+          <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>

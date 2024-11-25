@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Order = require("../models/order");
 const Product = require("../models/product");
 const Store = require("../models/store");
@@ -39,25 +40,29 @@ const updateOrder = async (req, res, next) => {
   const { id } = req.params;
   const { stress, phone, province, houseNumber, city, revicerName, status } =
     req.body;
-
   try {
     const findOrder = await Order.findById(id);
     if (findOrder) {
       const findProduct = await Product.findById(findOrder.product._id);
       if (findProduct) {
-        const findUser = users.findById(findOrder.user._id);
-        if (findUser && status === "Bị hủy") {
-          const updateUser = users.findByIdAndUpdate(
+        const findUser = await users.findById(findOrder.store._id);
+        if (findUser && status === "canceled") {
+          const updateUser = await users.findByIdAndUpdate(
             findUser._id,
             {
               deposit:
-                findUser.deposit +
+                findUser?.deposit +
                 Number(findProduct?.price) * Number(findOrder.quantity),
+              profit:
+                findUser?.profit -
+                (Number(findProduct?.price) - Number(findProduct.priceOld)) *
+                  Number(findOrder.quantity),
             },
             { new: true }
           );
-          console.log(updateUser);
+          console.log("updateUser", updateUser);
         }
+        // if(findUser && status === "Bị hủy")
       }
     }
     const order = await Order.findByIdAndUpdate(
@@ -73,7 +78,6 @@ const updateOrder = async (req, res, next) => {
       },
       { new: true }
     );
-    console.log(order);
     res.json(order);
   } catch (e) {
     next(e);
@@ -84,7 +88,7 @@ const List = async (req, res, next) => {
     const orders = await Order.find().populate({
       path: "product",
       select: "title price",
-    });;
+    });
     res.json(orders);
   } catch (e) {
     next(e);
@@ -208,21 +212,115 @@ const processPayment = async (req, res, next) => {
     next(e);
   }
 };
+const processPaymentStore = async (req, res, next) => {
+  const { id } = req.currentUser;
+  const { orderId, totalPayment, profitPayment } = req.body;
+
+  if (!orderId || !totalPayment || !profitPayment) {
+    return res.status(400).json({
+      err: 1,
+      msg: "Chưa chọn đơn hàng để thanh toán",
+    });
+  }
+  try {
+    const getAllOrder = await Order.find();
+    const filterOrder = getAllOrder?.filter((order) =>
+      orderId?.includes(order?._id.toString())
+    );
+    await Order.updateMany(
+      { _id: { $in: filterOrder.map((order) => order._id) } },
+      { $set: { status: "waitDelivery" } } // Cập nhật trạng thái thành 'delivering'
+    );
+    let findUser = await users.findById(id);
+    if (findUser && findUser?.deposit >= totalPayment) {
+      await users.findByIdAndUpdate(
+        id,
+        {
+          deposit: findUser.deposit + profitPayment - Number(totalPayment),
+          profit: findUser.profit + profitPayment,
+          sold: findUser.sold + Number(totalPayment),
+        },
+        { new: true }
+      );
+    } else {
+      return res.status(400).json({
+        msg: "Không đủ tiền để thanh toán",
+      });
+    }
+
+    // const newDeposit = botUser?.deposit - totalPrice;
+    // const orderData = productsInCart.map((item) => ({
+    //   user: findUserBot._id,
+    //   product: item.product._id,
+    //   store: storeId,
+    //   quantity: Number(item?.quantityInit),
+    //   // size: item?.product?.size[0],
+    //   // color: item?.product?.color[0],
+    //   phone: selectedAddress.phone,
+    //   province: selectedAddress.province,
+    //   houseNumber: selectedAddress.houseNumber,
+    //   city: selectedAddress.city,
+    //   stress: selectedAddress.stress,
+    //   revicerName: selectedAddress.revicerName,
+    //   active: selectedAddress.active,
+    //   // status: "waitDelivery",
+    // }));
+
+    // const orders = await Order.insertMany(orderData);
+
+    // await users.findOneAndUpdate(
+    //   { _id: botUser._id },
+    //   { $set: { deposit: newDeposit } },
+    //   { new: true }
+    // );
+
+    // for (const item of productsInCart) {
+    //   const productId = item?.product?._id;
+
+    //   await Product.findByIdAndUpdate(
+    //     productId,
+    //     {
+    //       $inc: { sold: Number(item.quantity) },
+    //       $inc: { inventory: -item.quantity },
+    //     },
+    //     { new: true }
+    //   );
+
+    //   if (storeId) {
+    //     await Store.findOneAndUpdate(
+    //       {
+    //         _id: storeId,
+    //         "order.product": productId,
+    //       },
+    //       {
+    //         $inc: { "order.$.quantity": -item.quantityInit },
+    //       },
+    //       { new: true }
+    //     );
+    //   }
+    // }
+
+    return res.status(200).json({
+      success: true,
+      msg: "Payment successful, orders created for bot users",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
 const processPaymentBot = async (req, res, next) => {
   const { selectedAddress, productsInCart, usersList, storeId } = req.body;
-
+  console.log(selectedAddress, usersList, storeId);
   if (!selectedAddress || !productsInCart || !usersList || !storeId) {
     return res.status(400).json({
       err: 1,
-      msg: "Missing input data",
+      msg: "Chưa chọn bot hoặc địa chỉ giao hàng",
     });
   }
-
   try {
-    // Lọc người dùng có role là "bot" từ mảng người dùng truyền vào
-    const botUsers = usersList.filter((user) => user.role === "bot");
-
-    if (!botUsers || botUsers.length === 0) {
+    const findUserBot = await users.findById(usersList);
+    if (!findUserBot) {
       return res.status(404).json({
         err: 1,
         msg: "Bạn chưa chọn bot để đặt hàng",
@@ -235,75 +333,67 @@ const processPaymentBot = async (req, res, next) => {
       totalPrice += productPrice * item?.quantity; // Tính tổng giá trị cần thanh toán
     });
 
-    // Duyệt qua từng người dùng bot để tạo đơn hàng cho họ
-    for (const botUser of botUsers) {
-      // Kiểm tra xem bot có đủ tiền không
-      if (botUser?.deposit < totalPrice) {
-        return res.status(400).json({
-          err: 1,
-          msg: `Tài khoản bot ${botUser?.fullName} không đủ tiền để thanh toán`,
-        });
-      }
+    // for (const botUser of botUsers) {
+    //   // Kiểm tra xem bot có đủ tiền không
+    //   if (botUser?.deposit < totalPrice) {
+    //     return res.status(400).json({
+    //       err: 1,
+    //       msg: `Tài khoản bot ${botUser?.fullName} không đủ tiền để thanh toán`,
+    //     });
+    //   }
 
-      const newDeposit = botUser?.deposit - totalPrice;
-      console.log(productsInCart);
-      const orderData = productsInCart.map((item) => ({
-        user: botUser._id,
-        product: item.product._id,
-        store: storeId,
-        quantity: Number(item.quantity),
-        size: item?.product?.size[0],
-        color: item?.product?.color[0],
-        phone: selectedAddress.phone,
-        province: selectedAddress.province,
-        houseNumber: selectedAddress.houseNumber,
-        city: selectedAddress.city,
-        stress: selectedAddress.stress,
-        revicerName: selectedAddress.revicerName,
-        active: selectedAddress.active,
-        status: "waitDelivery", // Đặt trạng thái đơn hàng là "chờ giao hàng"
-      }));
+    // const newDeposit = botUser?.deposit - totalPrice;
+    const orderData = productsInCart.map((item) => ({
+      user: findUserBot._id,
+      product: item.product._id,
+      store: storeId,
+      quantity: Number(item?.quantityInit),
+      // size: item?.product?.size[0],
+      // color: item?.product?.color[0],
+      phone: selectedAddress.phone,
+      province: selectedAddress.province,
+      houseNumber: selectedAddress.houseNumber,
+      city: selectedAddress.city,
+      stress: selectedAddress.stress,
+      revicerName: selectedAddress.revicerName,
+      active: selectedAddress.active,
+      // status: "waitDelivery",
+    }));
 
-      // Lưu đơn hàng vào cơ sở dữ liệu
-      const orders = await Order.insertMany(orderData);
+    // Lưu đơn hàng vào cơ sở dữ liệu
+    const orders = await Order.insertMany(orderData);
 
-      // Cập nhật lại số dư deposit cho bot
-      await users.findOneAndUpdate(
-        { _id: botUser._id },
-        { $set: { deposit: newDeposit } },
-        { new: true }
-      );
+    // await users.findOneAndUpdate(
+    //   { _id: botUser._id },
+    //   { $set: { deposit: newDeposit } },
+    //   { new: true }
+    // );
 
-      // Cập nhật inventory và sold của Product trong cơ sở dữ liệu (nếu cần)
-      for (const item of productsInCart) {
-        const productId = item?.product?._id;
+    // for (const item of productsInCart) {
+    //   const productId = item?.product?._id;
 
-        // Cập nhật Product: giảm inventory, tăng sold
-        // await Product.findByIdAndUpdate(
-        //   productId,
-        //   {
-        //     $inc: { sold: Number(item.quantity) },
-        //     $inc: { inventory: -item.quantity },
-        //   },
-        //   { new: true }
-        // );
+    //   await Product.findByIdAndUpdate(
+    //     productId,
+    //     {
+    //       $inc: { sold: Number(item.quantity) },
+    //       $inc: { inventory: -item.quantity },
+    //     },
+    //     { new: true }
+    //   );
 
-        // Cập nhật Store: giảm số lượng đơn hàng đã bán
-
-        if (storeId) {
-          await Store.findOneAndUpdate(
-            {
-              _id: storeId,
-              "order.product": productId,
-            },
-            {
-              $inc: { "order.$.quantity": -item.quantityInit },
-            },
-            { new: true }
-          );
-        }
-      }
-    }
+    //   if (storeId) {
+    //     await Store.findOneAndUpdate(
+    //       {
+    //         _id: storeId,
+    //         "order.product": productId,
+    //       },
+    //       {
+    //         $inc: { "order.$.quantity": -item.quantityInit },
+    //       },
+    //       { new: true }
+    //     );
+    //   }
+    // }
 
     return res.status(200).json({
       success: true,
@@ -316,11 +406,16 @@ const processPaymentBot = async (req, res, next) => {
 
 const GetMyOrders = async (req, res, next) => {
   const { id } = req.currentUser;
+  console.log(id);
   try {
-    const orders = await Order.find({ user: id }).populate([
-      { path: "product", select: "title price photos" }, // Lấy thông tin tên và giá sản phẩm
-      { path: "store", select: "inforByStore" }, // Lấy thông tin cửa hàng
-      { path: "user", select: "role" },
+    const orders = await Order.find({ store: id }).populate([
+      {
+        path: "product",
+        select:
+          "title price priceOld photos color size createdAt inventory updatedAt category industry",
+      }, // Lấy thông tin tên và giá sản phẩm
+      // { path: "store", select: "inforByStore logoStore industry" }, // Lấy thông tin cửa hàng
+      { path: "user", select: "role fullName" },
     ]);
     res.json(orders);
   } catch (e) {
@@ -331,8 +426,8 @@ const deleteOrder = async (req, res, next) => {
   const { id } = req.params;
   console.log();
   try {
-    const store = await Order.findByIdAndDelete(id)
-    console.log(store)
+    const store = await Order.findByIdAndDelete(id);
+    console.log(store);
     if (!store) {
       console.log("Order ID không tồn tại trong Store.");
       return res.status(404).json({
@@ -375,8 +470,16 @@ const GetMyOrdersByShop = async (req, res, next) => {
 const GetOrderById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log(id)
-    const products = await Order.findById(id);
+    console.log(id);
+    const products = await Order.findById(id).populate([
+      {
+        path: "product",
+        select:
+          "title price priceOld photos color size createdAt inventory updatedAt category industry",
+      }, // Lấy thông tin tên và giá sản phẩm
+      // { path: "store", select: "inforByStore logoStore industry" }, // Lấy thông tin cửa hàng
+      { path: "user", select: "role fullName" },
+    ]);
     res.json(products);
   } catch (e) {
     next(e);
@@ -392,4 +495,5 @@ module.exports = {
   updateOrder,
   deleteOrder,
   processPaymentBot,
+  processPaymentStore,
 };

@@ -70,11 +70,9 @@ const HomePage = () => {
           <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer" onClick={() => {
             if(isLoggedIn && token) {
               dispatch(getCurrent())
-            if(store) {
-              navigate("/register-store")
-            }
+            
             if(store && store?.active === "access") {
-              navigate("/product-list")
+              navigate("/home")
             }
             if(!store) {
               navigate("/register-choose")

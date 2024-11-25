@@ -53,7 +53,6 @@ const Order_Cart = () => {
      }else{
       setIsCheck([...isCheck, product])
      }
-   
   }
   const onChangeCheckedAll = (data) => {
     if(isCheckedAll ) {
@@ -63,6 +62,7 @@ const Order_Cart = () => {
     }
     
   }
+
   let getUsers = async () => {
     try {
       const userResponse = await apiGetAllUser(); 
@@ -98,6 +98,7 @@ const Order_Cart = () => {
     
     if(!data?.city || !data?.phone || !data?.province || !data?.revicerName || !data?.stress){
       toast.error("Bạn chưa nhập địa chỉ")
+      return
     }
     const res  = await apiOrderPaymentBot({productsInCart : isChecked, selectedAddress: {
       ...data, 
@@ -223,8 +224,9 @@ const Order_Cart = () => {
       
 
        <div className="fixed bottom-0 w-[70%] right-48 max-sm:w-full items-center justify-center flex  mx-auto h-16 bg-slate-100 shadow-md">
+       
           <div className="flex items-center justify-between w-full px-4 max-sm:px-1">
-          <span className="max-sm:text-[11px] text-black text-lg font-semibold">Số tiền của bạn: <span className="text-red-500 max-sm:text-[11px]">${currentData?.deposit}</span></span>
+          {/* <span className="max-sm:text-[11px] text-black text-lg font-semibold">Số tiền của bạn: <span className="text-red-500 max-sm:text-[11px]">${currentData?.deposit}</span></span> */}
          <div className="flex gap-2 items-center line-clamp-1">
           <span className="max-sm:text-[11px] text-black text-lg font-semibold">Tổng tiền:</span>
           <span className="max-sm:text-[11px] text-red-500 font-semibold text-xl">${isChecked?.reduce((initValue, currentValue) => {

@@ -49,12 +49,20 @@ const userSchema = new mongoose.Schema(
       default: 0,
       required: true,
     },
+    profit: {
+      type: Number,
+      default: 0,
+    },
+    sold: {
+      type: Number,
+      default: 0,
+    },
     withDraw: {
       type: Number,
       default: 0,
       required: true,
     },
-    createdAt : [],
+    createdAt: [],
     role: {
       type: String,
       enum: ["user", "admin", "agent", "bot", "botAgent"],

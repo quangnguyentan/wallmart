@@ -1,15 +1,20 @@
-import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible } from '@fortawesome/free-solid-svg-icons'
-
+import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome } from '@fortawesome/free-solid-svg-icons'
+import Box from '@mui/material/Box';
+import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, useNavigate } from 'react-router-dom'
 import "./sb-admin-2.min.css";
+import "@/index.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/stores/actions/authAction';
 import toast from 'react-hot-toast';
 import { useMediaQuery } from '@mui/material';
 import { LogOut } from 'lucide-react';
 import { useEffect } from 'react';
-
+import CircleIcon from '@mui/icons-material/Circle';
 function Sidebar() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -47,23 +52,47 @@ function Sidebar() {
             </li> */}
             {/* <!-- Divider --> */}
             <hr className="sidebar-divider my-0 " />
-
-            {/* <!-- Nav Item - Users --> */}
+             {currentData?.role === "agent" && <>
+                <li className="nav-item active py-1">
+                <Link className="nav-link" to="/home">
+                    <FontAwesomeIcon icon={faHome} style={{ marginRight: "0.5rem" }}/>
+                    <span className='max-sm:text-xs'>Bảng điều khiển</span>
+                </Link>
+                </li>         
+                <SimpleTreeView sx={{ color : "white", fontWeight : 500}} className='css-item mx-2 my-3 max-sm:text-xs'
+                slots={{
+                    expandIcon : ShoppingCartIcon
+                }}>
+                    <TreeItem itemId="grid" label="Các sản phẩm" onClick={(e) => {
+                        e.stopPropagation()
+                    }} sx={{ fontWeight : 500 }}>
+                    <TreeItem itemId="grid-community" label="Các sản phẩm" className='my-3' onClick={() => navigate("/products")} />
+                    <TreeItem itemId="grid-pro" label="Kho sản phẩm"  onClick={() => navigate("/storehouse")}/>
+                    </TreeItem>
+                </SimpleTreeView>
+                <li className="nav-item active py-1">
+                <Link className="nav-link" to="/order_store">
+                    <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: "0.5rem" }}/>
+                    <span className='max-sm:text-xs'>Đơn hàng</span>
+                </Link>
+                </li>    
+             </>}
+     
            
-            <li className="nav-item active py-1">
+            {currentData?.role === "admin" && <>
+                <li className="nav-item active py-1">
                 <Link className="nav-link" to="/product-list">
                     <FontAwesomeIcon icon={faProcedures} style={{ marginRight: "0.5rem" }}/>
                     <span className='max-sm:text-xs'>Quản lí sản phẩm</span>
                 </Link>
-            </li>
-           
-            <li className="nav-item active py-1">
-                <Link className="nav-link" to="/order-list">
-                    <FontAwesomeIcon icon={faReorder} style={{ marginRight: "0.5rem" }}/>
-                    <span className='max-sm:text-xs'>Quản lí đơn hàng</span>
-                </Link>
-            </li>
-            {currentData?.role === "admin" && <>
+                </li>
+            
+                <li className="nav-item active py-1">
+                    <Link className="nav-link" to="/order-list">
+                        <FontAwesomeIcon icon={faReorder} style={{ marginRight: "0.5rem" }}/>
+                        <span className='max-sm:text-xs'>Quản lí đơn hàng</span>
+                    </Link>
+                </li>
                 <li className="nav-item active">
                 <Link className="nav-link" to="/user-list">
                     <FontAwesomeIcon icon={faUsers} style={{ marginRight: "0.5rem" }}/>
@@ -97,7 +126,7 @@ function Sidebar() {
             <li className="nav-item active">
                 <Link className="nav-link" to="/store-list-form">
                     <FontAwesomeIcon icon={faShop} style={{ marginRight: "0.5rem" }}/>
-                    <span className='max-sm:text-xs'>Yêu cầu mở shop</span>
+                    <span className='max-sm:text-xs'>Quản lí cửa hàng</span>
                 </Link>
             </li>
             <li className="nav-item active">

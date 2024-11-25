@@ -53,6 +53,7 @@ function Orderlist() {
       console.log(error);
     }
   };
+  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -105,8 +106,7 @@ function Orderlist() {
 
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.quantity}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price * product?.quantity}$</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product && product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}</td>
-                        
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product &&  product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  product?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}</td>
                           <th className="flex flex-col gap-2">
                           
                             <Link
@@ -159,7 +159,7 @@ function Orderlist() {
                               {item?.quantity * item?.product?.price}$
                             </td>
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                            {item && item?.status === "waitDelivery" ? "Đợi giao hàng" : item?.status === "delivering" ? "Đang giao hàng" : item?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy"}
+                            {item &&  item?.status === "waitDelivery" ? "Đợi giao hàng" : item?.status === "delivering" ? "Đang giao hàng" : item?.status === "successfull" ? "Giao hàng thành công"  :  item?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}
                             </td>
                             <td>
                               <div className="flex flex-col gap-2">
