@@ -219,7 +219,7 @@ const Detail_product = ({agent}) => {
                 <KeyboardArrowRightIcon sx={{ fontSize  :  `${isMobile ? "20px" : "30px"}`}} className="cursor-pointer"/>
             </div>
         </div>
-        <div className="flex flex-col w-full py-4 px-2 gap-8 bg-white rounded-xl">
+        {/* <div className="flex flex-col w-full py-4 px-2 gap-8 bg-white rounded-xl">
             <div className="flex items-center justify-between gap-4 ">
                <div className="flex items-center gap-4 justify-center">
                 <AccountCircleIcon sx={{ fontSize  :  `${isMobile ? "40px" : "70px"}`}} className="text-gray-300"/>
@@ -238,7 +238,7 @@ const Detail_product = ({agent}) => {
                     <span className="max-sm:text-xs">Liên hệ hỗ trợ</span>
                 </div>
            </div>
-        </div>
+        </div> */}
         <div className="flex flex-col w-full py-4 px-2 gap-8 bg-white rounded-xl">
             <div className="flex items-center justify-between gap-4 ">
                 <div className="flex gap-4 items-center">
