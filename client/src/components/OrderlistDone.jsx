@@ -32,7 +32,7 @@ const list_status = [
     name : "Đơn hàng bị hủy"
   },
 ]
-function Orderlist() {
+function OrderlistDone() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate()
@@ -83,8 +83,9 @@ function Orderlist() {
         setLoading(false);
       }else{
         const store = await apiGetOrder()
-        setproductList(store?.orders);
-        setStore(store?.stores);
+        console.log(store)
+        setproductList(store?.orders1);
+        setStore(store?.stores1);
         setLoading(false);
       }
     
@@ -253,14 +254,14 @@ function Orderlist() {
                             <div className="flex items-center justify-center">
                             <div className="flex flex-col gap-2">
                                 <Link
-                                  to={`/order-view/${item?._id}`}
+                                  to={`/order-view-done/${item?._id}`}
                                   state={item}
                                   className="btn btn-primary btn-sm"
                                 >
                                   Xem chi tiết
                                 </Link>
                                 <Link
-                                  to={`/order-edit/${item?._id}`}
+                                  to={`/order-edit-done/${item?._id}`}
                                   className="btn btn-info btn-sm"
                                 >
                                   Cập nhật đơn hàng
@@ -291,4 +292,4 @@ function Orderlist() {
   );
 }
 
-export default Orderlist;
+export default OrderlistDone;
