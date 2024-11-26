@@ -139,15 +139,30 @@ const ProductAgent = () => {
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([])
     const navigate = useNavigate()
+    const [store, setStore] = useState(null)
+    
+    const fetchStore = async() => {
+        const res = await apiGetMyStore()
+        setStore(res[0])
+    }
+  
+    
+    useEffect(() => {
+        fetchStore() 
+    },[])
     const isMobile = useMediaQuery("(max-width:600px)");
     const fetchApiProduct = async() => {
         const res = await apiGetMyStore()
         console.log(res)
         setProducts(res[0]?.cart)
     }
-    const filteredProducts = products.filter((product) => 
-      product?.product?.title?.toLowerCase()?.includes(search?.toLowerCase()) || 
+    const filteredProducts = products.filter((product) =>  {
+      if(!search) {
+        return  product?.product?.title?.toLowerCase() ||  product?.product?.category?.toLowerCase()
+      }
+      return product?.product?.title?.toLowerCase()?.includes(search?.toLowerCase()) || 
       product?.product?.category?.toLowerCase()?.includes(search?.toLowerCase())
+    }
     );
     useEffect(() => {
         fetchApiProduct()
@@ -160,7 +175,7 @@ const ProductAgent = () => {
             <div className="px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg bg-[#eb4786]">
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <Upload color="white" className="max-sm:w-6 max-sm:h-6"/>
-                    <span className="text-3xl font-semibold text-white max-sm:text-xl">5</span>
+                    <span className="text-3xl font-semibold text-white max-sm:text-xl">{store?.cart?.length}</span>
                     <span className="text-white font-semibold max-sm:text-[10px]">Sản phẩm hiện có</span>
                 </div>
             </div>

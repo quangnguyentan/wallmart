@@ -156,6 +156,7 @@ const Order_Store_Detail = () => {
     useEffect(() => {
         fetchApiProduct(id)
     }, [id])
+    console.log(products[0]?.status !== "waitPay")
   return (
     <div className="flex flex-col gap-4">
         <h3 className="text-black font-semibold">Chi tiết đơn hàng</h3>
@@ -163,7 +164,13 @@ const Order_Store_Detail = () => {
             <div className="px-6 py-6 border h-64 max-sm:h-34 flex rounded-lg hover:shadow-lg">
                     <div className="flex flex-col gap-4 ">
                         <span className="text-black font-semibold max-sm:text-[10px]">Thanh toán cho nhà kho</span>
-                        <button onClick={handleClickOpen} className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">Thanh toán cho nhà kho</button>
+                        <button onClick={() => {
+                          if(products[0]?.status !== "waitPay") {
+                            return
+                          }else{
+                            handleClickOpen()
+                          }
+                        }} className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status !== "waitPay" && products[0]?.status !== "canceled" ? "Đã thanh toán" : products[0]?.status === "canceled" ? "Đã hủy" : "Thanh toán cho nhà kho"}</button>
                         <span className="text-black  max-sm:text-[10px]">
                             {products?.[0]?.revicerName}
                         </span>

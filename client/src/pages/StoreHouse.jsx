@@ -156,9 +156,15 @@ const StoreHouse = () => {
         toast.error(res?.msg)
       }
     }
-    const filteredProducts = products.filter((product) => 
-        product?.title?.toLowerCase()?.includes(search?.toLowerCase()) || 
-        product?.category?.toLowerCase()?.includes(search?.toLowerCase())
+    const filteredProducts = products.filter((product) => {
+      if(!search){
+        return product?.title?.toLowerCase() || product?.category?.toLowerCase()
+      }
+      return  product?.title?.toLowerCase()?.includes(search?.toLowerCase()) || 
+      product?.category?.toLowerCase()?.includes(search?.toLowerCase())
+     
+    }
+     
     );
     const handleSelectionChange = (newSelection) => {
       setSelectedIds(newSelection);
@@ -166,6 +172,7 @@ const StoreHouse = () => {
     useEffect(() => {
         fetchApiProduct()
     }, [])
+    console.log(search)
   return (
     <div className="flex flex-col gap-4">
         <h3 className="text-black font-semibold md:hidden">Các sản phẩm trong kho</h3>

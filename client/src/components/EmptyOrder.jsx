@@ -15,9 +15,7 @@ const EmptyOrder = () => {
                 <img src={noCart} alt="noCart" className="w-[220px] h-[134px]" />
                 <span className="text-lg text-gray-400 font-medium max-sm:text-sm">Không có đơn hàng</span>
             </div>
-            <div className="flex items-center justify-center" >
-                <button className="w-[167px] bg-[#fa3f3f] text-white text-sm px-2 py-4 rounded-full max-sm:text-xs max-sm:py-3">Bắt đầu mua sắm</button>
-            </div>
+           
        </div>
     </div>
   )
