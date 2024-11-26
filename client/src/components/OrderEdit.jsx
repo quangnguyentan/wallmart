@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { apiCreateProduct } from '@/services/productService';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { apiGetOrderByIdOrder, apiUpdateOrder } from '@/services/orderServer';
@@ -114,7 +113,7 @@ function OrderEdit() {
             type="submit"
             disabled={isLoading} // Disable button khi đang tải
           >
-            {isLoading ? "Đang tải..." : "Chỉnh sửa đơn hàng"}
+            {isLoading ? "Đang tải..." : "Cập nhật đơn hàng"}
           </button>
         </div>
       </form>

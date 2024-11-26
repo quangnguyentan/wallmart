@@ -1,24 +1,72 @@
-import { faUser } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./sb-admin-2.min.css";
-import { apiGetProduct } from "@/services/productService";
-import { useDispatch, useSelector } from "react-redux";
-import { apiGetAllUser } from "@/services/userService";
-import { apiDeleteOrderById, apiGetOrder, apiGetOrderByShop } from "@/services/orderServer";
-import { apiGetMyStore, apiGetStore } from "@/services/storeService";
-import { getCurrent } from "@/stores/actions/userAction";
-import toast from "react-hot-toast";
+import { apiDeleteOrderById, apiGetOrder, apiGetOrderByIdOrder, apiGetOrderByShop, apiUpdateOrder } from "@/services/orderServer";
+import toast from 'react-hot-toast';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
 
 
-
+const list_status = [
+  {
+    id : 1,
+    name : "Chưa thanh toán"
+  },
+  {
+    id : 2,
+    name : "Đợi giao hàng"
+  },
+  {
+    id : 3,
+    name : "Đang giao hàng"
+  },
+  {
+    id : 4,
+    name : "Giao hàng thành công"
+  },
+  {
+    id : 5,
+    name : "Đơn hàng bị hủy"
+  },
+]
 function Orderlist() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate()
-  const { currentData } = useSelector((state) => state.user); 
+  const { currentData } = useSelector((state) => state.user);
+  const [values, setValues] = useState("");
+  const [order, setOrder] = useState("")
+  const { id } = useParams()
+  const {
+    register,
+    handleSubmit,
+    resetField,
+    formState: { errors },
+    watch,
+    getValues,
+    setValue,
+
+  } = useForm();
+  // const updateOrder = async (data) => {
+  //   console.log(data)
+  //   try {
+  //     const formData = new FormData(); 
+  //     setLoading(true);
+  //     // const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : values === "Chưa thanh toán" ? "waitPay" : "canceled" : order?.status }); 
+  //     // if(res) {
+  //     //   setLoading(false);
+  //     //   toast.success("Đăng kí thành công");
+  //     //   navigate("/order-list")
+  //     // }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setLoading(false);
+  //     toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
+  //   }
+  // };
+ 
   useEffect(() => {
     getUsers();
   }, []);
@@ -53,7 +101,6 @@ function Orderlist() {
       console.log(error);
     }
   };
-  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -158,8 +205,9 @@ function Orderlist() {
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               {item?.quantity * item?.product?.price}$
                             </td>
+                            
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                            {item &&  item?.status === "waitDelivery" ? "Đợi giao hàng" : item?.status === "delivering" ? "Đang giao hàng" : item?.status === "successfull" ? "Giao hàng thành công"  :  item?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}
+                            {item &&  item?.status === "waitDelivery" ?<span className="px-2 py-1  text-white bg-amber-900 font-semibold text-sm">Đợi giao hàng</span> : item?.status === "delivering" ? <span className="px-2 py-1  text-white bg-yellow-400 font-semibold text-sm">Đang giao hàng</span> : item?.status === "successfull" ? <span className="px-2 py-1  text-white bg-green-500 font-semibold text-sm">Giao hàng thành công</span>  :  item?.status === "waitPay" ? <span className="px-2 py-1  text-white bg-pink-600 font-semibold text-sm">Chưa thanh toán</span>  :  <span className="px-2 py-1  text-white bg-red-600 font-semibold text-sm">Đơn hàng bị hủy</span>}
                             </td>
                             <td>
                               <div className="flex flex-col gap-2">
@@ -174,7 +222,7 @@ function Orderlist() {
                                   to={`/order-edit/${item?._id}`}
                                   className="btn btn-info btn-sm"
                                 >
-                                  Chỉnh sửa
+                                  Cập nhật đơn hàng
                                 </Link>
                                 <button
                                   onClick={() => handleDelete(item?._id)}

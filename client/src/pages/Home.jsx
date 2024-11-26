@@ -4,6 +4,7 @@ import { apiGetMyStore } from "@/services/storeService"
 import { getCurrent } from "@/stores/actions/userAction"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 const fileSvgBox = <svg xmlns="http://www.w3.org/2000/svg" width="64.001" height="64" viewBox="0 0 64.001 64">
                     <path id="Path_66" data-name="Path 66" d="M146.431,117.56l-26.514-10.606a8.014,8.014,0,0,0-5.944,0L87.458,117.56a4,4,0,0,0-2.514,3.714v34.217a4,4,0,0,0,2.514,3.714l26.514,10.606a8.013,8.013,0,0,0,5.944,0L146.431,159.2a4,4,0,0,0,2.514-3.714V121.274a4,4,0,0,0-2.514-3.714m-31.714-8.748a5.981,5.981,0,0,1,4.456,0l26.1,10.44a1,1,0,0,1,0,1.858l-12.332,4.932-30.654-12.26Zm1.228,59.633L88.2,157.347a2,2,0,0,1-1.258-1.856V122.6l29,11.6Zm1-36L88.612,121.11a1,1,0,0,1,0-1.858L99.6,114.858l30.654,12.262Zm30,23.048a2,2,0,0,1-1.258,1.856l-27.742,11.1V134.2l13-5.2V146.61a1.035,1.035,0,0,0,2-.466V128.2l14-5.6Z" transform="translate(-84.944 -106.382)" fill="#FFFFFF"></path>
@@ -89,6 +90,7 @@ const fileSvgSetting = <svg id="Group_31" data-name="Group 31" xmlns="http://www
 <path id="Path_82" data-name="Path 82" d="M16,0A46.43,46.43,0,0,1,0,8.4v2a3.451,3.451,0,0,0,5.333,2.133,3.452,3.452,0,0,0,5.333,2.134A3.453,3.453,0,0,0,16,16.8a3.451,3.451,0,0,0,5.333-2.133,3.451,3.451,0,0,0,5.333-2.134A3.454,3.454,0,0,0,32,10.4v-2A46.421,46.421,0,0,1,16,0M31.021,10.194a2.452,2.452,0,0,1-3.788,1.515,1,1,0,0,0-1.545.618A2.453,2.453,0,0,1,21.9,13.843a1,1,0,0,0-1.545.618A2.451,2.451,0,0,1,16,15.434a2.452,2.452,0,0,1-4.355-.973,1,1,0,0,0-1.545-.618,2.454,2.454,0,0,1-3.789-1.516,1,1,0,0,0-1.184-.772,1.015,1.015,0,0,0-.361.154A2.451,2.451,0,0,1,.978,10.194V9.148A47.458,47.458,0,0,0,16,1.277,47.442,47.442,0,0,0,31.021,9.148Z" fill="#2E294E"></path>
 </svg>
 const Home = () => {
+    const navigate = useNavigate()
     const [store, setStore] = useState(null)
     const [order, setOrder] = useState([])
     const { isLoggedIn, token } = useSelector((state) => state.auth);
@@ -167,33 +169,41 @@ const Home = () => {
                     {fileSvgBag}
                     <div className="flex flex-col">
                         <span className="font-semibold">Sản phẩm mới</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">3</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "waitPay")?.length}</span>
                     </div>
                 </div>
+              
                 <div className="flex gap-10 text-sm text-[#0277BD] ">
-                    {fileSvgCancel}
+                    {fileSvgDelivering}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Đã hủy</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">0</span>
+                        <span className="font-semibold">Đợi giao hàng</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
                     </div>
                 </div>
                 <div className="flex gap-10 text-sm text-[#0277BD] ">
                     {fileSvgDelivering}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Khi giao hàng</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">0</span>
+                        <span className="font-semibold">Đang giao hàng</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "delivering")?.length}</span>
                     </div>
                 </div>
                 <div className="flex gap-10 text-sm text-[#0277BD] ">
                     {fileSvgSuccess}
                     <div className="flex flex-col">
                         <span className="font-semibold">Đã giao hàng</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">0</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "successfull")?.length}</span>
+                    </div>
+                </div>
+                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                    {fileSvgCancel}
+                    <div className="flex flex-col">
+                        <span className="font-semibold">Đã hủy</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold"> <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "canceled")?.length}</span></span>
                     </div>
                 </div>
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 rounded-lg">
+            <div className="bg-white px-6 py-6 border h-44 rounded-lg cursor-pointer" onClick={() => navigate("/storehouse")}>
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <span className="text-[#0277BD] font-semibold">Thêm sản phẩm mới</span>
                     {fileSvgAdd}
@@ -203,7 +213,7 @@ const Home = () => {
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <span className="text-[#0277BD] font-semibold">Cài đặt cửa hàng</span>
                     {fileSvgSetting}
-                    <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg">Đi tới cài đặt</button>
+                    <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg" onClick={() => navigate("/setting")}>Đi tới cài đặt</button>
                 </div>
             </div>
         </div>

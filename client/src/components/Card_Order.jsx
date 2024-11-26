@@ -2,8 +2,10 @@ import product_test from "@/assets/product_test.jpg"
 import { pathImage } from "@/lib/helper"
 import { apiGetOrderById } from "@/services/orderServer"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 const Card_Order = ({hidden, type}) => {
   const [order, setOrder] = useState("")
+  const navigate = useNavigate()
   const getMyOrder = async() => {
     const res = await apiGetOrderById()
     setOrder(res)
@@ -16,7 +18,7 @@ const Card_Order = ({hidden, type}) => {
       {order && order?.map((ord) => (
         <>
         {type === "all" &&  <>
-          {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+          {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)} >
         <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
             <span>Mã đơn hàng:</span>
             <span>{ord?._id}</span>
@@ -43,7 +45,7 @@ const Card_Order = ({hidden, type}) => {
         </div>
     </div>}</>}
       {type === "wait" && ord?.status === "waitPay" &&  <>
-      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
           <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
@@ -71,7 +73,7 @@ const Card_Order = ({hidden, type}) => {
   </div>}
       </>}
       {type === "waitDelivery" && ord?.status === "waitDelivery" &&  <>
-      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
           <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
@@ -99,7 +101,7 @@ const Card_Order = ({hidden, type}) => {
   </div>}
       </>}
       {type === "delivering" && ord?.status === "delivering" &&  <>
-      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
           <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
@@ -127,7 +129,7 @@ const Card_Order = ({hidden, type}) => {
   </div>}
       </>}
       {type === "successfull" && ord?.status === "successfull" &&  <>
-      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
           <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
@@ -155,7 +157,7 @@ const Card_Order = ({hidden, type}) => {
   </div>}
       </>}
       {type === "canceled" && ord?.status === "canceled" &&  <>
-      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2" key={ord?._id}>
+      {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
       <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
           <span>Mã đơn hàng:</span>
           <span>{ord?._id}</span>
