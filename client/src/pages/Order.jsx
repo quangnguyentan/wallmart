@@ -50,7 +50,7 @@ const Order = () => {
       <div className="w-[10%]">
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "35px" : "50px"}`}}
-            className="text-gray-400 cursor-pointer line-clamp-1 px-2"
+            className="text-gray-400 cursor-pointer  px-2"
             onClick={() =>{
               localStorage.setItem("page", 0)
               navigate("/")
@@ -75,54 +75,64 @@ const Order = () => {
             />
         </div> */}
         </div>
-       <div className="w-full overflow-x-hidden border-none ">
+       <div className="w-full  border-none ">
     <Tabs defaultValue="all" className="w-full h-full ">
-      <div className="w-full flex flex-col z-40 px-2 bg-white outline-none overflow-hidden whitespace-nowrap ">
-        <TabsList className="w-full flex justify-between px-4  overflow-x-scroll scrollbar-hide">
+      <div className="w-full flex flex-col z-40  bg-white outline-none ">
+        <TabsList className="tabs-list w-full overflow-x-scroll pl-28 overflow-y-hidden">
         <TabsTrigger 
                  value="all" 
-                 className={`max-sm:text-xs h-16 line-clamp-1 text-ellipsis overflow-hidden whitespace-nowrap break-words px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
+                 className={`max-sm:text-xs  text-ellipsis whitespace-nowrap  px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
                  onClick={() => setActiveTab("all")}
             >
                <div className="flex items-center gap-1">
-                    <span className="font-bold line-clamp-1 px-2">Tất cả</span>
+                    <span className="font-bold  px-4">Tất cả</span>
                </div>
           </TabsTrigger>
       
+           
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs  ext-ellipsis whitespace-nowrap  px-2 cursor-default ${activeTab === 'wait' ? 'background-custom  ' : 'text-gray-500'}`} 
+                value="wait"
+                onClick={() => setActiveTab("wait")}
+            >
+               <div className="flex items-center gap-2">
+                 <span className="cursor-pointer   px-2">Chờ thanh toán</span>
+               </div>
+            </TabsTrigger>
+            <TabsTrigger 
+                className={`max-sm:text-xs  ext-ellipsis whitespace-nowrap  px-2 cursor-default ${activeTab === 'waitDelivery' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="waitDelivery"
                 onClick={() => setActiveTab("waitDelivery")}
             >
                <div className="flex items-center gap-2">
-                 <span className="cursor-pointer line-clamp-1 px-2">Vận chuyển</span>
+                 <span className="cursor-pointer  px-2">Vận chuyển</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Delivering' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs  ext-ellipsis whitespace-nowrap  px-2 cursor-default ${activeTab === 'Delivering' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Delivering"
                 onClick={() => setActiveTab("Delivering")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer line-clamp-1 px-2">Đang vận chuyển</span>
+                 <span className="cursor-pointer  px-2">Đang vận chuyển</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Successful' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs  ext-ellipsis whitespace-nowrap  px-2 cursor-default ${activeTab === 'Successful' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Successful"
                 onClick={() => setActiveTab("Successful")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer line-clamp-1 px-2">Đơn hoàn thành</span>
+                 <span className="cursor-pointer  px-2">Đơn hoàn thành</span>
                </div>
             </TabsTrigger>
             <TabsTrigger 
-                className={`max-sm:text-xs h-16 line-clamp-1 ext-ellipsis overflow-hidden whitespace-nowrap break-words px-2 cursor-default ${activeTab === 'Cancel' ? 'background-custom  ' : 'text-gray-500'}`} 
+                className={`max-sm:text-xs  ext-ellipsis whitespace-nowrap  px-2 cursor-default ${activeTab === 'Cancel' ? 'background-custom  ' : 'text-gray-500'}`} 
                 value="Cancel"
                 onClick={() => setActiveTab("Cancel")}
             >
                <div className="flex items-center  gap-2">
-                 <span className="cursor-pointer line-clamp-1 px-2">Đã hủy</span>
+                 <span className="cursor-pointer  px-2">Đã hủy</span>
                </div>
             </TabsTrigger>
         </TabsList>
@@ -151,6 +161,29 @@ const Order = () => {
       </div>
       </TabsContent>
       </div>
+      <TabsContent value="wait"> 
+      {order?.length > 0  ? <Card_Order hidden type="wait"/> : <EmptyOrder hidden/>}
+
+
+      <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
+        {visible && (
+          <ArrowUpwardOutlinedIcon
+            fontSize="large"
+            onClick={scrollToTop}
+            className="responsive-icon"
+            style={{
+              width: "60px",
+              height: "60px",
+              background: "lightgray",
+              border: "none",
+              borderRadius: "100%",
+              padding: "10px",
+              cursor: "pointer",
+            }}
+          />
+        )}
+      </div>
+      </TabsContent>
       <TabsContent value="waitDelivery"> 
       {order?.length > 0  ? <Card_Order hidden type="waitDelivery"/> : <EmptyOrder hidden/>}
 
@@ -176,8 +209,6 @@ const Order = () => {
       </TabsContent>
       <TabsContent value="Delivering"> 
       {order?.length > 0  ? <Card_Order hidden type="delivering"/> : <EmptyOrder hidden/>}
-
-
       <div className="fixed z-50 bottom-[20%] transform  md:left-[60%] max-sm:right-5">
         {visible && (
           <ArrowUpwardOutlinedIcon

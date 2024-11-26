@@ -85,11 +85,44 @@ const updateOrder = async (req, res, next) => {
 };
 const List = async (req, res, next) => {
   try {
-    const orders = await Order.find().populate({
-      path: "product",
-      select: "title price",
+    const orders = await Order.find()
+      .populate([
+        {
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry",
+        }, // Lấy thông tin tên và giá sản phẩm
+        // { path: "store", select: "inforByStore logoStore industry" }, // Lấy thông tin cửa hàng
+        { path: "user", select: "role fullName" },
+      ])
+      .sort({ createdAt: -1 });
+    const filterStatus1 = orders?.filter(
+      (order) => order?.status !== "successfull" && order?.status !== "canceled"
+    );
+    const filterStatus2 = orders?.filter(
+      (order) => order?.status === "successfull" || order?.status === "canceled"
+    );
+    const stores = [];
+    const stores1 = [];
+
+    for (const order of filterStatus1) {
+      const store = await Store.find({
+        userId: order?.store?._id.toString(),
+      });
+      stores.push(store[0]); // Add each store to the array
+    }
+    for (const order of filterStatus2) {
+      const store = await Store.find({
+        userId: order?.store?._id.toString(),
+      });
+      stores1.push(store[0]); // Add each store to the array
+    }
+    res.json({
+      orders: filterStatus1,
+      stores,
+      orders1: filterStatus2,
+      stores1,
     });
-    res.json(orders);
   } catch (e) {
     next(e);
   }

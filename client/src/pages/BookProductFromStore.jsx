@@ -90,7 +90,7 @@ const BookProductFromStore = () => {
   return (
     <div className="flex flex-col gap-2 bg-[#f5f5f5]">
       <div className="w-full justify-end flex px-4 py-2">
-      <DrawRightAdmin productItem={product}  userId={userId}/>
+      <DrawRightAdmin productItem={product} setProductItem={setProduct}   userId={userId}/>
       </div>
       <div className="grid grid-cols-5 gap-2 px-4">
       {stores?.cart &&

@@ -27,8 +27,9 @@ import { apiCreateAddresById, apiCreateAddress, apiGetAddressByUserId } from '@/
 import Switch from '@mui/material/Switch';
 import { useForm } from "react-hook-form"
 import { apiOrderPaymentBot } from '@/services/orderServer';
+import { Trash } from 'lucide-react';
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
-export default function DrawRightAdmin({ productItem }) {
+export default function DrawRightAdmin({ productItem, setProductItem }) {
   const [open, setOpen] = React.useState(false);
   const [isOpen, setIsOpen] = useState(false)
   const [products, setProducts] = useState(productItem || [])
@@ -195,6 +196,20 @@ export default function DrawRightAdmin({ productItem }) {
   const handleAddClose = () => {
     setIsAddOpen(false);
   };
+  const handleDelete = (product) => {
+    if (productItem) {
+      const updatedProducts = products.filter((item) => item?._id !== product?._id);
+      setProducts(updatedProducts);
+      if (setProductItem) {
+        setProductItem(updatedProducts);  
+      }
+      if(isChecked) {
+        setIsChecked(isChecked?.filter((item) => item?._id !== product?._id))
+      }
+    }
+    setValues("")
+    setAddress([])
+  }
   useEffect(() => {
     if(isLoggedIn && token)  dispatch(getCurrent())
    },[isLoggedIn, token, dispatch])
@@ -202,12 +217,13 @@ export default function DrawRightAdmin({ productItem }) {
   useEffect(() => {
     fetchGetByUserId(userId) && getUsers()
   },[userId])
-
+console.log(isChecked)
   const DrawerList = (
    <>
      {products && productItem &&  <Box className="w-[750px] max-sm:w-[250px]"  role="presentation" onClick={(e) => {
       e.stopPropagation()
       toggleDrawer(false)
+      
      }}>
       <List>
       <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
@@ -415,12 +431,11 @@ export default function DrawRightAdmin({ productItem }) {
       </div>
       <div className='flex items-center justify-between px-2'>
             <span className="text-base max-sm:text-sm">Tổng cộng {products?.length}</span>
-            <span className="text-base cursor-pointer max-sm:text-sm" onClick={() => setActiveSwitchText(!activeSwitchText)}>{activeSwitchText ? "Hoàn thành" : "Bỏ sản phẩm"}</span>
       </div>
        {products && products?.length> 0 ? <div className="px-4 flex flex-col gap-4 pb-40">
          {products?.map((product) => (
             <div key={product?._id} className="rounded-xl bg-white py-2 px-4 flex flex-col gap-2">
-              <div className="flex items-center justify-between ">
+              <div className="flex items-center justify-between gap-4 ">
              <div className="flex items-center gap-8 justify-between ">
              <input type="checkbox" id="checkbox" onClick={(e) => {
                 e.stopPropagation()
@@ -451,7 +466,11 @@ export default function DrawRightAdmin({ productItem }) {
                     <AddOutlinedIcon sx={{ fontSize : "15px" }} />
                    </div>
                   </div>
-
+                  <div>
+                  <div className='h-20 w-10 cursor-pointer flex items-center' onClick={() => handleDelete(product)}>
+                  <Trash/>
+                  </div>
+                  </div>
               </div>
             </div>
          ))}

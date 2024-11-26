@@ -1,4 +1,4 @@
-import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome, faDiceOne, faAdjust } from '@fortawesome/free-solid-svg-icons'
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
@@ -90,7 +90,13 @@ function Sidebar() {
                 <li className="nav-item active py-1">
                     <Link className="nav-link" to="/order-list">
                         <FontAwesomeIcon icon={faReorder} style={{ marginRight: "0.5rem" }}/>
-                        <span className='max-sm:text-xs'>Quản lí đơn hàng</span>
+                        <span className='max-sm:text-xs'>Đơn hàng chờ xử lý</span>
+                    </Link>
+                </li>
+                <li className="nav-item active py-1">
+                    <Link className="nav-link" to="/order-list-done">
+                        <FontAwesomeIcon icon={faAdjust} style={{ marginRight: "0.5rem" }}/>
+                        <span className='max-sm:text-xs'>Đơn hàng hoàn thành</span>
                     </Link>
                 </li>
                 <li className="nav-item active">

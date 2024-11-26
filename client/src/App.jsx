@@ -68,6 +68,10 @@ import ProductAgent from "./pages/ProductAgent";
 import StoreHouse from "./pages/StoreHouse";
 import Order_Store from "./pages/Order_Store";
 import Order_Store_Detail from "./pages/Order_Store_Detail";
+import OrderlistDone from "./components/OrderlistDone";
+import OrderCreateDone from "./components/OrderCreateDone";
+import OrderViewDone from "./components/OrderViewDone";
+import OrderEditDone from "./components/OrderEditDone";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -169,6 +173,10 @@ function App() {
                 <Route path='create-order' element={<OrderCreate />} />
                 <Route path='order-view/:id' element={<OrderView />} />
                 <Route path='order-edit/:id' element={<OrderEdit />} />
+                <Route path='order-list-done' element={<OrderlistDone />} />
+                <Route path='create-order-done' element={<OrderCreateDone />} />
+                <Route path='order-view-done/:id' element={<OrderViewDone />} />
+                <Route path='order-edit-done/:id' element={<OrderEditDone />} />
                 <Route path='deposit-user-list' element={<UserDepositList />} />
                 <Route path='deposit-user-create' element={<UserDepositCreate />} />
                 <Route path='deposit-user-view/:id' element={<UserDepositView />} />
