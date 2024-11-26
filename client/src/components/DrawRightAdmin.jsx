@@ -431,7 +431,6 @@ console.log(isChecked)
       </div>
       <div className='flex items-center justify-between px-2'>
             <span className="text-base max-sm:text-sm">Tổng cộng {products?.length}</span>
-            <span className="text-base cursor-pointer max-sm:text-sm" onClick={() => setActiveSwitchText(!activeSwitchText)}>{activeSwitchText ? "Hoàn thành" : "Bỏ sản phẩm"}</span>
       </div>
        {products && products?.length> 0 ? <div className="px-4 flex flex-col gap-4 pb-40">
          {products?.map((product) => (
