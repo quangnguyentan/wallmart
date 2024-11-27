@@ -35,12 +35,14 @@ function StoreFormList() {
       })
       if(res?.success) {
         dispatch(getStore())
+        getUsers()
         toast.success(`Đã xác nhận tạo cửa hàng cho khách hàng ${data?.fullname}` )
       }
     }else{
       const res = await apiDeletestoreById(data?._id)
       if(res?.success) {
         dispatch(getStore())
+        getUsers()
         toast.success(`Đã từ chối đơn hàng đơn hàng của khách hàng ${data?.fullname}`)
       }
     }
@@ -120,27 +122,27 @@ function StoreFormList() {
                           >
                            Xem chi tiết  cửa hàng
                           </Link>
-                         {/* {product?.active === "wait" && <>
+                         {product?.active === "wait" && <>
                           <div
-                            className="btn btn-primary btn-sm mr-1"
+                            className="btn btn-info btn-sm mr-1"
                             onClick={() => hanleUpdateStore(product, "accept")}
                           >
                            Xác nhận duyệt
                           </div>
                           <div
-                            className="btn btn-info btn-sm mr-1"
+                            className="btn btn-danger btn-sm mr-1"
                             onClick={() => hanleUpdateStore(product, "denied")}
 
                           >
                            Từ chối
                           </div>
-                          <button
+                          {/* <button
                             onClick={() => handleDelete(product?._id)}
                             className="btn btn-danger btn-sm mr-1"
                           >
                             Xóa
-                          </button>
-                         </>} */}
+                          </button> */}
+                         </>}
                         </th>
                       </tr>
                     );

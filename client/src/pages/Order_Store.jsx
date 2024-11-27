@@ -168,7 +168,7 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.price - params.row.product.priceOld}</span>
+              <span className="text-xs">${params.row.product.price * 20 / 100}</span>
             </div>
           ),
         
@@ -275,7 +275,7 @@ const Order_Store = () => {
     }, 0)
     const profitPayment = products &&  products?.reduce((total, product) => {
         if (selectedIds?.includes(product?._id)) {
-        return total + ((Number(product?.product?.price) - Number(product?.product?.priceOld))) * product?.quantity; 
+        return total + ((Number(product?.product?.price) * 20 / 100)) * product?.quantity; 
         }
         return total;  
     }, 0)
@@ -299,7 +299,7 @@ const Order_Store = () => {
     }, [])
   return (
     <div className="flex flex-col gap-4">
-        <h3 className="text-black font-semibold md:hidden">Các sản phẩm trong kho</h3>
+        <h3 className="text-black font-semibold md:hidden max-sm:text-xs">Các sản phẩm trong kho</h3>
         {/* <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-2 ">
             <div className="px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg bg-[#eb4786]">
                 <div className="flex flex-col gap-4 items-center justify-center">
@@ -363,7 +363,7 @@ const Order_Store = () => {
                     onChange={(e) => setSearch(e.target.value)}
                     sx={{  width : isMobile ? "100%" :  600  }} 
                 />
-                 <button className="bg-[#0277BD] text-white px-12 py-4 rounded-lg max-sm:text-[10px] max-sm:px-28 max-sm:py-4 md:hidden">Thanh toán tất cả đơn hàng</button>
+                 <button className="bg-[#0277BD] text-white px-12 py-4 rounded-lg max-sm:text-[10px] max-sm:w-full max-sm:py-4 md:hidden" onClick={handleClickOpen}>Thanh toán tất cả đơn hàng</button>
 
             </div>
             <React.Fragment>
@@ -379,12 +379,12 @@ const Order_Store = () => {
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    <div className="px-20 flex-col gap-4 flex ">
-                       <div className="bg-[#d4edda] px-20 py-6">
-                            <span className="text-[#155724] font-semibold">Thanh toán bằng ví ${totalPayment}</span>
+                    <div className="px-20 max-sm:px-0 flex-col gap-4 flex ">
+                       <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${totalPayment}</span>
                         </div>
-                        <div className="bg-[#d4edda] px-20 py-6">
-                            <span className="text-[#155724] font-semibold">Lợi nhuận ${profitPayment}</span>
+                        <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${profitPayment}</span>
                        </div>
                     </div>
                 </DialogContentText>

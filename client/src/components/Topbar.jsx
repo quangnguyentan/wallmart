@@ -146,13 +146,11 @@ function Topbar() {
             {/* <!-- Topbar Navbar --> */}
             <ul className="navbar-nav ml-auto">
 
-                {/* <!-- Nav Item - Search Dropdown (Visible Only XS) --> */}
-                <li className="nav-item dropdown no-arrow d-sm-none">
+                {/* <li className="nav-item dropdown no-arrow d-sm-none">
                     <a className="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <FontAwesomeIcon icon={faSearch} />
                     </a>
-                    {/* <!-- Dropdown - Messages --> */}
                     <div className="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                         aria-labelledby="searchDropdown">
                         <form className="form-inline mr-auto w-100 navbar-search">
@@ -168,41 +166,20 @@ function Topbar() {
                             </div>
                         </form>
                     </div>
-                </li>
+                </li> */}
 
-                {/* <!-- Nav Item - User Information --> */}
                 <li className="nav-item dropdown no-arrow flex items-center">
                     <div className='flex flex-col gap-1'>
-                        <span className="mr-2 d-none d-lg-inline text-gray-600 small">{currentData?.fullName}</span>
-                        <span className='mr-2 text-[10px] d-none d-lg-inline text-gray-600'>
+                        <span className="mr-2 d-lg-inline text-gray-600 small">{currentData?.fullName}</span>
+                        <span className='mr-2 text-[10px] d-lg-inline text-gray-600'>
                             {currentData?.role === "agent" ? "Người bán hàng" : "Quản trị"}
                         </span>
                     </div>
                     <Link className="nav-link dropdown-toggle" to={currentData?.role === "admin" ? "product-list" : "/"} id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {currentData?.avatar ?  <img src={`${pathImage}/${currentData?.avatar}`} className='w-6 h-6 rounded-full' alt="" /> :  <FontAwesomeIcon icon={faCircleUser} size={"xl"} />}
+                        {currentData?.avatar ?  <img src={`${pathImage}/${currentData?.avatar}`} className='w-12 h-12 max-sm:w-8 max-sm:h-8 rounded-full' alt="" /> :  <FontAwesomeIcon icon={faCircleUser} size={"xl"} />}
                     </Link>
-                    {/* <!-- Dropdown - User Information --> */}
-                    {/* <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                        aria-labelledby="userDropdown">
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </a>
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a className="dropdown-item" href="#">
-                            <i className="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
-                        </a>
-                        <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                            <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
-                        </a>
-                    </div> */}
+                    
                 </li>
 
             </ul>

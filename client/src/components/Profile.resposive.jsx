@@ -24,6 +24,7 @@ import { getCurrent } from "@/stores/actions/userAction";
 import { apiGetProduct } from "@/services/productService";
 import { apiGetMyStore, apiGetStore } from "@/services/storeService";
 import { pathImage } from "@/lib/helper";
+import { apiGetOrderById } from "@/services/orderServer";
 const Profile = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
@@ -34,11 +35,7 @@ const Profile = () => {
   const { currentData } = useSelector((state) => state.user);
   const { isLoggedIn, token } = useSelector((state) => state.auth);
   const [stores, setStores] = useState([])
-  
-  const [visible, setVisible] = useState(false);
-
-
-
+  const [order, setOrder] = useState([]) 
   const getAllStore = async() => {
     const res = await apiGetStore()
     setStores(res)
@@ -47,10 +44,20 @@ const Profile = () => {
     const res = await apiGetProduct()
     setProducts(res)
   }
+  const getOrder = async() => {
+    const res = await apiGetOrderById()
+    setOrder(res)
+  }
   const getMyStore = async() => {
     const  res = await apiGetMyStore() 
     setStore(res[0])
   }
+  useEffect(() => {
+    getAllStore() && getProduct() 
+    if(isLoggedIn && token) {
+      getMyStore() && getOrder()
+    }
+  },[isLoggedIn, token])
   useEffect(() => {
     if (isLoggedIn && token) {
       setLoading(true);
@@ -61,13 +68,7 @@ const Profile = () => {
     } 
   }, [isLoggedIn, token, dispatch]);
 
-  useEffect(() => {
-    getAllStore()
-    getProduct() 
-    if(isLoggedIn && token) {
-      getMyStore()
-    }
-  },[])
+
   return (
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
@@ -78,9 +79,8 @@ const Profile = () => {
           {currentData && currentData?.role === "user" || currentData?.role === "agent" || currentData && currentData?.role === "bot" || currentData?.role === "botAgent" ? 
             <div className="flex flex-col gap-2">
               <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>
-              <div className={`${currentData?.role === "user" ? "w-40 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer" : "w-48 max-sm:h-6 max-sm:w-30 h-8 flex justify-center items-center rounded-full bg-[#fdf6ec] border-[#fcbd71] border cursor-pointer"}`} >
-                {currentData?.role === "user" || currentData?.role === "bot" ? <span className="text-[#f90] max-sm:text-xs">Người dùng thường</span> : <span className="text-[#f90] max-sm:text-xs">Người dùng bán hàng</span>}
-                
+      
+              <div className={`${store && store?.active === "wait" ? "px-4  py-1 bg-red-500  font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1" : "px-4 py-1 bg-green-400 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1"}`}>{store && store?.active === "wait" ? <span className="text-white text-xs  ">Chưa được xác minh</span> : <span className="text-white text-xs">Người bán đã được xác minh</span>}
             </div>
             </div>
           : <span className="text-2xl cursor-pointer hover:text-gray-200 max-sm:text-base">Đăng nhập/Đăng kí</span>}
@@ -125,55 +125,90 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
-            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+             if(isLoggedIn && token) {
               navigate("/order")
+              }else{
+                navigate("/login")
+              }
             }}>
               <img
                 src={icon_myWaitPay}
                 alt="icon_myWaitPay"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
+             <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-2">
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
+             </div>
               <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
-              navigate("/order")
+            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+              if(isLoggedIn && token) {
+                navigate("/order")
+              }else{
+                navigate("/login")
+              }
             }}>
               <img
                 src={icon_myWaitDeliver}
                 alt="icon_myWaitDeliver"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
+              <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-0">
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitPay")?.length}</span>
+             </div>
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
+            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+             if(isLoggedIn && token) {
               navigate("/order")
+              }else{
+                navigate("/login")
+              }
             }}>
               <img
                 src={icon_myTakeGoods}
                 alt="icon_myTakeGoods"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
+               <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-4">
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "delivering")?.length}</span>
+             </div>
               <span className="line-clamp-1">Đang vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
-              navigate("/order")
+            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+              if(isLoggedIn && token) {
+                navigate("/order")
+              }else{
+                navigate("/login")
+              }
             }}>
               <img
                 src={icon_myWaitComent}
                 alt="icon_myWaitComent"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
+              <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-3">
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "successfull")?.length}</span>
+             </div>
               <span className="line-clamp-1">Đơn hoàn thành</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer " onClick={() => {
-              navigate("/order")
+            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+              if(isLoggedIn && token) {
+                navigate("/order")
+              }else{
+                navigate("/login")
+              }
             }}>
               <img
                 src={icon_myWaitReturn}
                 alt="icon_myWaitReturn"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-              <span className="line-clamp-1">Sau bán hàng</span>
+                <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-4">
+                <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "canceled")?.length}</span>
+              </div>
+              <span className="line-clamp-1">Đơn hàng hủy bỏ</span>
             </div>
           </div>
         </div>
@@ -184,23 +219,29 @@ const Profile = () => {
       <div className="px-4">
         <div className="grid grid-cols-4 bg-white rounded-2xl px-4 py-8 gap-4 max-sm:text-xs">
           <div className="flex flex-col items-center gap-3 cursor-pointer " onClick={() => {
-           if(isLoggedIn && token ) {
-            dispatch(getCurrent())
-            if(store && store?.active === "access") {
+            
+           if(isLoggedIn && token) {
+            if(store) {
               navigate("/home")
-            }
-           
-            if(!store) {
+            }else{
               navigate("/register-choose")
             }
+           
            }else{
             navigate("/login")
            }
           }}>
             <img src={shop} alt="shop" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
-            <span className="line-clamp-1">{store && store?.active === "access" ? "Shop của tôi" : "Bắt đầu bán"}</span>
+            <span className="line-clamp-1">{store && store?.active === "access" ||store?.active === "wait" ? "Shop của tôi" : "Bắt đầu bán"}</span>
           </div>
-          <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => navigate("/wallet")}> 
+          <div className="flex flex-col items-center gap-3 cursor-pointer" onClick={() => {
+            if(isLoggedIn && token) {
+              navigate("/wallet")
+            }else{
+              navigate("/login")
+
+            }
+          }}> 
             <img src={wallet} alt="wallet" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1" >Ví của tôi</span>
           </div>

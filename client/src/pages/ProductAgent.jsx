@@ -1,11 +1,12 @@
-import { Upload } from "lucide-react"
+import { Eye, Upload } from "lucide-react"
 import { DataGrid } from '@mui/x-data-grid';
 import { Autocomplete, Box, TextField, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { apiGetProduct } from "@/services/productService";
 import { listLeftCategories, pathImage } from "@/lib/helper";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiGetMyStore } from "@/services/storeService";
+import moment from "moment";
 const fileSvgWithDraw = <svg id="Group_22725" className="max-sm:w-6 max-sm:h-6" data-name="Group 22725" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
 <path id="Path_108" d="M24,28.5A1.538,1.538,0,0,1,25.5,30v6a1.5,1.5,0,0,1-3,0V30A1.538,1.538,0,0,1,24,28.5" fill="#2E294E"></path>
 <path id="Path_109" d="M36,21H33V43.5A1.538,1.538,0,0,1,31.5,45h-15A1.538,1.538,0,0,1,15,43.5V21H12V43.5A4.481,4.481,0,0,0,16.5,48h15A4.481,4.481,0,0,0,36,43.5Z" fill="#2E294E"></path>
@@ -25,121 +26,125 @@ const fileSvgSetting = <svg id="Group_31"  data-name="Group 31" xmlns="http://ww
 <path id="Path_81" data-name="Path 81" d="M27.5,26A1.5,1.5,0,1,0,26,27.5,1.5,1.5,0,0,0,27.5,26" fill="#2E294E"></path>
 <path id="Path_82" data-name="Path 82" d="M16,0A46.43,46.43,0,0,1,0,8.4v2a3.451,3.451,0,0,0,5.333,2.133,3.452,3.452,0,0,0,5.333,2.134A3.453,3.453,0,0,0,16,16.8a3.451,3.451,0,0,0,5.333-2.133,3.451,3.451,0,0,0,5.333-2.134A3.454,3.454,0,0,0,32,10.4v-2A46.421,46.421,0,0,1,16,0M31.021,10.194a2.452,2.452,0,0,1-3.788,1.515,1,1,0,0,0-1.545.618A2.453,2.453,0,0,1,21.9,13.843a1,1,0,0,0-1.545.618A2.451,2.451,0,0,1,16,15.434a2.452,2.452,0,0,1-4.355-.973,1,1,0,0,0-1.545-.618,2.454,2.454,0,0,1-3.789-1.516,1,1,0,0,0-1.184-.772,1.015,1.015,0,0,0-.361.154A2.451,2.451,0,0,1,.978,10.194V9.148A47.458,47.458,0,0,0,16,1.277,47.442,47.442,0,0,0,31.021,9.148Z" fill="#2E294E"></path>
 </svg>
-const columns = [
-    { 
-        field: 'title', 
-        headerName: 'Tên', 
-        // width: 520, 
-        flex : 4,
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center gap-4 w-full h-full">
-                {params.row.product.photos && params.row.product.photos[0] && (
-                <img 
-                  src={`${pathImage}/${params.row.product.photos[0]}`} 
-                  alt="Product" 
-                  style={{ width: 50, height: 50, objectFit: 'cover' }} 
-                />
-              )}
-              <span className="line-clamp-1 text-xs">{params.row.product.title}</span>
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'category', 
-        headerName: 'Thể loại', 
-        // width: 160, 
-        flex : 1, 
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{params.row.product.category}</span>
-              
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'inventory', 
-        headerName: 'Số lượng hiện tại', 
-        // width: 160,  
-        flex : 1,
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{params.row.product.inventory}</span>
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'price', 
-        headerName: 'Giá bán', 
-        // width: 160,  
-        flex : 1,
 
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.price}</span>
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'priceOld', 
-        headerName: 'Giá kho', 
-        // width: 160,  
-        flex : 1,
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.priceOld}</span>
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'color', 
-        headerName: 'Màu sắc', 
-        // width: 160, 
-        flex : 1,
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{(params.row.product.color).join(",")}</span>
-            </div>
-          ),
-        
-    },
-    { 
-        field: 'size', 
-        headerName: 'Kích thước', 
-        // width: 160,  
-        flex : 1,
-        headerAlign: 'center',
-        align: 'center', 
-        renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{(params.row.product.size).join(",")}</span>
-            </div>
-          ),
-        
-    },
-];
 
 const ProductAgent = () => {
     const [search, setSearch] = useState('');
     const [products, setProducts] = useState([])
     const navigate = useNavigate()
     const [store, setStore] = useState(null)
+    const isMobile = useMediaQuery("(max-width:600px)");
+    const columns = [
+      { 
+          field: 'title', 
+          headerName: 'Tên', 
+          width: isMobile && 520, 
+          flex : isMobile ? 0 : 4,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center gap-4 w-full h-full">
+                  {params.row.product.photos && params.row.product.photos[0] && (
+                  <img 
+                    src={`${pathImage}/${params.row.product.photos[0]}`} 
+                    alt="Product" 
+                    style={{ width: 50, height: 50, objectFit: 'cover' }} 
+                  />
+                )}
+                <span className="line-clamp-1 text-xs">{params.row.product.title}</span>
+                
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'category', 
+          headerName: 'Thể loại', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">{params.row.product.category}</span>
+                
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'inventory', 
+          headerName: 'Số lượng hiện tại', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">{params.row.product.inventory}</span>
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'price', 
+          headerName: 'Giá bán', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+    
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">${params.row.product.price}</span>
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'priceOld', 
+          headerName: 'Giá kho', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">${params.row.product.priceOld}</span>
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'color', 
+          headerName: 'Màu sắc', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">{(params.row.product.color).join(",")}</span>
+              </div>
+            ),
+          
+      },
+      { 
+          field: 'size', 
+          headerName: 'Kích thước', 
+          width: isMobile && 160, 
+          flex : isMobile ? 0 : 1,
+          headerAlign: 'center',
+          align: 'center', 
+          renderCell: (params) => (
+              <div className="flex items-center justify-center gap-4 w-full h-full">
+                <span className="text-xs">{(params.row.product.size).join(",")}</span>
+              </div>
+            ),
+          
+      },
+    ];
+    
     
     const fetchStore = async() => {
         const res = await apiGetMyStore()
@@ -150,7 +155,7 @@ const ProductAgent = () => {
     useEffect(() => {
         fetchStore() 
     },[])
-    const isMobile = useMediaQuery("(max-width:600px)");
+   
     const fetchApiProduct = async() => {
         const res = await apiGetMyStore()
         console.log(res)
@@ -170,29 +175,29 @@ const ProductAgent = () => {
     
   return (
     <div className="flex flex-col gap-4">
-        <h3 className="text-black font-semibold">Các sản phẩm</h3>
+        <h3 className="text-black font-semibold max-sm:text-xs">Các sản phẩm</h3>
         <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-2">
-            <div className="px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg bg-[#eb4786]">
+            <div className="px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg bg-[#eb4786]">
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <Upload color="white" className="max-sm:w-6 max-sm:h-6"/>
                     <span className="text-3xl font-semibold text-white max-sm:text-xl">{store?.cart?.length}</span>
                     <span className="text-white font-semibold max-sm:text-[10px]">Sản phẩm hiện có</span>
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg" onClick={() => navigate("/storehouse")}>
+            <div className="bg-white px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg" onClick={() => navigate("/storehouse")}>
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Thêm sản phẩm mới</span>
                     {fileSvgAdd}
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg hover:shadow-lg ">
+            <div className="bg-white px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg hover:shadow-lg ">
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Cài đặt cửa hàng</span>
                     {fileSvgSetting}
                     <button className="bg-[#0277BD] max-sm:px-4 max-sm:py-1 max-sm:text-[10px] text-white px-12 py-2 rounded-lg" onClick={() => navigate("/setting")}>Đi tới cài đặt</button>
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg" onClick={() => navigate("/update-bank")}>
+            <div className="bg-white px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg" onClick={() => navigate("/update-bank")}>
                 <div className="flex flex-col gap-4 items-center justify-center">
                     <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Rút tiền</span>
                     {fileSvgWithDraw}
@@ -200,15 +205,15 @@ const ProductAgent = () => {
             </div>
         </div>
         <div className="flex flex-col gap-4 ">
-            <div className="flex items-center justify-between">
+            <div className="flex max-sm:flex-col items-center max-sm:gap-2 justify-between">
                 <h3 className="text-black font-semibold max-sm:text-xs max-sm:hidden">Tất cả sản phẩm của cửa hàng</h3>
                 <Autocomplete
                     disablePortal
                     options={listLeftCategories?.flatMap((option) => 
                         option.category?.map((category) => category.name)
                       )}
-                    sx={{ width: isMobile ? 100 : 300 }}
-                    className="max"
+                    sx={{ width: isMobile ? "100%" : 300 }}
+                    className="max-sm:w-full"
                     onChange={(event, newValue) => {
                         setSearch(newValue)
                     }}
@@ -218,7 +223,7 @@ const ProductAgent = () => {
                     label="Tìm kiếm sản phẩm" 
                     variant="outlined" 
                     onChange={(e) => setSearch(e.target.value)}
-                    sx={{  width : isMobile ? 200 :  600  }} 
+                    sx={{  width : isMobile ? "100%" :  600  }} 
                 />
             </div>
             <Box sx={{ width: '100%' }}>

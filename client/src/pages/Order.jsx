@@ -78,7 +78,7 @@ const Order = () => {
        <div className="w-full  border-none ">
     <Tabs defaultValue="all" className="w-full h-full ">
       <div className="w-full flex flex-col z-40  bg-white outline-none ">
-        <TabsList className="tabs-list w-full overflow-x-scroll pl-28 overflow-y-hidden">
+        <TabsList className="tabs-list w-full scroll-smooth overflow-x-scroll pl-28 max-sm:pl-56 overflow-y-hidden">
         <TabsTrigger 
                  value="all" 
                  className={`max-sm:text-xs  text-ellipsis whitespace-nowrap  px-2  ${activeTab === 'all' ? `background-custom ` : 'text-gray-500'}`} 
