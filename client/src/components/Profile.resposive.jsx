@@ -79,7 +79,6 @@ const Profile = () => {
           {currentData && currentData?.role === "user" || currentData?.role === "agent" || currentData && currentData?.role === "bot" || currentData?.role === "botAgent" ? 
             <div className="flex flex-col gap-2">
               <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>
-      
               <div className={`${store && store?.active === "wait" ? "px-4  py-1 bg-red-500  font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1" : "px-4 py-1 bg-green-400 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1"}`}>{store && store?.active === "wait" ? <span className="text-white text-xs  ">Chưa được xác minh</span> : <span className="text-white text-xs">Người bán đã được xác minh</span>}
             </div>
             </div>
@@ -125,7 +124,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex items-center justify-between px-4 gap-6 max-sm:text-xs">
-            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+            <div className="flex flex-col items-center gap-1 py-2 cursor-pointer relative" onClick={() => {
              if(isLoggedIn && token) {
               navigate("/order")
               }else{
@@ -137,12 +136,12 @@ const Profile = () => {
                 alt="icon_myWaitPay"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-             <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-2">
+             <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
               <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
              </div>
               <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+            <div className="flex flex-col items-center gap-1 py-2 cursor-pointer relative" onClick={() => {
               if(isLoggedIn && token) {
                 navigate("/order")
               }else{
@@ -154,12 +153,12 @@ const Profile = () => {
                 alt="icon_myWaitDeliver"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-              <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-0">
+              <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
               <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitPay")?.length}</span>
              </div>
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+            <div className="flex flex-col items-center gap-1 py-2 cursor-pointer relative" onClick={() => {
              if(isLoggedIn && token) {
               navigate("/order")
               }else{
@@ -171,12 +170,12 @@ const Profile = () => {
                 alt="icon_myTakeGoods"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-               <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-4">
+               <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
               <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "delivering")?.length}</span>
              </div>
               <span className="line-clamp-1">Đang vận chuyển</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+            <div className="flex flex-col items-center gap-1 py-2 cursor-pointer relative" onClick={() => {
               if(isLoggedIn && token) {
                 navigate("/order")
               }else{
@@ -188,12 +187,12 @@ const Profile = () => {
                 alt="icon_myWaitComent"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-              <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-3">
+              <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
               <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "successfull")?.length}</span>
              </div>
               <span className="line-clamp-1">Đơn hoàn thành</span>
             </div>
-            <div className="flex flex-col items-center gap-1 cursor-pointer relative" onClick={() => {
+            <div className="flex flex-col items-center gap-1 py-2 cursor-pointer relative" onClick={() => {
               if(isLoggedIn && token) {
                 navigate("/order")
               }else{
@@ -205,7 +204,7 @@ const Profile = () => {
                 alt="icon_myWaitReturn"
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
-                <div className="absolute top-[-13px] max-sm:top-[-10px] bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-[-5px] right-4">
+                <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
                 <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "canceled")?.length}</span>
               </div>
               <span className="line-clamp-1">Đơn hàng hủy bỏ</span>
