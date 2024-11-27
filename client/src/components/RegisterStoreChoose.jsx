@@ -17,6 +17,7 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Switch from '@mui/material/Switch';
 import { useForm } from "react-hook-form"
+import { apiGetMyStore } from "@/services/storeService"
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const RegisterStoreChoose = () => {
   const navigate = useNavigate()
@@ -33,16 +34,22 @@ const RegisterStoreChoose = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState("")
+  const [store, setStore] = useState(null)
   const dispatch = useDispatch();
-
+  const fetchStore = async() => {
+    const res = await apiGetMyStore()
+    if(res[0]) {
+      navigate("/home")
+    }
+    setStore(res[0])
+  }
 
   const onChecked = (value) => {
     setChecked(value)
   }
- 
- 
-
-
+  useEffect(() => {
+    fetchStore()
+  }, [])
   return (
     <div className=' flex flex-col gap-4 bg-gray-50 h-screen w-full relative'>
       <div className="flex items-center w-full max-sm:gap-28 gap-48 ">

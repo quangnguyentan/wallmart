@@ -209,7 +209,10 @@ const updatedUser = async (req, res) => {
         creditCartOfBank,
         deposit: deposit && Number(deposit),
         role,
-        avatar: req.files.images[0].filename && req.files.images[0].filename,
+        avatar:
+          req?.file &&
+          req?.files?.images[0]?.filename &&
+          req.files.images[0].filename,
         gender,
         password: password && hashPassword(password),
       },

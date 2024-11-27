@@ -385,17 +385,29 @@ const CreateNewStore = async (req, res, next) => {
       industry,
       catergory,
       userId: id,
-      logoStore: req.files.images[0].filename,
+      logoStore:
+        req?.file &&
+        req?.files?.images[0]?.filename &&
+        req.files.images[0].filename,
       phone,
       fullname,
-      active: "access",
+      active: "wait",
       service,
       idYourself,
       emailYourself,
       identification: {
-        front: req.files.front[0].filename,
-        backside: req.files.back[0].filename,
-        yourFace: req.files.yourFace[0].filename,
+        front:
+          req?.file &&
+          req.files?.front[0]?.filename &&
+          req.files?.front[0].filename,
+        backside:
+          req?.file &&
+          req?.files?.back[0]?.filename &&
+          req.files.back[0].filename,
+        yourFace:
+          req?.file &&
+          req?.files?.yourFace[0]?.filename &&
+          req.files.yourFace[0].filename,
       },
       inforByStore: {
         nameStore: nameStore,
@@ -438,11 +450,13 @@ const updateStore = async (req, res, next) => {
       industry,
       catergory,
       active,
-      logoStore: req.files && req.files.images[0].filename,
+      logoStore:
+        req?.files &&
+        req?.files?.images[0]?.filename &&
+        req.files.images[0].filename,
       phone,
       fullname,
       service,
-      active,
       idYourself,
       emailYourself,
       codeByFriend,

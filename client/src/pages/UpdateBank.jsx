@@ -120,47 +120,47 @@ const UpdateBank = () => {
             <form onSubmit={handleSubmit(updateUser)}>
               <div className="flex flex-col gap-4">
                 <div className="w-[90%] mx-auto h-[0.5px] bg-[#ebedf0]"></div>
-                <div className="flex  px-4 py-2">
+                <div className="flex px-4 py-2 max-sm:text-xs">
                   <span>Vui lòng liên kết ngân hàng</span>
                 </div>
-                <div className="flex items-center gap-8 px-4 py-2">
-                  <span>Chủ tài khoản</span>
+                <div className="flex max-sm:items-center max-sm:justify-center items-center justify-between gap-8 px-4 py-2 max-sm:gap-5">
+                  <span className="max-sm:text-xs">Chủ tài khoản</span>
                   <input
                     type="text"
-                    className="outline-none"
+                    className="outline-none max-sm:py-2 max-sm:px-6 max-sm:text-xs px-28 py-2  "
                     placeholder="Chủ tài khoản"
                     {...register("nameOfUser")}
                   />
                 </div>
-                <div className="flex items-center gap-8 px-4 py-2">
-                  <span>Số tài khoản</span>
+                <div className="flex max-sm:items-center max-sm:justify-center items-center justify-between gap-8 px-4 py-2 max-sm:gap-5">
+                  <span className="max-sm:text-xs">Số tài khoản</span>
                   <input
                     type="number"
-                    className="outline-none"
+                    className="outline-none max-sm:py-2 max-sm:px-5 max-sm:text-xs px-28 py-2  "
                     placeholder="Số tài khoản"
                     {...register("creditCartOfBank")}
                   />
                 </div>
-                <div className="flex items-center gap-8 px-4 py-2">
-                  <span>Tên ngân hàng</span>
+                <div className="flex max-sm:items-center max-sm:justify-center items-center justify-between gap-8 px-4 py-2 max-sm:gap-5">
+                  <span className="max-sm:text-xs">Tên ngân hàng</span>
                   <input
                     type="text"
-                    className="outline-none"
+                    className="outline-none max-sm:py-2 max-sm:px-6 max-sm:text-xs px-28 py-2  "
                     placeholder="Tên ngân hàng"
                     {...register("nameOfBank")}
                   />
                 </div>
-                <div className="flex items-center gap-8 px-4 py-2">
-                  <span className="text-red-500 font-semibold">
+                <div className="flex max-sm:items-center max-sm:justify-center items-center justify-between gap-8 px-4 py-2 max-sm:gap-5">
+                  <span className="text-red-500 font-semibold max-sm:text-xs">
                     Để đảm bảo an toàn cho tài khoản của bạn, vui lòng liên kết
                     họ tên thật của bạn và đặt mật khẩu rút. Nếu tên của bạn
                     không khớp với tên tài khoản, bạn sẽ không thể rút.
                   </span>
                 </div>
-                <div className="flex items-center gap-8 px-4 py-2 bg-red-500 rounded-full hover:bg-red-600">
+                <div className="flex items-center max-sm:w-[80%] max-sm:mx-auto gap-8 px-4 py-2 bg-red-500 rounded-full hover:bg-red-600 max-sm:py-0 max-sm:text-xs">
                   <button
                     type="submit"
-                    className="bg-profileColor w-full rounded-xl h-12 text-white"
+                    className="bg-profileColor w-full max-sm:h-8 max-sm:w-[80%] max-sm:mx-auto rounded-xl h-12 text-white"
                   >
                     Xác nhận
                   </button>

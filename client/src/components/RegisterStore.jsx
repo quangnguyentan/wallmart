@@ -103,7 +103,6 @@ const RegisterStore = () => {
   useEffect(() => {
     getStore()
   }, [])
-  
  
   return (
     <div className=' flex flex-col gap-4 bg-white h-screen w-full overflow-y-scroll overflow-x-hidden pb-28  scrollbar-hide shadow-sm'>

@@ -159,11 +159,11 @@ const Order_Store_Detail = () => {
     console.log(products[0]?.status !== "waitPay")
   return (
     <div className="flex flex-col gap-4">
-        <h3 className="text-black font-semibold">Chi tiết đơn hàng</h3>
-        <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-2 ">
-            <div className="px-6 py-6 border h-64 max-sm:h-34 flex rounded-lg hover:shadow-lg">
-                    <div className="flex flex-col gap-4 ">
-                        <span className="text-black font-semibold max-sm:text-[10px]">Thanh toán cho nhà kho</span>
+        <h3 className="text-black font-semibold max-sm:text-sm">Chi tiết đơn hàng</h3>
+        <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-1 ">
+            <div className="px-6 py-6 items-center justify-center border h-64 max-sm:h-34 flex rounded-lg hover:shadow-lg">
+                    <div className="flex flex-col gap-4 max-sm:gap-4">
+                        <span className="text-black font-semibold max-sm:text-xs">Thanh toán cho nhà kho</span>
                         <button onClick={() => {
                           if(products[0]?.status !== "waitPay") {
                             return
@@ -171,24 +171,24 @@ const Order_Store_Detail = () => {
                             handleClickOpen()
                           }
                         }} className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status !== "waitPay" && products[0]?.status !== "canceled" ? "Đã thanh toán" : products[0]?.status === "canceled" ? "Đã hủy" : "Thanh toán cho nhà kho"}</button>
-                        <span className="text-black  max-sm:text-[10px]">
+                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
                             {products?.[0]?.revicerName}
                         </span>
-                        <span className="text-black  max-sm:text-[10px]">
+                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
                             +{products?.[0]?.phone}
                         </span>
-                        <span className="text-black  max-sm:text-[10px]">
+                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
                             {products?.[0]?.stress }, {products?.[0]?.province }, {products?.[0]?.city }
                         </span>
                     </div>
             </div>
-            <div className="px-6 py-6 border h-44 max-sm:h-34 justify-center flex rounded-lg hover:shadow-lg">
+            <div className="px-6 py-6 border h-44 max-sm:h-32 justify-center flex rounded-lg hover:shadow-lg">
                     <div className="flex flex-col items-center gap-4 ">
                         <span className="text-black font-semibold max-sm:text-[10px]">Tình trạng thanh toán</span>
                         <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status === "waitPay" ? "Chưa thanh toán" : products[0]?.status === "waitDelivery" ? "Đã thanh toán" : products[0]?.status === "delivering" ? "Đã thanh toán" :  products[0]?.status === "successfull" ? "Đã thanh toán" : "Đã hoàn tiền" }</button>
                     </div>
             </div>
-            <div className="px-6 py-6 border h-44 max-sm:h-34 justify-center flex rounded-lg hover:shadow-lg">
+            <div className="px-6 py-6 border h-44 max-sm:h-32 items-center justify-center flex rounded-lg hover:shadow-lg">
                     <div className="flex flex-col items-center gap-4 ">
                         <span className="text-black font-semibold max-sm:text-[10px]">Tình trạng giao hàng</span>
                         <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status === "waitPay" ? "Đang chờ xử lý" : products[0]?.status === "waitDelivery" ? "Đã duyệt đơn hàng" : products[0]?.status === "delivering" ? "Đang giao hàng" :  products[0]?.status === "successfull" ? "Đã giao hàng" : "Bị hủy" }</button>
@@ -232,14 +232,15 @@ const Order_Store_Detail = () => {
               </DialogTitle>
               <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                  <div className="px-20 flex-col gap-4 flex ">
-                     <div className="bg-[#d4edda] px-20 py-6">
-                          <span className="text-[#155724] font-semibold">Thanh toán bằng ví ${products[0]?.product?.price}</span>
-                      </div>
-                      <div className="bg-[#d4edda] px-20 py-6">
-                          <span className="text-[#155724] font-semibold">Lợi nhuận ${products[0]?.product?.price - products[0]?.product?.priceOld}</span>
-                     </div>
-                  </div>
+                
+                  <div className="px-20 max-sm:px-0 flex-col gap-4 flex ">
+                       <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${products[0]?.product?.price}</span>
+                        </div>
+                        <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${products[0]?.product?.price * 20 / 100}</span>
+                       </div>
+                    </div>
               </DialogContentText>
               </DialogContent>
               <DialogActions>

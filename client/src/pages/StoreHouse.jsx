@@ -224,7 +224,7 @@ const StoreHouse = () => {
                     onChange={(e) => setSearch(e.target.value)}
                     sx={{  width : isMobile ? "100%" :  600  }} 
                 />
-                <button className="bg-[#25bcf1] w-56 h-10 max-sm:w-full text-white rounded-full" onClick={handleAddToCart}>Thêm vào cửa hàng của tôi</button>
+                <button className="bg-[#25bcf1] w-56 h-10 max-sm:w-full max-sm:rounded-[5px] text-white rounded-full" onClick={handleAddToCart}>Thêm vào cửa hàng của tôi</button>
 
             </div>
             <Box sx={{ width: '100%' }}>

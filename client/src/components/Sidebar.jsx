@@ -1,4 +1,4 @@
-import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome, faDiceOne, faAdjust } from '@fortawesome/free-solid-svg-icons'
+import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome, faDiceOne, faAdjust, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
@@ -59,7 +59,7 @@ function Sidebar() {
                     <span className='max-sm:text-xs'>Bảng điều khiển</span>
                 </Link>
                 </li>         
-                <SimpleTreeView sx={{ color : "white", fontWeight : 500}} className='css-item mx-2 my-3 max-sm:text-xs'
+                <SimpleTreeView sx={{ color : "white", fontWeight : 500}} className='css-item mx-2 my-1 max-sm:text-xs'
                 slots={{
                     expandIcon : ShoppingCartIcon
                 }}>
@@ -70,10 +70,16 @@ function Sidebar() {
                     <TreeItem itemId="grid-pro" label="Kho sản phẩm"  onClick={() => navigate("/storehouse")}/>
                     </TreeItem>
                 </SimpleTreeView>
-                <li className="nav-item active py-1">
+                <li className="nav-item active pt-1">
                 <Link className="nav-link" to="/order_store">
                     <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: "0.5rem" }}/>
                     <span className='max-sm:text-xs'>Đơn hàng</span>
+                </Link>
+                </li>
+                <li className="nav-item active">
+                <Link className="nav-link" to="/">
+                    <FontAwesomeIcon icon={faArrowRightToBracket} style={{ marginRight: "0.5rem" }}/>
+                    <span className='max-sm:text-xs'>Quay về trang chủ</span>
                 </Link>
                 </li>    
              </>}

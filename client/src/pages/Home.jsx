@@ -6,13 +6,13 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
-const fileSvgBox = <svg xmlns="http://www.w3.org/2000/svg" width="64.001" height="64" viewBox="0 0 64.001 64">
+const fileSvgBox = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="64.001" height="64" viewBox="0 0 64.001 64">
                     <path id="Path_66" data-name="Path 66" d="M146.431,117.56l-26.514-10.606a8.014,8.014,0,0,0-5.944,0L87.458,117.56a4,4,0,0,0-2.514,3.714v34.217a4,4,0,0,0,2.514,3.714l26.514,10.606a8.013,8.013,0,0,0,5.944,0L146.431,159.2a4,4,0,0,0,2.514-3.714V121.274a4,4,0,0,0-2.514-3.714m-31.714-8.748a5.981,5.981,0,0,1,4.456,0l26.1,10.44a1,1,0,0,1,0,1.858l-12.332,4.932-30.654-12.26Zm1.228,59.633L88.2,157.347a2,2,0,0,1-1.258-1.856V122.6l29,11.6Zm1-36L88.612,121.11a1,1,0,0,1,0-1.858L99.6,114.858l30.654,12.262Zm30,23.048a2,2,0,0,1-1.258,1.856l-27.742,11.1V134.2l13-5.2V146.61a1.035,1.035,0,0,0,2-.466V128.2l14-5.6Z" transform="translate(-84.944 -106.382)" fill="#FFFFFF"></path>
                 </svg>
-const fileSvgStar = <svg xmlns="http://www.w3.org/2000/svg" width="64" height="61.143" viewBox="0 0 64 61.143">
+const fileSvgStar = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="64" height="61.143" viewBox="0 0 64 61.143">
 <path id="Path_57" data-name="Path 57" d="M63.286,22.145a2.821,2.821,0,0,0-1.816-.926L43.958,19.455a2.816,2.816,0,0,1-2.294-1.666L34.574,1.68a2.813,2.813,0,0,0-5.148,0l-7.09,16.11a2.813,2.813,0,0,1-2.292,1.666L2.53,21.219a2.813,2.813,0,0,0-1.59,4.9l13.13,11.72a2.818,2.818,0,0,1,.876,2.7l-3.734,17.2a2.812,2.812,0,0,0,4.166,3.026L30.584,51.9a2.8,2.8,0,0,1,2.832,0l15.206,8.864a2.813,2.813,0,0,0,4.166-3.026l-3.734-17.2a2.818,2.818,0,0,1,.876-2.7l13.13-11.72a2.813,2.813,0,0,0,.226-3.972m-1.5,2.546L48.658,36.413a4.717,4.717,0,0,0-1.47,4.524l3.732,17.2a.9.9,0,0,1-1.336.97l-15.2-8.866a4.729,4.729,0,0,0-4.758,0L14.416,59.109a.9.9,0,0,1-1.336-.97l3.732-17.2a4.717,4.717,0,0,0-1.47-4.524L2.212,24.691a.9.9,0,0,1,.51-1.57l17.512-1.766a4.721,4.721,0,0,0,3.85-2.8l7.09-16.11a.9.9,0,0,1,1.652,0l7.09,16.11a4.721,4.721,0,0,0,3.85,2.8l17.512,1.766a.9.9,0,0,1,.51,1.57" transform="translate(0 0)" fill="#FFFFFF"></path>
 </svg>
-const fileSvgBook = <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+const fileSvgBook = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="64" height="64" viewBox="0 0 64 64">
 <g id="Group_25" data-name="Group 25" transform="translate(-1561.844 1020.618)">
     <path id="Path_58" data-name="Path 58" d="M229.23,106.382h-12a6,6,0,0,0,0,12h12a6,6,0,0,0,0-12m0,10h-12a4,4,0,0,1,0-8h12a4,4,0,0,1,0,8" transform="translate(1370.615 -1127)" fill="#FFFFFF"></path>
     <path id="Path_59" data-name="Path 59" d="M213.73,117.882h24a1,1,0,0,1,0,2h-24a1,1,0,0,1,0-2" transform="translate(1372.115 -1115.5)" fill="#FFFFFF"></path>
@@ -28,7 +28,7 @@ const fileSvgBook = <svg xmlns="http://www.w3.org/2000/svg" width="64" height="6
     <path id="Path_65" data-name="Path 65" d="M265.23,116.382a8,8,0,0,0-8-8h-7.2a1,1,0,0,0,0,2h7.2a6,6,0,0,1,6,6v44a6,6,0,0,1-6,6h-48a6,6,0,0,1-6-6v-44a6,6,0,0,1,6-6h7.2a1,1,0,0,0,0-2h-7.2a8,8,0,0,0-8,8v44a8,8,0,0,0,8,8h48a8,8,0,0,0,8-8Z" transform="translate(1360.615 -1125)" fill="#FFFFFF"></path>
 </g>
 </svg>
-const fileSvgBag = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+const fileSvgBag = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="30" height="30" viewBox="0 0 30 30">
 <g id="Group_23742" data-name="Group 23742" transform="translate(2044 3467)">
     <rect id="Rectangle_17194" data-name="Rectangle 17194" width="30" height="30" transform="translate(-2044 -3467)" fill="none"></rect>
     <g id="Group_23741" data-name="Group 23741" transform="translate(310 759)">
@@ -37,7 +37,7 @@ const fileSvgBag = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30
     </g>
 </g>
 </svg>
-const fileSvgCancel = <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+const fileSvgCancel = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-4 max-sm:h-6"  xmlnsXlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
 <defs>
     <clipPath id="clip-path">
         <rect id="Rectangle_17198" data-name="Rectangle 17198" width="30" height="30" transform="translate(0 0)" fill="none"></rect>
@@ -52,7 +52,7 @@ const fileSvgCancel = <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http:/
     </g>
 </g>
 </svg>
-const fileSvgDelivering = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+const fileSvgDelivering = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="30" height="30" viewBox="0 0 30 30">
 <g id="Group_23745" data-name="Group 23745" transform="translate(1901 3455)">
     <rect id="Rectangle_17195" data-name="Rectangle 17195" width="30" height="30" transform="translate(-1901 -3455)" fill="none"></rect>
     <g id="Group_23744" data-name="Group 23744" transform="translate(-867.487 654.098)">
@@ -66,7 +66,7 @@ const fileSvgDelivering = <svg xmlns="http://www.w3.org/2000/svg" width="30" hei
     </g>
 </g>
 </svg>
-const fileSvgSuccess = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+const fileSvgSuccess = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-4 max-sm:h-6"  width="30" height="30" viewBox="0 0 30 30">
 <g id="Group_23747" data-name="Group 23747" transform="translate(1894 3457)">
     <rect id="Rectangle_17196" data-name="Rectangle 17196" width="30" height="30" transform="translate(-1894 -3457)" fill="none"></rect>
     <g id="Group_23746" data-name="Group 23746" transform="translate(-1599.983 686.845)">
@@ -76,13 +76,13 @@ const fileSvgSuccess = <svg xmlns="http://www.w3.org/2000/svg" width="30" height
     </g>
 </g>
 </svg>
-const fileSvgAdd = <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+const fileSvgAdd = <svg xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-4 max-sm:h-6"  width="48" height="48" viewBox="0 0 48 48">
 <g id="Group_22724" data-name="Group 22724" transform="translate(-1284 -875)">
     <rect id="Rectangle_17080" data-name="Rectangle 17080" width="2" height="48" rx="1" transform="translate(1307 875)" fill="#2E294E"></rect>
     <rect id="Rectangle_17081" data-name="Rectangle 17081" width="2" height="48" rx="1" transform="translate(1332 898) rotate(90)" fill="#2E294E"></rect>
 </g>
 </svg>
-const fileSvgSetting = <svg id="Group_31" data-name="Group 31" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+const fileSvgSetting = <svg id="Group_31" data-name="Group 31" xmlns="http://www.w3.org/2000/svg"  className="max-sm:w-6 max-sm:h-6"  width="32" height="32" viewBox="0 0 32 32">
 <path id="Path_78" data-name="Path 78" d="M2,25.723a1,1,0,0,0,.629.928L16,32l3.361-1.344a.5.5,0,0,0-.186-.965.491.491,0,0,0-.185.036L16,30.923l-13-5.2v-11.6a4.428,4.428,0,0,1-1-.2Z" fill="#2E294E"></path>
 <path id="Path_79" data-name="Path 79" d="M19.681,24.189a.5.5,0,0,0-.5-.5.493.493,0,0,0-.186.036l-3,1.2L7.432,21.5a.5.5,0,0,0-.65.278.512.512,0,0,0-.035.186.5.5,0,0,0,.314.464L16,26l3.367-1.347a.5.5,0,0,0,.314-.464" fill="#2E294E"></path>
 <path id="Path_80" data-name="Path 80" d="M31.5,25.126h-.087a1.368,1.368,0,0,1-.967-2.336l.061-.061a.5.5,0,0,0,0-.707l-.265-.265-.264-.264a.5.5,0,0,0-.707,0l-.061.06a1.368,1.368,0,0,1-2.336-.967V20.5a.5.5,0,0,0-.5-.5h-.748a.5.5,0,0,0-.5.5v.086a1.368,1.368,0,0,1-2.336.967l-.061-.06a.5.5,0,0,0-.707,0l-.265.264-.265.265a.5.5,0,0,0,0,.707l.061.061a1.368,1.368,0,0,1-.967,2.336H20.5a.5.5,0,0,0-.5.5v.748a.5.5,0,0,0,.5.5h.086a1.368,1.368,0,0,1,.967,2.336l-.061.061a.5.5,0,0,0,0,.707l.265.264.265.265a.5.5,0,0,0,.707,0l.061-.061a1.368,1.368,0,0,1,2.336.968V31.5a.5.5,0,0,0,.5.5h.748a.5.5,0,0,0,.5-.5v-.086a1.368,1.368,0,0,1,2.336-.968l.061.061a.5.5,0,0,0,.707,0l.264-.265.265-.264a.5.5,0,0,0,0-.707l-.061-.061a1.368,1.368,0,0,1,.967-2.336H31.5a.5.5,0,0,0,.5-.5v-.748a.5.5,0,0,0-.5-.5M29.171,29a2.373,2.373,0,0,0,.118.285,2.368,2.368,0,0,0-3.171,1.078,2.22,2.22,0,0,0-.118.285,2.369,2.369,0,0,0-3-1.481,2.516,2.516,0,0,0-.285.118A2.367,2.367,0,0,0,21.348,26a2.369,2.369,0,0,0,1.48-3,2.344,2.344,0,0,0-.118-.285,2.37,2.37,0,0,0,3.172-1.077A2.516,2.516,0,0,0,26,21.348a2.367,2.367,0,0,0,3,1.48,2.28,2.28,0,0,0,.285-.118,2.37,2.37,0,0,0,1.077,3.172,2.457,2.457,0,0,0,.286.118,2.367,2.367,0,0,0-1.481,3" fill="#2E294E"></path>
@@ -118,102 +118,105 @@ const Home = () => {
     },[])
   return (
     <div className="flex flex-col gap-8">
-        <h3 className="text-[#0277BD] font-semibold">Bảng điều khiển</h3>
-        <div className='grid grid-cols-4 gap-8'>
-            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 h-40 "  >
+        <div className="flex justify-between items-center gap-2">
+            <h3 className="text-[#0277BD] font-semibold max-sm:text-xs">Bảng điều khiển</h3>
+            <div className={`${store && store?.active === "wait" ? "px-4  py-2 bg-red-500 w-48 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1 max-sm:w-28" : "px-4 py-2 bg-green-400 w-64 max-sm:w-36 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1"}`}>{store && store?.active === "wait" ? <span className="text-white ">Chưa được xác minh</span> : <span className="text-white ">Người bán đã được xác minh</span>}</div>
+        </div>
+        <div className='grid grid-cols-4 max-sm:gap-2 gap-8 max-sm:grid-cols-2'>
+            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 max-sm:px-4 h-40 max-sm:h-24"  >
                <div className="flex flex-col gap-2 text-white">
-                <span className="font-medium">Các sản phẩm</span>
-                <span className="text-3xl font-semibold">{store?.cart?.length || 0}</span>
+                <span className="font-medium max-sm:text-[10px]">Các sản phẩm</span>
+                <span className="text-3xl font-semibold max-sm:text-sm">{store?.cart?.length || 0}</span>
                </div>
                 {fileSvgBox}
             </div>
-            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 h-40 "  >
+            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 max-sm:px-4 h-40 max-sm:h-24"  >
                <div className="flex flex-col gap-2 text-white">
-                <span className="font-medium">Tổng lợi nhuận</span>
-                <span className="text-3xl font-semibold">${currentData?.profit || 0}</span>
+                <span className="font-medium max-sm:text-[10px]">Tổng lợi nhuận</span>
+                <span className="text-3xl font-semibold max-sm:text-sm">${currentData?.profit || 0}</span>
                </div>
                 {fileSvgStar}
             </div>
-            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 h-40 "  >
+            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 max-sm:px-4 h-40 max-sm:h-24"  >
                <div className="flex flex-col gap-2 text-white">
-                <span className="font-medium">Tổng số đơn đặt hàng</span>
-                <span className="text-3xl font-semibold">{order?.length || 0}</span>
+                <span className="font-medium max-sm:text-[10px]">Tổng số đơn đặt hàng</span>
+                <span className="text-3xl font-semibold max-sm:text-sm">{order?.length || 0}</span>
                </div>
                 {fileSvgBook}
             </div>
-            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 h-40 "  >
+            <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 max-sm:px-4 h-40 max-sm:h-24"  >
                <div className="flex flex-col gap-2 text-white">
-                <span className="font-medium">Đã bán</span>
-                <span className="text-3xl font-semibold">${currentData?.sold}</span>
+                <span className="font-medium max-sm:text-[10px]">Đã bán</span>
+                <span className="text-3xl font-semibold max-sm:text-sm">${currentData?.sold}</span>
                </div>
                 {fileSvgBook}
             </div>
         </div>
-        <div className="grid grid-cols-4 gap-8">
-            <div className="bg-white px-6 py-6 border rounded-lg">
+        <div className="grid grid-cols-4 gap-8 max-sm:gap-2 max-sm:grid-cols-2">
+            <div className="bg-white px-6 max-sm:px-4 py-6 max-sm:py-2 border rounded-lg">
                 <div className="py-4 border-b">
-                    <span className="text-[#0277BD] font-semibold">Phân loại sản phẩm</span>
+                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Phân loại sản phẩm</span>
                 </div>
-                <div className="flex flex-col gap-2 py-4 text-sm text-[#0277BD]">
+                <div className="flex flex-col max-sm:py-2 gap-2 py-4 text-sm text-[#0277BD]">
                     {listLeftCategories?.map((category) => (
-                        <span key={category.id} className="cursor-pointer">{category.name}</span>
+                        <span key={category.id} className="cursor-pointer max-sm:text-[10px]">{category.name}</span>
                     ))}
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border rounded-lg">
+            <div className="bg-white px-6 max-sm:px-4 max-sm:py-2 py-6  border rounded-lg">
                 <div className="py-4">
-                    <span className="text-[#0277BD] font-semibold">Đơn hàng</span>
+                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Đơn hàng</span>
                 </div>
                 <div className="flex flex-col gap-6">
-                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                <div className="flex gap-10 max-sm:gap-4 text-sm text-[#0277BD] ">
                     {fileSvgBag}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Sản phẩm mới</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "waitPay")?.length}</span>
+                        <span className="font-semibold max-sm:text-[10px]">Sản phẩm mới</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold max-sm:text-sm">{order?.filter((item) => item?.status === "waitPay")?.length}</span>
                     </div>
                 </div>
               
-                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                <div className="flex gap-10 max-sm:gap-4 text-sm text-[#0277BD] ">
                     {fileSvgDelivering}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Đợi giao hàng</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
+                        <span className="font-semibold max-sm:text-[10px]">Đợi giao hàng</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold max-sm:text-sm">{order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
                     </div>
                 </div>
-                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                <div className="flex gap-10 max-sm:gap-4 text-sm text-[#0277BD] ">
                     {fileSvgDelivering}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Đang giao hàng</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "delivering")?.length}</span>
+                        <span className="font-semibold max-sm:text-[10px]">Đang giao hàng</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold max-sm:text-sm">{order?.filter((item) => item?.status === "delivering")?.length}</span>
                     </div>
                 </div>
-                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                <div className="flex gap-10 max-sm:gap-4 text-sm text-[#0277BD] ">
                     {fileSvgSuccess}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Đã giao hàng</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "successfull")?.length}</span>
+                        <span className="font-semibold max-sm:text-[10px]">Đã giao hàng</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold max-sm:text-sm">{order?.filter((item) => item?.status === "successfull")?.length}</span>
                     </div>
                 </div>
-                <div className="flex gap-10 text-sm text-[#0277BD] ">
+                <div className="flex gap-10 max-sm:gap-4 text-sm text-[#0277BD] ">
                     {fileSvgCancel}
                     <div className="flex flex-col">
-                        <span className="font-semibold">Đã hủy</span>
-                        <span className="text-[#A9A3CC] text-3xl font-semibold"> <span className="text-[#A9A3CC] text-3xl font-semibold">{order?.filter((item) => item?.status === "canceled")?.length}</span></span>
+                        <span className="font-semibold max-sm:text-[10px]">Đã hủy</span>
+                        <span className="text-[#A9A3CC] text-3xl font-semibold max-sm:text-sm"> {order?.filter((item) => item?.status === "canceled")?.length}</span>
                     </div>
                 </div>
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 rounded-lg cursor-pointer" onClick={() => navigate("/storehouse")}>
+            <div className="bg-white px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg cursor-pointer" onClick={() => navigate("/storehouse")}>
                 <div className="flex flex-col gap-4 items-center justify-center">
-                    <span className="text-[#0277BD] font-semibold">Thêm sản phẩm mới</span>
+                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Thêm sản phẩm mới</span>
                     {fileSvgAdd}
                 </div>
             </div>
-            <div className="bg-white px-6 py-6 border h-44 rounded-lg">
+            <div className="bg-white px-6 py-6 border h-44 max-sm:h-36 flex items-center justify-center rounded-lg">
                 <div className="flex flex-col gap-4 items-center justify-center">
-                    <span className="text-[#0277BD] font-semibold">Cài đặt cửa hàng</span>
+                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Cài đặt cửa hàng</span>
                     {fileSvgSetting}
-                    <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg" onClick={() => navigate("/setting")}>Đi tới cài đặt</button>
+                    <button className="bg-[#0277BD] max-sm:px-4 text-white px-12 max-sm:text-[10px]  py-2 rounded-lg" onClick={() => navigate("/setting")}>Đi tới cài đặt</button>
                 </div>
             </div>
         </div>

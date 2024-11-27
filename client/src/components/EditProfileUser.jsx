@@ -62,7 +62,7 @@ const EditProfileUser = () => {
       const formData = new FormData();
       formData.append("images", imageStore)
       formData.append("fullName", data?.fullName); 
-      formData.append("gender", values === "Nam" ? "male" :  values === "Nữ" ? "female" : "other"); 
+      formData.append("gender",values ? values === "Nam" ? "male" :  values === "Nữ" ? "female" : "other" : currentData?.gender); 
       const res = await apiUpdatedUser(currentData?._id, formData)
       console.log(res)
        if(res?.success) {
