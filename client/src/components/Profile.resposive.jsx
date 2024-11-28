@@ -79,7 +79,7 @@ const Profile = () => {
           {currentData && currentData?.role === "user" || currentData?.role === "agent" || currentData && currentData?.role === "bot" || currentData?.role === "botAgent" ? 
             <div className="flex flex-col gap-2">
               <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>
-              <div className={`${store && store?.active === "wait" ? "px-4  py-1 bg-red-500  font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1" : "px-4 py-1 bg-green-400 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1"}`}>{store && store?.active === "wait" ? <span className="text-white text-xs  ">Chưa được xác minh</span> : <span className="text-white text-xs">Người bán đã được xác minh</span>}
+              <div className={`${!store || store &&  store?.active === "wait"  ? "px-4  py-1 bg-red-500  font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1" : "px-4 py-1 bg-green-400 font-semibold max-sm:text-[8px] rounded-xl text-center max-sm:py-1"}`}>{ !store || store &&  store?.active === "wait"  ? <span className="text-white text-xs  ">Chưa được xác minh</span> : <span className="text-white text-xs">Người bán đã được xác minh</span>}
             </div>
             </div>
           : <span className="text-2xl cursor-pointer hover:text-gray-200 max-sm:text-base">Đăng nhập/Đăng kí</span>}
