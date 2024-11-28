@@ -12,6 +12,15 @@ import { useState } from "react";
 import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "@mui/material";
+function shuffleRandomly(arr) {
+  let shuffledArr = arr.slice(); // Tạo bản sao của mảng gốc để tránh sửa đổi mảng gốc
+  for (let i = shuffledArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // Chọn ngẫu nhiên một chỉ số trong mảng
+    // Hoán đổi vị trí giữa phần tử tại chỉ số i và j
+    [shuffledArr[i], shuffledArr[j]] = [shuffledArr[j], shuffledArr[i]];
+  }
+  return shuffledArr;
+}
 
 const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, category }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
@@ -73,6 +82,24 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
     } else {
       // Logic click vào sản phẩm bình thường
     }
+  };
+  const generateProducts = () => {
+    const filteredProducts = allProduct.filter(
+      (item) => !category || item?.category === category
+    );
+    const productCount = 30; // Mỗi category cần 30 sản phẩm
+
+    // Nhân bản sản phẩm sao cho có đủ 30 sản phẩm cho mỗi category
+    let repeatedProducts = [];
+    filteredProducts.forEach((item) => {
+      const repetitions = Math.ceil(productCount / filteredProducts.length); // Tính số lần lặp
+      for (let i = 0; i < repetitions; i++) {
+        repeatedProducts.push(item);
+      }
+    });
+
+    // Xáo trộn ngẫu nhiên các sản phẩm
+    return shuffleRandomly(repeatedProducts).slice(0, productCount); // Lấy chính xác 30 sản phẩm
   };
   useEffect(() => {
     scrollToTop()
@@ -176,7 +203,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
       </div> }
       <div className="grid grid-cols-2 gap-2 px-4">
  
-        <React.Fragment >
+        {/* <React.Fragment >
           {location.pathname === "/list-product" &&  allProduct?.length > 0 && allProduct?.map((item) => {
             // Kiểm tra xem có category và sản phẩm có category đó không
             const isCategoryMatch = category && item?.category === category;
@@ -203,8 +230,31 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
             }
             return null;
           })}
-        </React.Fragment>
-      
+        </React.Fragment> */}
+    { generateProducts().map((product) => (
+            <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">
+              <Link to={`/detail-product/${product?._id}`}>
+                <img
+                  src={`${pathImage}/${product?.photos?.[0]}`}
+                  alt="product_test"
+                  className="h-[256px] max-sm:h-[120px] w-full object-cover"
+                />
+                <div className="flex flex-col gap-2 px-2">
+                  <span className="line-clamp-2 break-all text-ellipsis font-medium text-[18px] max-sm:text-xs max-sm:font-medium">
+                    {product?.title}
+                  </span>
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base max-sm:font-semibold">
+                    ${product?.price}
+                  </span>
+                </div>
+              </Link>
+            </div>
+          ))}
+
+
+
+
+
     
  
       </div>
