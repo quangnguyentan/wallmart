@@ -34,7 +34,7 @@
       getWithDrawalHistory();
     }, []);
     return (
-      <div className="h-screen">
+      <div className="h-screen overflow-y-scroll">
         <div className="relative w-full mx-auto">
           <div className="sticky w-full top-0 ">
             <div className="w-full h-[50px] bg-profileColor">

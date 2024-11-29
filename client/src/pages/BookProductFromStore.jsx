@@ -88,7 +88,7 @@ const BookProductFromStore = () => {
     }));
   }, [])
   return (
-    <div className="flex flex-col gap-2 bg-[#f5f5f5]">
+    <div className="flex flex-col gap-2 bg-[#f5f5f5] overflow-y-scroll h-full">
       <div className="w-full justify-end flex px-4 py-2">
       <DrawRightAdmin productItem={product} setProductItem={setProduct}   userId={userId}/>
       </div>
