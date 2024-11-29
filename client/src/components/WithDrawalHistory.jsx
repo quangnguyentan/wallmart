@@ -18,7 +18,7 @@ const WithDrawalHistory = () => {
     getWithDrawalHistory();
   }, []);
   return (
-    <div className="h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50 ">
       <div className="relative w-full mx-auto">
         <div className="sticky w-full top-0">
           <div className="w-full h-[50px] bg-profileColor">
@@ -38,7 +38,7 @@ const WithDrawalHistory = () => {
         </div>
         <div>
           {withDraw && withDraw?.length > 0 ? (
-            <div className=" h-fit px-2 py-4">
+            <div className=" h-fit px-2 py-4 ">
               <div className="w-full px-2 ">
                 {withDraw?.map((el, index) => (
                   <div

@@ -62,7 +62,7 @@ function Botlist() {
           {isLoading ? (
             <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif" />
           ) : (
-            <div className="table-responsive">
+            <div className="table-responsive overflow-y-scroll custom-table">
               <table
                 className="table table-bordered"
                 id="dataTable"

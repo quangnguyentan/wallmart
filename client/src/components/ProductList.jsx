@@ -75,10 +75,9 @@ function ProductList() {
       console.log(error);
     }
   };
-  console.log(product)
   return (
     <>
-      <div className="d-sm-flex align-items-center mb-4 flex items-center justify-end max-sm:justify-between">
+      <div className="d-sm-flex align-items-center mb-4 flex items-center justify-end max-sm:justify-between ">
         {/* <h1 className="h3 mb-0 text-gray-800 text-3xl">Sản phẩm</h1> */}
         <h6 className="m-0 font-weight-bold text-primary max-sm:text-sm md:hidden">Sản phẩm</h6>
         {currentData?.role === "admin" ? <Link
@@ -118,7 +117,7 @@ function ProductList() {
           {isLoading ? (
             <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif" />
           ) : (
-            <div className="table-responsive">
+            <div className="table-responsive overflow-y-scroll custom-table">
               <table
                 className="table table-bordered "
                 
