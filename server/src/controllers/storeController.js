@@ -386,7 +386,7 @@ const CreateNewStore = async (req, res, next) => {
       catergory,
       userId: id,
       logoStore:
-        req?.file &&
+        req?.files &&
         req?.files?.images[0]?.filename &&
         req.files.images[0].filename,
       phone,
@@ -397,15 +397,15 @@ const CreateNewStore = async (req, res, next) => {
       emailYourself,
       identification: {
         front:
-          req?.file &&
-          req.files?.front[0]?.filename &&
+          req?.files &&
+          req?.files?.front[0]?.filename &&
           req.files?.front[0].filename,
         backside:
-          req?.file &&
+          req?.files &&
           req?.files?.back[0]?.filename &&
           req.files.back[0].filename,
         yourFace:
-          req?.file &&
+          req?.files &&
           req?.files?.yourFace[0]?.filename &&
           req.files.yourFace[0].filename,
       },

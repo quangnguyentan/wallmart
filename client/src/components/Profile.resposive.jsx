@@ -137,7 +137,7 @@ const Profile = () => {
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
              <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
-              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitPay")?.length}</span>
              </div>
               <span className="line-clamp-1">Chờ thanh toán</span>
             </div>
@@ -154,7 +154,7 @@ const Profile = () => {
                 className="w-8 h-8 max-sm:w-5 max-sm:h-5"
               />
               <div className="absolute top-0 max-sm:top-0 bg-red-500 px-2 max-sm:px-[5px] rounded-full max-sm:right-0 right-0">
-              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitPay")?.length}</span>
+              <span className="font-semibold text-white text-sm max-sm:text-xs">{order && order?.filter((item) => item?.status === "waitDelivery")?.length}</span>
              </div>
               <span className="line-clamp-1">Vận chuyển</span>
             </div>
