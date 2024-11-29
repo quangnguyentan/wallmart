@@ -147,7 +147,6 @@ const CreateNewProduct = async (req, res, next) => {
 };
 const UpdateProduct = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const {
       title,

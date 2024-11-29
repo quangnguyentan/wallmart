@@ -14,7 +14,6 @@
   
     const getWithDrawalHistory = async () => {
       const data = await apiGetAllWithDraw();
-      console.log(data)
       if (data.success) setWithDraw(data?.withDraw);
     };
     const handleCheck = async (id, status) => {
@@ -34,7 +33,6 @@
     useEffect(() => {
       getWithDrawalHistory();
     }, []);
-    console.log(withDraw)
     return (
       <div className="h-screen">
         <div className="relative w-full mx-auto">
@@ -46,8 +44,7 @@
             </div>
           </div>
           <div>
-            {withDraw?.length && withDraw
-                    ?.filter((fill) => fill?.status?.includes("Đợi duyệt")) > 0 ? (
+            {withDraw && withDraw?.length > 0 ? (
               <div className="h-fit">
                 <div className="w-full px-2 py-4 ">
                   {withDraw

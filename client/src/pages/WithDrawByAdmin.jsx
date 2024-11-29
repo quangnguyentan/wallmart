@@ -17,11 +17,12 @@
       if (data.success) setWithDraw(data?.withDraw);
     };
     const handleCheck = async (id,  status) => {
+      console.log(id, status)
       const data = await apiUpdatedStatusWithDraw(id, {
         status: status,
         reason: reson,
       });
-      console.log(data);
+      console.log(data)
     };
     useEffect(() => {
       getWithDrawalHistory();
@@ -67,7 +68,7 @@
                               Tên người muốn rút tiền
                             </span>
                             <span className="text-lg font-bold">
-                              {el?.users?.username}
+                              {el?.user?.nameOfUser}
                             </span>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -75,7 +76,7 @@
                               Số tiền hiện có
                             </span>
                             <span className="text-lg font-bold">
-                              {el?.users?.withDraw} VNĐ
+                              {el?.user?.deposit}
                             </span>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -83,7 +84,7 @@
                               Số tiền muốn rút
                             </span>
                             <span className="text-lg font-bold">
-                              {el?.withDraw}
+                              {el?.money}
                             </span>
                           </div>
                           <div className="flex flex-col gap-2">
@@ -120,7 +121,7 @@
                                   onClick={() =>
                                     handleCheck(
                                       el?._id,
-                                      el?.users?._id,
+                                      el?.user?._id,
                                       "Không thành công"
                                     )
                                   }

@@ -55,7 +55,6 @@ const UpdateBank = () => {
     const res = await apiUpdateWithDraw(currentData?._id, {
         draw : value
     })
-    console.log(res)
     if(res?.success){
         toast.success(res?.message)
     }else{

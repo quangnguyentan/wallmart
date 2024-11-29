@@ -170,7 +170,10 @@ const createUser = async (req, res) => {
       deposit: deposit && Number(deposit),
       role,
       phone,
-      avatar: req?.file && req.files.images[0].filename,
+      avatar:
+        req?.files &&
+        req?.files?.images[0]?.filename &&
+        req?.files?.images[0]?.filename,
       gender,
       password: hashPassword(password),
     });
@@ -210,7 +213,7 @@ const updatedUser = async (req, res) => {
         deposit: deposit && Number(deposit),
         role,
         avatar:
-          req?.file &&
+          req?.files &&
           req?.files?.images[0]?.filename &&
           req.files.images[0].filename,
         gender,
@@ -218,7 +221,6 @@ const updatedUser = async (req, res) => {
       },
       { new: true }
     );
-    console.log(user);
     return res.status(200).json({
       success: user ? true : false,
       user,
