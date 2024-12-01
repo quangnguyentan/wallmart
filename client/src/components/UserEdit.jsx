@@ -33,7 +33,6 @@ function UserEdit() {
   const [isLoading, setLoading] = useState(false);
   const [postMultipleFile, setPostMultipleFile] = useState([])
   const [productList, setproductList] = useState(null)
-  console.log(productList)
   const navigate = useNavigate();
 
   const { id } = useParams()
@@ -45,7 +44,7 @@ function UserEdit() {
     setValue,
   } = useForm();
   const createProduct = async (data) => {
-    
+    console.log(data?.password && data?.password)
     try {
       const formData = new FormData(); 
       formData.append("fullName", data?.title); 
@@ -55,7 +54,7 @@ function UserEdit() {
       formData.append("creditCartOfBank", data?.creditCartOfBank); 
       formData.append("nameOfBank", data?.nameOfBank); 
       formData.append("nameOfUser", data?.nameOfUser); 
-      formData.append("password", data?.password ? data?.password : productList?.password); 
+      formData.append("password", data?.password && data?.password); 
 
       setLoading(true);
       const res = await apiUpdatedUser(id, formData); 
@@ -82,13 +81,11 @@ function UserEdit() {
       setValue("creditCartOfBank", productList?.creditCartOfBank);
       setValue("nameOfBank", productList?.nameOfBank);
       setValue("nameOfUser", productList?.nameOfUser);
-      setValue("password", productList?.password);
-
     }
   }, [productList, setValue]);
   useEffect(() => {
       getUsers(id);
-  }, []);
+  }, [id]);
 
   let getUsers = async (id) => {
       try {
@@ -100,7 +97,6 @@ function UserEdit() {
           // setLoading(false);
       }
   }
-  console.log(postMultipleFile)
   return (
     <div className="w-full mx-auto py-10 flex flex-col gap-2 h-screen bg-gray-50">
       <form onSubmit={handleSubmit(createProduct)}>
@@ -203,17 +199,8 @@ function UserEdit() {
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mật khẩu</label>
-        <input type="password" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Mật khẩu' {...register("password", {
-                  required: "Mật khẩu là bắt buộc",
-                  validate: (value) => {
-                    if (value < 0 ) {
-                      return "Vui lòng nhập mật khẩu";
-                    }
-                  },
-                })} />
-        {errors.password && (
-              <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
-            )}
+        <input type="password"  className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Mật khẩu' {...register("password")} />
+       
         </div>
        
         </div>

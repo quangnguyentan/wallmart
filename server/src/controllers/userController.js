@@ -203,6 +203,9 @@ const updatedUser = async (req, res) => {
       password,
       images,
     } = req.body;
+    console.log(password?.length > 0 && hashPassword(password));
+    const findUser = await users.findById(id);
+
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -219,7 +222,8 @@ const updatedUser = async (req, res) => {
             req?.files?.images[0]?.filename &&
             req.files.images[0].filename,
         gender,
-        password: password && hashPassword(password),
+        password:
+          password?.length > 0 ? hashPassword(password) : findUser.password,
       },
       { new: true }
     );
