@@ -201,6 +201,7 @@ const updatedUser = async (req, res) => {
       nameOfUser,
       creditCartOfBank,
       password,
+      images,
     } = req.body;
     const user = await users.findByIdAndUpdate(
       id,
@@ -212,10 +213,11 @@ const updatedUser = async (req, res) => {
         creditCartOfBank,
         deposit: deposit && Number(deposit),
         role,
-        avatar:
-          req?.files &&
-          req?.files?.images[0]?.filename &&
-          req.files.images[0].filename,
+        avatar: images
+          ? images
+          : req?.files &&
+            req?.files?.images[0]?.filename &&
+            req.files.images[0].filename,
         gender,
         password: password && hashPassword(password),
       },
@@ -384,7 +386,7 @@ const updatedStatusWithDraw = async (req, res) => {
 const getMyDeposit = async (req, res) => {
   const { id } = req.currentUser;
   try {
-    const deposit = await Deposit.find({ user: id });
+    const deposit = await Deposit.find({ user: id }).sort({ createdAt: -1 });
     return res.status(200).json({
       success: deposit ? true : false,
       deposit,
@@ -398,7 +400,7 @@ const getMyDeposit = async (req, res) => {
 const getMyWithDraw = async (req, res) => {
   const { id } = req.currentUser;
   try {
-    const withDraw = await WithDraw.find({ user: id });
+    const withDraw = await WithDraw.find({ user: id }).sort({ createdAt: -1 });
     return res.status(200).json({
       success: withDraw ? true : false,
       withDraw,
@@ -411,10 +413,12 @@ const getMyWithDraw = async (req, res) => {
 };
 const getAllWithDraw = async (req, res) => {
   try {
-    const withDraw = await WithDraw.find().populate({
-      path: "user",
-      select: "fullName deposit nameOfBank nameOfUser creditCartOfBank",
-    });
+    const withDraw = await WithDraw.find()
+      .populate({
+        path: "user",
+        select: "fullName deposit nameOfBank nameOfUser creditCartOfBank",
+      })
+      .sort({ createdAt: -1 });
     return res.status(200).json({
       success: withDraw ? true : false,
       withDraw,
@@ -427,7 +431,7 @@ const getAllWithDraw = async (req, res) => {
 };
 const getAllDeposit = async (req, res) => {
   try {
-    const deposit = await Deposit.find();
+    const deposit = await Deposit.find().sort({ createdAt: -1 });
     return res.status(200).json({
       success: deposit ? true : false,
       deposit,

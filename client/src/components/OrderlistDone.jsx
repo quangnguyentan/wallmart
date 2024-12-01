@@ -261,8 +261,15 @@ function OrderlistDone() {
                                   Xem chi tiết
                                 </Link>
                                 <Link
-                                  to={`/order-edit-done/${item?._id}`}
+                                  // to={`/order-edit-done/${item?._id}`}
                                   className="btn btn-info btn-sm"
+                                  onClick={() => {
+                                    if(item?.status === "successfull"){
+                                      toast.success("Đơn hàng đã hoàn thành")
+                                    }else{
+                                      toast.error("Đơn hàng đã bị hủy")
+                                    }
+                                  }}
                                 >
                                   Cập nhật đơn hàng
                                 </Link>
