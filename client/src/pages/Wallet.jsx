@@ -70,7 +70,7 @@ const Wallet = () => {
                         </div>   
                         <div className="flex flex-col gap-1 text-center">
                                 <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Điểm thưởng</h3>
-                                <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">0</h3>
+                                <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">{currentData?.profit}</h3>
                         </div>   
                         <div className="flex flex-col gap-1 text-center">
                                 <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Cấp thành viên</h3>
