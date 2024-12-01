@@ -32,6 +32,8 @@ function UserEdit() {
   const [values, setValues] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [postMultipleFile, setPostMultipleFile] = useState([])
+  const [productList, setproductList] = useState(null)
+  console.log(productList)
   const navigate = useNavigate();
 
   const { id } = useParams()
@@ -47,16 +49,17 @@ function UserEdit() {
     try {
       const formData = new FormData(); 
       formData.append("fullName", data?.title); 
-      formData.append("images", postMultipleFile.length > 0 && postMultipleFile); 
+      formData.append("images", postMultipleFile?.length > 0  ? postMultipleFile : productList?.avatar); 
       formData.append("role", values ? values : productList?.role); 
       formData.append("deposit", data?.price); 
       formData.append("creditCartOfBank", data?.creditCartOfBank); 
       formData.append("nameOfBank", data?.nameOfBank); 
       formData.append("nameOfUser", data?.nameOfUser); 
-      formData.append("password", data?.password); 
+      formData.append("password", data?.password ? data?.password : productList?.password); 
 
       setLoading(true);
       const res = await apiUpdatedUser(id, formData); 
+      console.log(res)
       setLoading(false);
       if (res?.success) {
         toast.success("Chỉnh sửa người dùng thành công");
@@ -70,8 +73,6 @@ function UserEdit() {
       toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
     }
   };
-  const [productList, setproductList] = useState([])
-  console.log(productList)
   useEffect(() => {
     if (productList) {
       setValue("title", productList.fullName);
@@ -144,7 +145,7 @@ function UserEdit() {
               <p className="text-red-500 text-xs px-2">{errors.description.message}</p>
             )}
         </div> */}
-        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        {/* <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Nạp tiền</label>
         <input type="number" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='(vd : 30000$)' {...register("price", {
                   required: "Giá tiền sau khi giảm giá là bắt buộc",
@@ -157,7 +158,7 @@ function UserEdit() {
         {errors.price && (
               <p className="text-red-500 text-xs px-2">{errors.price.message}</p>
             )}
-        </div>
+        </div> */}
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Số tài khoản</label>
         <input type="number" className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Số tài khoản' {...register("creditCartOfBank", {

@@ -47,20 +47,27 @@ const updateOrder = async (req, res, next) => {
       if (findProduct) {
         const findUser = await users.findById(findOrder.store._id);
         if (findUser && status === "canceled") {
-          const updateUser = await users.findByIdAndUpdate(
+          await users.findByIdAndUpdate(
             findUser._id,
             {
               deposit:
                 findUser?.deposit +
                 Number(findProduct?.price) * Number(findOrder.quantity),
+            },
+            { new: true }
+          );
+        }
+        if (findUser && status === "successfull") {
+          await users.findByIdAndUpdate(
+            findUser._id,
+            {
               profit:
-                findUser?.profit -
-                (Number(findProduct?.price) - Number(findProduct.priceOld)) *
+                findUser?.profit +
+                ((Number(findProduct?.price) * 20) / 100) *
                   Number(findOrder.quantity),
             },
             { new: true }
           );
-          console.log("updateUser", updateUser);
         }
         // if(findUser && status === "Bị hủy")
       }
@@ -269,8 +276,7 @@ const processPaymentStore = async (req, res, next) => {
       await users.findByIdAndUpdate(
         id,
         {
-          deposit: findUser.deposit + profitPayment - Number(totalPayment),
-          profit: findUser.profit + profitPayment,
+          deposit: findUser.deposit - Number(totalPayment),
           sold: findUser.sold + Number(totalPayment),
         },
         { new: true }
