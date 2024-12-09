@@ -3,11 +3,21 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./sb-admin-2.min.css";
 import { apiGetStore } from "@/services/storeService";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
 function StoreList() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
+  const [value, setValue] = useState(null)
+  useEffect(() => {
+    if(value?.length > 0) {
+      getUsers();
+    }
+    }, [value]);
 
+    const onChangeValue = (e) => {
+        setValue(e.target.value)
+    }
   useEffect(() => {
     getUsers();
     
@@ -54,8 +64,21 @@ function StoreList() {
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
-        <div className="card-header py-3">
+        <div className="card-header py-3 flex items-center justify-center gap-8">
           <h6 className="m-0 font-weight-bold text-primary">Người dùng</h6>
+          <form
+                className="d-none w-[30%] d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
+           
+                <div className="input-group">
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm tên cửa hàng" 
+                        aria-label="Search" aria-describedby="basic-addon2" />
+                    <div className="input-group-append">
+                        <button className="btn btn-primary" type="button">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div className="card-body">
           {isLoading ? (
@@ -81,7 +104,7 @@ function StoreList() {
                 </thead>
                 
                 <tbody>
-                  {productList.map((product) => {
+                  {/* {productList.map((product) => {
                    if(product?.active === "access") {
                     return (
                       <tr key={product?.id}>
@@ -97,22 +120,57 @@ function StoreList() {
                           >
                             Đặt đơn ảo
                           </Link>
-                          {/* <Link
-                            to={`/store-edit/${product?._id}`}
-                            className="btn btn-info btn-sm mr-1"
-                          >
-                            Chỉnh sửa
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(product?._id)}
-                            className="btn btn-danger btn-sm mr-1"
-                          >
-                            Xóa
-                          </button> */}
+                    
                         </th>
                       </tr>
                     );
                    }
+                  })} */}
+                  {value?.length > 0 ? productList?.map((product, index) => {
+                     if(typeof product?.inforByStore?.nameStore === "string" && typeof value === "string" && product?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase())) {
+                      if(product?.active === "access") {
+                        return (
+                          <tr key={product?.id}>
+                            <td>{product?.inforByStore?.nameStore}</td>
+                            <td>{product?.industry}</td>
+                            <td>{product?.fullname}</td>
+                            <td>{product?.phone}</td>
+                            <td>{product?.address?.area}</td>
+                            <th className="flex flex-col gap-2">
+                              <Link
+                                to={`/book-product/${product?._id}/${product?.userId}`}
+                                className="btn btn-primary btn-sm mr-1"
+                              >
+                                Đặt đơn ảo
+                              </Link>
+                        
+                            </th>
+                          </tr>
+                        );
+                       }
+                     }
+                    ;
+                  }) : productList?.map((product, index) => {
+                    if(product?.active === "access") {
+                      return (
+                        <tr key={product?.id}>
+                          <td>{product?.inforByStore?.nameStore}</td>
+                          <td>{product?.industry}</td>
+                          <td>{product?.fullname}</td>
+                          <td>{product?.phone}</td>
+                          <td>{product?.address?.area}</td>
+                          <th className="flex flex-col gap-2">
+                            <Link
+                              to={`/book-product/${product?._id}/${product?.userId}`}
+                              className="btn btn-primary btn-sm mr-1"
+                            >
+                              Đặt đơn ảo
+                            </Link>
+                      
+                          </th>
+                        </tr>
+                      );
+                     }
                   })}
                 </tbody>
               </table>

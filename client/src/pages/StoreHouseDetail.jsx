@@ -1,14 +1,12 @@
-import { Upload } from "lucide-react"
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, useMediaQuery } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { apiGetProduct } from "@/services/productService";
+import { apiGetProductByShop } from "@/services/productService";
 import { listLeftCategories, pathImage } from "@/lib/helper";
 import Autocomplete from '@mui/material/Autocomplete';
 import { apiAddToCart } from "@/services/userService";
 import { apiAddToCartByStore } from "@/services/storeService";
 import toast from "react-hot-toast";
-import { apiGetOrderById, apiGetOrderByIdOrder, apiOrderPaymentStore } from "@/services/orderServer";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 const fileSvgWithDraw = <svg id="Group_22725" className="max-sm:w-6 max-sm:h-6" data-name="Group 22725" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
@@ -31,13 +29,14 @@ const fileSvgSetting = <svg id="Group_31"  data-name="Group 31" xmlns="http://ww
 <path id="Path_82" data-name="Path 82" d="M16,0A46.43,46.43,0,0,1,0,8.4v2a3.451,3.451,0,0,0,5.333,2.133,3.452,3.452,0,0,0,5.333,2.134A3.453,3.453,0,0,0,16,16.8a3.451,3.451,0,0,0,5.333-2.133,3.451,3.451,0,0,0,5.333-2.134A3.454,3.454,0,0,0,32,10.4v-2A46.421,46.421,0,0,1,16,0M31.021,10.194a2.452,2.452,0,0,1-3.788,1.515,1,1,0,0,0-1.545.618A2.453,2.453,0,0,1,21.9,13.843a1,1,0,0,0-1.545.618A2.451,2.451,0,0,1,16,15.434a2.452,2.452,0,0,1-4.355-.973,1,1,0,0,0-1.545-.618,2.454,2.454,0,0,1-3.789-1.516,1,1,0,0,0-1.184-.772,1.015,1.015,0,0,0-.361.154A2.451,2.451,0,0,1,.978,10.194V9.148A47.458,47.458,0,0,0,16,1.277,47.442,47.442,0,0,0,31.021,9.148Z" fill="#2E294E"></path>
 </svg>
 
-const Order_Store_Detail = () => {
+const StoreHouseDetail = () => {
     const [products, setProducts] = useState([])
     const [search, setSearch] = useState('');
     const [selectedIds, setSelectedIds] = useState([]);
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate()
     const isMobile = useMediaQuery("(max-width:600px)");
+
     const { id } = useParams()
     const columns = [
         { 
@@ -49,9 +48,9 @@ const Order_Store_Detail = () => {
             align: 'center', 
             renderCell: (params) => (
                 <div className="flex items-center gap-4 w-full h-full justify-center">
-                    {params.row.product.photos && params.row.product.photos[0] && (
+                    {params?.row?.product?.photos && params?.row?.product?.photos[0] && (
                     <img 
-                      src={`${pathImage}/${params.row.product.photos[0]}`} 
+                      src={`${pathImage}/${params?.row?.product?.photos[0]}`} 
                       alt="Product" 
                       style={{ width: 50, height: 50, objectFit: 'cover' }} 
                     />
@@ -69,7 +68,7 @@ const Order_Store_Detail = () => {
           align: 'center', 
           renderCell: (params) => (
               <div className="flex items-center gap-4 w-full h-full">
-                <span className="line-clamp-1 text-xs">{params.row.product.title}</span>
+                <span className="line-clamp-1 text-xs">{params?.row?.product?.title}</span>
               </div>
             ),
           
@@ -83,7 +82,7 @@ const Order_Store_Detail = () => {
           align: 'center', 
           renderCell: (params) => (
               <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">{params.row.quantity}</span>
+                <span className="text-xs">{params?.row?.quantity}</span>
               </div>
             ),
           
@@ -97,7 +96,7 @@ const Order_Store_Detail = () => {
           align: 'center', 
           renderCell: (params) => (
               <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">${params.row.product.price}</span>
+                <span className="text-xs">${params?.row?.product?.price}</span>
               </div>
             ),
           
@@ -119,154 +118,42 @@ const Order_Store_Detail = () => {
     ];
     
     const fetchApiProduct = async(id) => {
-        const res = await apiGetOrderByIdOrder(id)
-        setProducts([res])
+        const res = await apiGetProductByShop(id)
+        setProducts([res?.products])
     }
-    const handleClickOpen = () => {
-        setOpen(true);
-      };
-      const handleClose = () => {
-        setOpen(false);
-      };
-      const handlePaymentStore = async () => {
-        const res = await apiOrderPaymentStore({ orderId : [products[0]?._id], totalPayment : products[0]?.product?.price, profitPayment : products[0]?.product?.price - products[0]?.product?.priceOld })
-        if(res?.success){
-            toast.success("Thanh toán thành công")
-            navigate("/order_store")
-            
-        }else{
-          toast.error(res?.msg)
-        }
-      }
-    const handleAddToCart = async() => {
-      const res = await apiAddToCartByStore({productsInCart : selectedIds })
-      if(res?.success) {
-        toast.success("Thêm sản phẩm vào cửa hàng thành công")
-      }else{
-        toast.error(res?.msg)
-      }
-    }
-    // const filteredProducts = products.filter((product) => 
-    //     product?.title?.toLowerCase()?.includes(search?.toLowerCase()) || 
-    //     product?.category?.toLowerCase()?.includes(search?.toLowerCase())
-    // );
     const handleSelectionChange = (newSelection) => {
       setSelectedIds(newSelection);
     }
     useEffect(() => {
         fetchApiProduct(id)
     }, [id])
-    console.log(products[0]?.status !== "waitPay")
+    console.log(products)
   return (
     <div className="flex flex-col gap-4">
         <h3 className="text-black font-semibold max-sm:text-sm">Chi tiết đơn hàng</h3>
-        <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-1 ">
-            <div className="px-6 py-6 items-center justify-center border h-64 max-sm:h-34 flex rounded-lg hover:shadow-lg">
-                    <div className="flex flex-col gap-4 max-sm:gap-4">
-                        <span className="text-black font-semibold max-sm:text-xs">Thanh toán cho nhà kho</span>
-                        <button onClick={() => {
-                          if(products[0]?.status !== "waitPay") {
-                            return
-                          }else{
-                            handleClickOpen()
-                          }
-                        }} className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status !== "waitPay" && products[0]?.status !== "canceled" ? "Đã thanh toán" : products[0]?.status === "canceled" ? "Đã hủy" : "Thanh toán cho nhà kho"}</button>
-                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
-                            {products?.[0]?.revicerName}
-                        </span>
-                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
-                            +{products?.[0]?.phone}
-                        </span>
-                        <span className="text-black  max-sm:text-[10px] max-sm:text-center">
-                            {products?.[0]?.stress }, {products?.[0]?.province }, {products?.[0]?.city }
-                        </span>
-                    </div>
-            </div>
-            <div className="px-6 py-6 border h-44 max-sm:h-32 justify-center flex rounded-lg hover:shadow-lg">
-                    <div className="flex flex-col items-center gap-4 ">
-                        <span className="text-black font-semibold max-sm:text-[10px]">Tình trạng thanh toán</span>
-                        <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status === "waitPay" ? "Chưa thanh toán" : products[0]?.status === "waitDelivery" ? "Đã thanh toán" : products[0]?.status === "delivering" ? "Đã thanh toán" :  products[0]?.status === "successfull" ? "Đã thanh toán" : "Đã hoàn tiền" }</button>
-                    </div>
-            </div>
-            <div className="px-6 py-6 border h-44 max-sm:h-32 items-center justify-center flex rounded-lg hover:shadow-lg">
-                    <div className="flex flex-col items-center gap-4 ">
-                        <span className="text-black font-semibold max-sm:text-[10px]">Tình trạng giao hàng</span>
-                        <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">{products[0]?.status === "waitPay" ? "Đang chờ xử lý" : products[0]?.status === "waitDelivery" ? "Đã duyệt đơn hàng" : products[0]?.status === "delivering" ? "Đang giao hàng" :  products[0]?.status === "successfull" ? "Đã giao hàng" : "Bị hủy" }</button>
-                    </div>
-            </div>
-          
-        </div>
         <div className="flex flex-col gap-4 ">
-            {/* <div className="flex items-center justify-between max-sm:flex-col max-sm:gap-2">
-                <h3 className="text-black font-semibold max-sm:text-xs max-sm:hidden">Tất cả sản phẩm trong kho</h3>
-                <Autocomplete
-                    disablePortal
-                    options={listLeftCategories?.flatMap((option) => 
-                        option.category?.map((category) => category.name)
-                      )}
-                    sx={{ width: isMobile ? "100%" : 300 }}
-                    onChange={(event, newValue) => {
-                        setSearch(newValue)
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Thể loại" />}
-                />
-                <TextField 
-                    label="Tìm kiếm sản phẩm" 
-                    variant="outlined" 
-                    onChange={(e) => setSearch(e.target.value)}
-                    sx={{  width : isMobile ? "100%" :  600  }} 
-                />
-              
-
-            </div> */}
-            <React.Fragment>
-          
-          <Dialog
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-          >
-              <DialogTitle id="alert-dialog-title">
-                  Thanh toán đơn hàng
-              </DialogTitle>
-              <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                
-                  <div className="px-20 max-sm:px-0 flex-col gap-4 flex ">
-                       <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${products[0]?.product?.price}</span>
-                        </div>
-                        <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${products[0]?.product?.price * 20 / 100}</span>
-                       </div>
-                    </div>
-              </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-              <Button onClick={handleClose}>Hủy bỏ</Button>
-              <Button onClick={handlePaymentStore} autoFocus>
-                  Thanh toán
-              </Button>
-              </DialogActions>
-          </Dialog>
-          </React.Fragment>
             <Box sx={{ width: '100%' }}>
             {isMobile ? (
             <div className="flex flex-col gap-4">
               {products?.map((product) => (
-                <div key={product._id} className="flex items-center p-4 border rounded-lg">
+                <div key={product?._id} className="flex items-center p-4 border rounded-lg">
                   <img 
-                    src={`${pathImage}/${product.product.photos[0]}`}
+                    src={`${pathImage}/${product?.photos[0]}`}
                     alt="Product"
                     style={{ width: 50, height: 50, objectFit: 'cover' }}
                   />
                   <div className="ml-4">
-                    <h4 className="font-semibold max-sm:text-xs line-clamp-2">{product?.product?.title}</h4>
-                    <p className="text-sm text-gray-600">Thể loại: {product?.product?.category}</p>
+                    <h4 className="font-semibold max-sm:text-xs line-clamp-2">{product?.title}</h4>
+                    <p className="text-sm text-gray-600">Thể loại: {product?.category}</p>
                     <p className="text-sm text-gray-600">Số lượng: {product?.quantity}</p>
-                    <p className="text-sm text-gray-600">Giá: ${product?.product?.price}</p>
+                    <p className="text-sm text-gray-600">Giá: ${product?.price}</p>
+                    <p className="text-sm text-gray-600">Số lượng sản phẩm: {product?.inventory}</p>
+
                     <p className="text-sm text-gray-600">Ngày: {moment(product?.createdAt).format('L')}</p>
+                    <p className="text-sm text-gray-600">Màu sắc: {product?.color?.join(",")}</p>
+                    <p className="text-sm text-gray-600">Kích thước: {product?.size?.join(",")}</p>
+
+
 
                   </div>
                 </div>
@@ -303,4 +190,4 @@ const Order_Store_Detail = () => {
   )
 }
 
-export default Order_Store_Detail
+export default StoreHouseDetail

@@ -55,7 +55,7 @@ const Wallet = () => {
                         <div className="flex items-center text-white gap-2 w-full justify-around">
                         <div className="flex flex-col gap-1 text-center">
                         <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Số dư</h3>
-                            <h3 className="text-3xl font-bold max-sm:text-sm">${currentData?.deposit}</h3>
+                            <h3 className="text-3xl font-bold max-sm:text-sm">${currentData?.deposit.toFixed(1)}</h3>
                         </div>   
                         <div className="flex flex-col gap-1 text-center">
                                 <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Loại thẻ</h3>
@@ -70,7 +70,7 @@ const Wallet = () => {
                         </div>   
                         <div className="flex flex-col gap-1 text-center">
                                 <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Điểm thưởng</h3>
-                                <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">{currentData?.profit}</h3>
+                                <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">{currentData?.bonusPoints || 0}</h3>
                         </div>   
                         <div className="flex flex-col gap-1 text-center">
                                 <h3 className="text-xl max-sm:text-xs max-sm:font-semibold font-bold">Cấp thành viên</h3>

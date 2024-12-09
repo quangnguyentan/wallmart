@@ -32,16 +32,18 @@ const GetProductByShop = async (req, res, next) => {
 };
 const GetAllStore = async (req, res, next) => {
   try {
-    const products = await Store.find().populate({
-      path: "order",
-      populate: [
-        {
-          path: "product",
-          select:
-            "title price priceOld photos color size createdAt inventory updatedAt category industry",
-        }, // Lấy thông tin tên và ảnh sản phẩm
-      ],
-    });
+    const products = await Store.find()
+      .populate({
+        path: "order",
+        populate: [
+          {
+            path: "product",
+            select:
+              "title price priceOld photos color size createdAt inventory updatedAt category industry",
+          }, // Lấy thông tin tên và ảnh sản phẩm
+        ],
+      })
+      .sort({ createdAt: -1 });
     res.json(products);
   } catch (e) {
     next(e);

@@ -1,4 +1,4 @@
-import { Upload } from "lucide-react"
+import { Eye, Upload } from "lucide-react"
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, TextField, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { apiAddToCart } from "@/services/userService";
 import { apiAddToCartByStore } from "@/services/storeService";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 const fileSvgWithDraw = <svg id="Group_22725" className="max-sm:w-6 max-sm:h-6" data-name="Group 22725" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
 <path id="Path_108" d="M24,28.5A1.538,1.538,0,0,1,25.5,30v6a1.5,1.5,0,0,1-3,0V30A1.538,1.538,0,0,1,24,28.5" fill="#2E294E"></path>
 <path id="Path_109" d="M36,21H33V43.5A1.538,1.538,0,0,1,31.5,45h-15A1.538,1.538,0,0,1,15,43.5V21H12V43.5A4.481,4.481,0,0,0,16.5,48h15A4.481,4.481,0,0,0,36,43.5Z" fill="#2E294E"></path>
@@ -56,7 +57,8 @@ const StoreHouse = () => {
             ),
           
       },
-      { 
+      ...(!isMobile ? [
+        { 
           field: 'category', 
           headerName: 'Thể loại', 
           width: isMobile && 160, 
@@ -100,20 +102,20 @@ const StoreHouse = () => {
             ),
           
       },
-      { 
-          field: 'priceOld', 
-          headerName: 'Giá kho', 
-          width: isMobile && 160, 
-          flex : isMobile ? 0 : 1,
-          headerAlign: 'center',
-          align: 'center', 
-          renderCell: (params) => (
-              <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">${params.row.priceOld}</span>
-              </div>
-            ),
+      // { 
+      //     field: 'priceOld', 
+      //     headerName: 'Giá kho', 
+      //     width: isMobile && 160, 
+      //     flex : isMobile ? 0 : 1,
+      //     headerAlign: 'center',
+      //     align: 'center', 
+      //     renderCell: (params) => (
+      //         <div className="flex items-center justify-center gap-4 w-full h-full">
+      //           <span className="text-xs">${params.row.priceOld}</span>
+      //         </div>
+      //       ),
           
-      },
+      // },
       { 
           field: 'color', 
           headerName: 'Màu sắc', 
@@ -142,6 +144,27 @@ const StoreHouse = () => {
             ),
           
       },
+      ] : []),
+      ...(isMobile ? [
+        { 
+          field: 'options', 
+          headerName: 'Xem thêm', 
+          width: 160, 
+          flex: 0,  
+          headerAlign: 'center',
+          align: 'center',
+          renderCell: (params) => (
+            <div className="flex items-center justify-center gap-4 w-full h-full">
+              <Link 
+                to={`${"/storehouse_detail"}/${params.row._id}`} 
+                className="h-8 w-8 bg-slate-200 items-center justify-center flex rounded-full"
+              >
+                <Eye className="h-4 w-4" color="blue" />
+              </Link>
+            </div>
+          ),
+        }
+      ] : []),
     ];
     
     const fetchApiProduct = async() => {
@@ -176,34 +199,7 @@ const StoreHouse = () => {
   return (
     <div className="flex flex-col gap-4">
         <h3 className="text-black font-semibold md:hidden">Các sản phẩm trong kho</h3>
-        {/* <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-2 ">
-            <div className="px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg bg-[#eb4786]">
-                <div className="flex flex-col gap-4 items-center justify-center">
-                    <Upload color="white" className="max-sm:w-6 max-sm:h-6"/>
-                    <span className="text-3xl font-semibold text-white max-sm:text-lg ">5</span>
-                    <span className="text-white font-semibold max-sm:text-[10px]">Sản phẩm hiện có</span>
-                </div>
-            </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg">
-                <div className="flex flex-col gap-4 items-center justify-center">
-                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Thêm sản phẩm mới</span>
-                    {fileSvgAdd}
-                </div>
-            </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg hover:shadow-lg">
-                <div className="flex flex-col gap-4 items-center justify-center">
-                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Cài đặt cửa hàng</span>
-                    {fileSvgSetting}
-                    <button className="bg-[#0277BD] text-white px-12 py-2 rounded-lg max-sm:text-[10px] max-sm:px-4 max-sm:py-1">Đi tới cài đặt</button>
-                </div>
-            </div>
-            <div className="bg-white px-6 py-6 border h-44 max-sm:h-34 flex items-center justify-center rounded-lg cursor-pointer hover:shadow-lg">
-                <div className="flex flex-col gap-4 items-center justify-center">
-                    <span className="text-[#0277BD] font-semibold max-sm:text-[10px]">Rút tiền</span>
-                    {fileSvgWithDraw}
-                </div>
-            </div>
-        </div> */}
+       
         <div className="flex flex-col gap-4 ">
             <div className="flex items-center justify-between max-sm:flex-col max-sm:gap-2">
                 <h3 className="text-black font-semibold max-sm:text-xs max-sm:hidden">Tất cả sản phẩm trong kho</h3>

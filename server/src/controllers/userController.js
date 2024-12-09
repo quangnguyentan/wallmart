@@ -202,8 +202,9 @@ const updatedUser = async (req, res) => {
       creditCartOfBank,
       password,
       images,
+      bonusPoints,
     } = req.body;
-    console.log(password?.length > 0 && hashPassword(password));
+    console.log(bonusPoints);
     const findUser = await users.findById(id);
 
     const user = await users.findByIdAndUpdate(
@@ -216,6 +217,7 @@ const updatedUser = async (req, res) => {
         creditCartOfBank,
         deposit: deposit && Number(deposit),
         role,
+        bonusPoints,
         avatar: images
           ? images
           : req?.files &&
@@ -341,6 +343,7 @@ const updatedStatusWithDraw = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, reason } = req.body;
+    console.log(id, status, reason);
     let user;
     let findBill;
     let findWithDraw = await WithDraw.findById(id);
