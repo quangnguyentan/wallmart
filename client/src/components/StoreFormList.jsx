@@ -9,10 +9,12 @@ import { apiDeletestoreById, apiGetStore, apiUpdatestore } from "@/services/stor
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { getStore } from "@/stores/actions/storeAction";
-
+import {  faSearch } from '@fortawesome/free-solid-svg-icons'
 function StoreFormList() {
   const [productList, setproductList] = useState([])
   const [isLoading, setLoading] = useState(true);
+  const [value, setValue] = useState(null)
+
   const dispatch = useDispatch()
   useEffect(() => {
     getUsers();
@@ -63,7 +65,15 @@ function StoreFormList() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if(value?.length > 0) {
+      getUsers();
+    }
+    }, [value]);
 
+    const onChangeValue = (e) => {
+        setValue(e.target.value)
+    }
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -78,8 +88,21 @@ function StoreFormList() {
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
-        <div className="card-header py-3">
+        <div className="card-header py-3 flex items-center justify-center gap-8">
           <h6 className="m-0 font-weight-bold text-primary">Yêu cầu duyệt đơn mở cửa hàng</h6>
+          <form
+                className="d-none w-[30%] d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
+           
+                <div className="input-group">
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm người dùng" 
+                        aria-label="Search" aria-describedby="basic-addon2" />
+                    <div className="input-group-append">
+                        <button className="btn btn-primary" type="button">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div className="card-body">
           {isLoading ? (
@@ -106,7 +129,51 @@ function StoreFormList() {
                 </thead>
                 
                 <tbody>
-                  {productList.map((product) => {
+
+                {value?.length > 0 ? productList?.map((product) => {
+                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName.toUpperCase().includes(value.toUpperCase())) {
+                      return (
+                        <tr key={product?.id}>
+                          <td>{product?.industry}</td>
+                          <td>{product?.fullname}</td>
+                          <td>{product?.phone}</td>
+                          <td>{product?.inforByStore?.nameStore}</td>
+                          <td>{product?.address?.area}</td>
+                          {/* <td>{product?.active === "wait" ? "Đang đợi duyệt" : "Đã duyệt"}</td> */}
+                          <th className="flex flex-col gap-2">
+                          <Link
+                              to={`/store-view-form/${product?._id}`}
+                              className="btn btn-primary btn-sm mr-1"
+                            >
+                             Xem chi tiết  cửa hàng
+                            </Link>
+                           {product?.active === "wait" && <>
+                            <div
+                              className="btn btn-info btn-sm mr-1"
+                              onClick={() => hanleUpdateStore(product, "accept")}
+                            >
+                             Xác nhận duyệt
+                            </div>
+                            <div
+                              className="btn btn-danger btn-sm mr-1"
+                              onClick={() => hanleUpdateStore(product, "denied")}
+  
+                            >
+                             Từ chối
+                            </div>
+                            {/* <button
+                              onClick={() => handleDelete(product?._id)}
+                              className="btn btn-danger btn-sm mr-1"
+                            >
+                              Xóa
+                            </button> */}
+                           </>}
+                          </th>
+                        </tr>
+                      );
+                     }
+                    ;
+                  }) : productList?.map((product) => {
                     return (
                       <tr key={product?.id}>
                         <td>{product?.industry}</td>
@@ -147,6 +214,42 @@ function StoreFormList() {
                       </tr>
                     );
                   })}
+
+                  {/* {productList.map((product) => {
+                    return (
+                      <tr key={product?.id}>
+                        <td>{product?.industry}</td>
+                        <td>{product?.fullname}</td>
+                        <td>{product?.phone}</td>
+                        <td>{product?.inforByStore?.nameStore}</td>
+                        <td>{product?.address?.area}</td>
+                        <th className="flex flex-col gap-2">
+                        <Link
+                            to={`/store-view-form/${product?._id}`}
+                            className="btn btn-primary btn-sm mr-1"
+                          >
+                           Xem chi tiết  cửa hàng
+                          </Link>
+                         {product?.active === "wait" && <>
+                          <div
+                            className="btn btn-info btn-sm mr-1"
+                            onClick={() => hanleUpdateStore(product, "accept")}
+                          >
+                           Xác nhận duyệt
+                          </div>
+                          <div
+                            className="btn btn-danger btn-sm mr-1"
+                            onClick={() => hanleUpdateStore(product, "denied")}
+
+                          >
+                           Từ chối
+                          </div>
+                          
+                         </>}
+                        </th>
+                      </tr>
+                    );
+                  })}  */}
                 </tbody>
               </table>
             </div>

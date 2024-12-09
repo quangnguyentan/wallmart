@@ -55,7 +55,9 @@ function UserEdit() {
       formData.append("nameOfBank", data?.nameOfBank); 
       formData.append("nameOfUser", data?.nameOfUser); 
       formData.append("password", data?.password && data?.password); 
+      formData.append("bonusPoints", data?.bonusPoints); 
 
+      
       setLoading(true);
       const res = await apiUpdatedUser(id, formData); 
       console.log(res)
@@ -77,10 +79,10 @@ function UserEdit() {
       setValue("title", productList.fullName);
       setValue("description", productList?.role);
       setValue("price", productList.deposit);
-      setValue("photo", productList.avatar);
       setValue("creditCartOfBank", productList?.creditCartOfBank);
       setValue("nameOfBank", productList?.nameOfBank);
       setValue("nameOfUser", productList?.nameOfUser);
+      setValue("bonusPoints", productList?.bonusPoints);
     }
   }, [productList, setValue]);
   useEffect(() => {
@@ -111,11 +113,11 @@ function UserEdit() {
               <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
             )}
         </div>
-        <div  className='flex gap-4 items-center  px-8 w-full'>
+        {/* <div  className='flex gap-4 items-center  px-8 w-full'>
         <label htmlFor="photo">Ảnh người dùng:       </label>
         <input type="file" title='Chọn ảnh' className=' cursor-pointer' id='photo'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
         {postMultipleFile.length === 0 &&  <img src={`${pathImage}/${productList?.avatar}`} className='w-8 h-8' alt="" />  }
-        </div>
+        </div> */}
        <div className='px-8 py-4'>
        <Autocomplete
             disablePortal
@@ -200,6 +202,11 @@ function UserEdit() {
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Mật khẩu</label>
         <input type="password"  className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Mật khẩu' {...register("password")} />
+       
+        </div>
+        <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="bonusPoints">Điểm thưởng</label>
+        <input type="bonusPoints"  className='w-full py-2 placeholder:px-2 px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Điểm thưởng' {...register("bonusPoints")} />
        
         </div>
        

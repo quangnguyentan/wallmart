@@ -1,12 +1,12 @@
-import { Eye, Upload } from "lucide-react"
+import {  Upload } from "lucide-react"
 import { DataGrid } from '@mui/x-data-grid';
 import { Autocomplete, Box, TextField, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { apiGetProduct } from "@/services/productService";
+
 import { listLeftCategories, pathImage } from "@/lib/helper";
 import { Link, useNavigate } from "react-router-dom";
 import { apiGetMyStore } from "@/services/storeService";
-import moment from "moment";
+
 const fileSvgWithDraw = <svg id="Group_22725" className="max-sm:w-6 max-sm:h-6" data-name="Group 22725" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
 <path id="Path_108" d="M24,28.5A1.538,1.538,0,0,1,25.5,30v6a1.5,1.5,0,0,1-3,0V30A1.538,1.538,0,0,1,24,28.5" fill="#2E294E"></path>
 <path id="Path_109" d="M36,21H33V43.5A1.538,1.538,0,0,1,31.5,45h-15A1.538,1.538,0,0,1,15,43.5V21H12V43.5A4.481,4.481,0,0,0,16.5,48h15A4.481,4.481,0,0,0,36,43.5Z" fill="#2E294E"></path>
@@ -227,7 +227,25 @@ const ProductAgent = () => {
                 />
             </div>
             <Box sx={{ width: '100%' }}>
-                <DataGrid
+                {isMobile ? (
+            <div className="flex flex-col gap-4">
+              {filteredProducts.map((product) => (
+                <div key={product._id} className="flex items-center p-4 border rounded-lg">
+                  <img 
+                    src={`${pathImage}/${product.product.photos[0]}`}
+                    alt="Product"
+                    style={{ width: 50, height: 50, objectFit: 'cover' }}
+                  />
+                  <div className="ml-4">
+                    <h4 className="font-semibold max-sm:text-xs">{product.product.title}</h4>
+                    <p className="text-sm text-gray-600">Thể loại: {product.product.category}</p>
+                    <p className="text-sm text-gray-600">Số lượng: {product.product.inventory}</p>
+                    <p className="text-sm text-gray-600">Giá: ${product.product.price}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : <DataGrid
                 // unstable_rowSpanning
                 disableRowSelectionOnClick
                 // hideFooter
@@ -247,7 +265,7 @@ const ProductAgent = () => {
                 
                 pageSizeOptions={[5]}
                 checkboxSelection
-                />
+                />}
                 
             </Box>
         </div>

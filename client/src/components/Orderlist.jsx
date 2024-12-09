@@ -8,6 +8,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { pathImage } from "@/lib/helper";
+import {  faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 const list_status = [
@@ -37,20 +39,10 @@ function Orderlist() {
   const [isLoading, setLoading] = useState(true);
   const navigate = useNavigate()
   const { currentData } = useSelector((state) => state.user);
-  const [values, setValues] = useState("");
-  const [order, setOrder] = useState("")
   const [store, setStore] = useState("")
-  const { id } = useParams()
-  const {
-    register,
-    handleSubmit,
-    resetField,
-    formState: { errors },
-    watch,
-    getValues,
-    setValue,
+ 
+  const [value, setValue] = useState(null)
 
-  } = useForm();
   // const updateOrder = async (data) => {
   //   console.log(data)
   //   try {
@@ -69,12 +61,28 @@ function Orderlist() {
   //   }
   // };
  
-  useEffect(() => {
-    getUsers();
-  }, []);
+
   
  
   let getUsers = async () => {
+    try {
+      if(currentData?.role === "agent"){
+        const user = await apiGetOrderByShop()
+        const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
+        setproductList(filterOrderUser);
+        setLoading(false);
+      }else{
+        const store = await apiGetOrder()
+        setproductList(store?.orders);
+        setStore(store?.stores);
+        setLoading(false);
+      }
+    
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  let fetchApi = async () => {
     try {
       if(currentData?.role === "agent"){
         const user = await apiGetOrderByShop()
@@ -104,6 +112,18 @@ function Orderlist() {
       console.log(error);
     }
   };
+  useEffect(() => {
+      if(value?.length > 0) {
+        fetchApi();
+      }
+  }, [value]);
+  useEffect(() => {
+    getUsers()
+  }, [])
+ 
+  const onChangeValue = (e) => {
+      setValue(e.target.value)
+  }
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
@@ -118,8 +138,21 @@ function Orderlist() {
       </div>
       {/* <!-- DataTables --> */}
       <div className="card shadow mb-4">
-        <div className="card-header py-3">
+        <div className="card-header py-3 flex items-center justify-center gap-8">
           <h6 className="m-0 font-weight-bold text-primary max-sm:text-sm">Đơn hàng</h6>
+          <form
+                className="w-[30%] max-sm:w-full d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
+           
+                <div className="input-group">
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small max-sm:placeholder:text-xs" placeholder="Tìm kiếm sản phẩm" 
+                        aria-label="Search" aria-describedby="basic-addon2" />
+                    <div className="input-group-append">
+                        <button className="btn btn-primary" type="button">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
         <div className="card-body">
           {isLoading ? (
@@ -188,9 +221,11 @@ function Orderlist() {
                       ); 
                     }
                   })}
-                 {currentData?.role === "admin" &&
-                      productList?.map((item, index) => {
-                        const storeForItem = store ? store[index] : null; 
+                  {currentData?.role === "admin" && <>
+                    {value?.length > 0 ?
+                    productList?.map((item, index) => {
+                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase())) { 
+                      const storeForItem = store ? store[index] : null; 
                         return (
                           <tr key={item?._id}>
                             {/* Tên sản phẩm */}
@@ -214,7 +249,7 @@ function Orderlist() {
                              {storeForItem ? storeForItem?.inforByStore?.nameStore : "Không có cửa hàng"}
                              </div>
                             </td>
-
+      
                             <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               <div className="flex items-center justify-center py-10">
                               {item?.user?.fullName}
@@ -233,14 +268,14 @@ function Orderlist() {
                             <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               <div className="flex items-center justify-center py-10">
                               {item?.quantity}
-
+      
                              </div>
                             </td>
                             <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                             
                               <div className="flex items-center justify-center py-10">
                               {item?.quantity * item?.product?.price}$
-
+      
                              </div>
                             </td>
                             
@@ -272,14 +307,106 @@ function Orderlist() {
                                   Xóa
                                 </button>
                               </div>
-
+      
                              </div>
                              
                             </td>
                           </tr>
                         );
-                      }
-                    )}
+                    } 
+                    })
+                 :   productList?.map((item, index) => {  
+                  const storeForItem = store ? store[index] : null; 
+                  return (
+                    <tr key={item?._id}>
+                      {/* Tên sản phẩm */}
+                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                      <div className="flex items-center justify-center py-10">
+                      {index + 1}
+                       </div>
+                      </td>
+                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                        <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
+                         {item?.product?.title}
+                       </div>
+                      </td>
+                      <td className="max-sm:text-[10px]   max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                      <div className="flex items-center justify-center py-10">
+                      <img src={`${pathImage}/${item?.product?.photos[0]}`}  className="w-8 h-8" alt="photos" />
+                      </div>
+                      </td>
+                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                       <div className="flex items-center justify-center py-10">
+                       {storeForItem ? storeForItem?.inforByStore?.nameStore : "Không có cửa hàng"}
+                       </div>
+                      </td>
+
+                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                        <div className="flex items-center justify-center py-10">
+                        {item?.user?.fullName}
+                       </div>
+                      </td>
+                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                      
+                        <div className="flex items-center justify-center py-10">
+                        {item?.product?.price}$
+                       </div>
+                      </td>
+                      {/* Trạng thái */}
+                     
+                      {/* Hành động */}
+                      
+                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                        <div className="flex items-center justify-center py-10">
+                        {item?.quantity}
+
+                       </div>
+                      </td>
+                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                      
+                        <div className="flex items-center justify-center py-10">
+                        {item?.quantity * item?.product?.price}$
+
+                       </div>
+                      </td>
+                      
+                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                 <div className="flex items-center justify-center py-10">
+                 {item &&  item?.status === "waitDelivery" ?<span className="px-2 py-1  text-white bg-amber-900 font-semibold text-sm">Đợi giao hàng</span> : item?.status === "delivering" ? <span className="px-2 py-1  text-white bg-yellow-400 font-semibold text-sm">Đang giao hàng</span> : item?.status === "successfull" ? <span className="px-2 py-1  text-white bg-green-500 font-semibold text-sm">Giao hàng thành công</span>  :  item?.status === "waitPay" ? <span className="px-2 py-1  text-white bg-pink-600 font-semibold text-sm">Chưa thanh toán</span>  :  <span className="px-2 py-1  text-white bg-red-600 font-semibold text-sm">Đơn hàng bị hủy</span>}
+                 </div>
+                      </td>
+                      <td>
+                      <div className="flex items-center justify-center">
+                      <div className="flex flex-col gap-2">
+                          <Link
+                            to={`/order-view/${item?._id}`}
+                            state={item}
+                            className="btn btn-primary btn-sm"
+                          >
+                            Xem chi tiết
+                          </Link>
+                          <Link
+                            to={`/order-edit/${item?._id}`}
+                            className="btn btn-info btn-sm"
+                          >
+                            Cập nhật đơn hàng
+                          </Link>
+                          <button
+                            onClick={() => handleDelete(item?._id)}
+                            className="btn btn-danger btn-sm"
+                          >
+                            Xóa
+                          </button>
+                        </div>
+
+                       </div>
+                       
+                      </td>
+                    </tr>
+                  );
+                })}
+                  </>}
+                 
 
                 </tbody>
               </table>

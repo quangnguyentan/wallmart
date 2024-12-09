@@ -92,45 +92,45 @@ const Order_Store = () => {
       { 
           field: 'id', 
           headerName: 'Mã đặt hàng', 
-          width: isMobile && 520, 
-          flex : isMobile ? 0 : 2,
+          width: isMobile && 160, 
+          // flex : isMobile ? 0 : 2,
           headerAlign: 'center',
           align: 'center', 
           renderCell: (params) => (
-            <div className="flex items-center justify-center gap-4 w-full h-full">
+            <div className="flex items-center justify-center gap-4 w-full h-full line-clamp-1">
                 <span className="text-xs">{params.row._id}</span>
             </div>
             ),
           
       },
-      { 
-          field: 'createdAt', 
-          headerName: 'Ngày', 
-          width: isMobile && 160, 
-          flex : isMobile ? 0 : 1,
-          headerAlign: 'center',
-          align: 'center', 
-          renderCell: (params) => (
-              <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">{moment(params.row.createdAt).format('L')}</span>
-              </div>
-            ),
+      // { 
+      //     field: 'createdAt', 
+      //     headerName: 'Ngày', 
+      //     width: isMobile && 160, 
+      //     flex : isMobile ? 0 : 1,
+      //     headerAlign: 'center',
+      //     align: 'center', 
+      //     renderCell: (params) => (
+      //         <div className="flex items-center justify-center gap-4 w-full h-full">
+      //           <span className="text-xs">{moment(params.row.createdAt).format('L')}</span>
+      //         </div>
+      //       ),
           
-      },
-      { 
-          field: 'quantity', 
-          headerName: 'Số lượng sản phẩm', 
-          width: isMobile && 160, 
-          flex : isMobile ? 0 : 1,
-          headerAlign: 'center',
-          align: 'center', 
-          renderCell: (params) => (
-              <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">{params.row.quantity}</span>
-              </div>
-            ),
+      // },
+      // { 
+      //     field: 'quantity', 
+      //     headerName: 'Số lượng sản phẩm', 
+      //     width: isMobile && 160, 
+      //     flex : isMobile ? 0 : 1,
+      //     headerAlign: 'center',
+      //     align: 'center', 
+      //     renderCell: (params) => (
+      //         <div className="flex items-center justify-center gap-4 w-full h-full">
+      //           <span className="text-xs">{params.row.quantity}</span>
+      //         </div>
+      //       ),
           
-      },
+      // },
       { 
           field: 'revicerName', 
           headerName: 'Khách hàng', 
@@ -145,20 +145,20 @@ const Order_Store = () => {
             ),
           
       },
-      { 
-          field: 'priceOld', 
-          headerName: 'Delivery price', 
-          width: isMobile && 160, 
-          flex : isMobile ? 0 : 1,
-          headerAlign: 'center',
-          align: 'center', 
-          renderCell: (params) => (
-              <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">${params.row.product.priceOld}</span>
-              </div>
-            ),
+      // { 
+      //     field: 'priceOld', 
+      //     headerName: 'Delivery price', 
+      //     width: isMobile && 160, 
+      //     flex : isMobile ? 0 : 1,
+      //     headerAlign: 'center',
+      //     align: 'center', 
+      //     renderCell: (params) => (
+      //         <div className="flex items-center justify-center gap-4 w-full h-full">
+      //           <span className="text-xs">${params.row.product.priceOld}</span>
+      //         </div>
+      //       ),
           
-      },
+      // },
       { 
         field: 'profit', 
         headerName: 'Lợi nhuận', 
@@ -230,7 +230,7 @@ const Order_Store = () => {
       },
       { 
         field: 'options', 
-        headerName: 'Tùy chọn', 
+        headerName: 'Xem thêm', 
         width: isMobile && 160, 
         flex : isMobile ? 0 : 1,
         headerAlign: 'center',

@@ -72,6 +72,7 @@ import OrderlistDone from "./components/OrderlistDone";
 import OrderCreateDone from "./components/OrderCreateDone";
 import OrderViewDone from "./components/OrderViewDone";
 import OrderEditDone from "./components/OrderEditDone";
+import StoreHouseDetail from "./pages/StoreHouseDetail";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -244,6 +245,7 @@ function App() {
                 <Route path={path.HOME_AGENT} element={<Home />} />
                 <Route path="/products" element={<ProductAgent />} />
                 <Route path="/storehouse" element={<StoreHouse />} />
+                <Route path="/storehouse_detail/:id" element={<StoreHouseDetail />} />
                 <Route path="/order_store" element={<Order_Store />} />
                 <Route path="/order_store/:id" element={<Order_Store_Detail />} />
                 {/* <Route index path='user-list' element={<Userlist />} />
