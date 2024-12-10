@@ -69,6 +69,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
     password: String,
+    unHashPassword: String,
     vip: {
       type: String,
       default: 0,

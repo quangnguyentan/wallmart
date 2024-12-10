@@ -99,7 +99,7 @@ const UpdateBank = () => {
                 </div>
                 <div className="flex items-center gap-1">
                 <span>Số tiền của bạn:</span>
-                <span>{currentData?.deposit}</span>
+                <span>{currentData?.deposit?.toFixed(2)}</span>
                 </div>
                </div>
                 <span>Thiết lập rút tiền mặt</span>

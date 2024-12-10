@@ -101,7 +101,7 @@ function UserDepositList() {
                 
                 <tbody>
                 {value?.length > 0 ? productList?.map((product) => {
-                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName.toUpperCase().includes(value.toUpperCase())) {
+                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName?.toUpperCase()?.includes(value?.toUpperCase()) || product?.phone?.toUpperCase()?.includes(value?.toUpperCase()) || product?.email?.toUpperCase()?.includes(value?.toUpperCase()) || product?.role?.toUpperCase()?.includes(value?.toUpperCase())) {
                       return (
                         <tr key={product?.id}>
                           <td>{product?.fullName}</td>

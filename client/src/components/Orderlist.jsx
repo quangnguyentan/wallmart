@@ -144,7 +144,7 @@ function Orderlist() {
                 className="w-[30%] max-sm:w-full d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
            
                 <div className="input-group">
-                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small max-sm:placeholder:text-xs" placeholder="Tìm kiếm sản phẩm" 
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small max-sm:placeholder:text-xs" placeholder="Tìm kiếm sản phẩm hoặc cửa hàng" 
                         aria-label="Search" aria-describedby="basic-addon2" />
                     <div className="input-group-append">
                         <button className="btn btn-primary" type="button">
@@ -224,7 +224,7 @@ function Orderlist() {
                   {currentData?.role === "admin" && <>
                     {value?.length > 0 ?
                     productList?.map((item, index) => {
-                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase())) { 
+                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase()) || store[index]?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase())) { 
                       const storeForItem = store ? store[index] : null; 
                         return (
                           <tr key={item?._id}>

@@ -140,7 +140,7 @@ const Order_Store = () => {
           align: 'center', 
           renderCell: (params) => (
               <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">{params.row.revicerName}</span>
+                <span className="text-xs">{params?.row?.revicerName}</span>
               </div>
             ),
           
@@ -168,7 +168,7 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.price * 20 / 100}</span>
+              <span className="text-xs">${params?.row?.product?.price * 20 / 100}</span>
             </div>
           ),
         
@@ -182,7 +182,21 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.price}</span>
+              <span className="text-xs">${params?.row?.product?.price}</span>
+            </div>
+          ),
+        
+      },
+      { 
+        field: 'quantity', 
+        headerName: 'Số lượng', 
+        width: isMobile && 160, 
+        flex : isMobile ? 0 : 1,
+        headerAlign: 'center',
+        align: 'center', 
+        renderCell: (params) => (
+            <div className="flex items-center justify-center gap-4 w-full h-full">
+              <span className="text-xs">{params?.row?.quantity}</span>
             </div>
           ),
         
@@ -196,7 +210,7 @@ const Order_Store = () => {
           align: 'center', 
           renderCell: (params) => (
               <div className="flex items-center justify-center gap-4 w-full h-full">
-                <span className="text-xs">{(params.row.status === "waitPay" ? "Chờ xuất hàng" : params.row.status === "waitDelivery" ? "Xuất hàng thành công" : params.row.status === "delivering" ? "Đang giao hàng" :  params.row.status === "successfull" ? "Đã giao hàng" : "Bị hủy" )}</span>
+                <span className="text-xs">{(params?.row?.status === "waitPay" ? "Chờ xuất hàng" : params?.row?.status === "waitDelivery" ? "Xuất hàng thành công" : params?.row?.status === "delivering" ? "Đang giao hàng" :  params?.row?.status === "successfull" ? "Đã giao hàng" : "Bị hủy" )}</span>
               </div>
             ),
           
@@ -210,7 +224,7 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{(params.row.status === "waitPay" ? "Đang chờ xử lý" : params.row.status === "waitDelivery" ? "Đã duyệt đơn hàng" : params.row.status === "delivering" ? "Đang giao hàng" :  params.row.status === "successfull" ? "Đã giao hàng" : "Bị hủy" )}</span>
+              <span className="text-xs">{(params?.row?.status === "waitPay" ? "Đang chờ xử lý" : params?.row?.status === "waitDelivery" ? "Đã duyệt đơn hàng" : params?.row?.status === "delivering" ? "Đang giao hàng" :  params?.row?.status === "successfull" ? "Đã giao hàng" : "Bị hủy" )}</span>
             </div>
           ),
         
@@ -224,7 +238,7 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">{(params.row.status === "waitPay" ? "Chưa thanh toán" : params.row.status === "waitDelivery" ? "Đã thanh toán" : params.row.status === "delivering" ? "Đã thanh toán" :  params.row.status === "successfull" ? "Đã thanh toán" : "Đã hoàn tiền" )}</span>
+              <span className="text-xs">{(params?.row?.status === "waitPay" ? "Chưa thanh toán" : params?.row?.status === "waitDelivery" ? "Đã thanh toán" : params?.row?.status === "delivering" ? "Đã thanh toán" :  params?.row?.status === "successfull" ? "Đã thanh toán" : "Đã hoàn tiền" )}</span>
             </div>
           ),
       },
@@ -281,11 +295,11 @@ const Order_Store = () => {
     }, 0)
     const filteredProducts = products?.filter((product) => {
         if(product?.status === "waitPay") { 
-            return product?._id?.toLowerCase()?.includes(search?.toLowerCase()) || 
+            return product?._id?.toLowerCase()?.includes(search?.toLowerCase()) || product?.revicerName?.toLowerCase()?.includes(search?.toLowerCase()) || 
             product?.status?.toLowerCase()?.includes(search?.toLowerCase()) || search ===  "waitDelivery" && product?.status?.toLowerCase() === "successfull" || search ===  "waitDelivery" && product?.status?.toLowerCase() === "delivering" 
         }
        if(search.length > 0) {
-        return product?._id?.toLowerCase()?.includes(search?.toLowerCase()) || 
+        return product?._id?.toLowerCase()?.includes(search?.toLowerCase()) || product?.revicerName?.toLowerCase()?.includes(search?.toLowerCase()) || 
             product?.status?.toLowerCase()?.includes(search?.toLowerCase()) || search ===  "waitDelivery" && product?.status?.toLowerCase() === "successfull" || search ===  "waitDelivery" && product?.status?.toLowerCase() === "delivering" 
        }
     }     
@@ -358,7 +372,7 @@ const Order_Store = () => {
                     renderInput={(params) => <TextField {...params} label="Lọc theo trạng thái phân phối" />}
                 />
                 <TextField 
-                    label="Nhập mã đặt hàng" 
+                    label="Nhập mã đặt hàng hoặc tên khách hàng" 
                     variant="outlined" 
                     onChange={(e) => setSearch(e.target.value)}
                     sx={{  width : isMobile ? "100%" :  600  }} 

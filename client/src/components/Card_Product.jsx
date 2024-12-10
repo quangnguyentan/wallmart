@@ -87,7 +87,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
     const filteredProducts = allProduct.filter(
       (item) => !category || item?.category === category
     );
-    const productCount = 30; // Mỗi category cần 30 sản phẩm
+    const productCount = 10; // Mỗi category cần 30 sản phẩm
 
     // Nhân bản sản phẩm sao cho có đủ 30 sản phẩm cho mỗi category
     let repeatedProducts = [];
@@ -101,6 +101,9 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
     // Xáo trộn ngẫu nhiên các sản phẩm
     return shuffleRandomly(repeatedProducts).slice(0, productCount); // Lấy chính xác 30 sản phẩm
   };
+  const filteredProducts = allProduct &&  allProduct?.filter(
+    (item) => !category || item?.category === category
+  );
   useEffect(() => {
     scrollToTop()
    
@@ -231,7 +234,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
             return null;
           })}
         </React.Fragment> */}
-    { generateProducts().map((product) => (
+    {filteredProducts?.map((product) => (
             <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">
               <Link to={`/detail-product/${product?._id}`}>
                 <img

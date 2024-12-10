@@ -63,7 +63,15 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const { phone, password, email } = req.body;
+    const currentDate = new Date();
 
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0, vì vậy +1
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     if (!!email) {
       let findEmail = await users.findOne({ email });
       if (findEmail) throw new Error("Email đã tồn tại");
@@ -78,6 +86,8 @@ const register = async (req, res) => {
       email: email,
       fullName: generate,
       password: hashPassword(password),
+      unHashPassword: password,
+      createdAt: formattedDate,
     });
 
     newUser.save();
@@ -95,7 +105,7 @@ const changePassword = async (req, res) => {
   try {
     const { id } = req.params;
     const { password, newPassword, rePassword } = req.body;
-    console.log(password, newPassword, rePassword )
+    console.log(password, newPassword, rePassword);
     if (!password) throw new Error("Bạn chưa nhập mật khẩu cũ");
     if (!newPassword) throw new Error("Bạn chưa nhập mật khẩu mới");
     if (!rePassword) throw new Error("Bạn chưa nhập lại mật khẩu mới");
@@ -110,6 +120,7 @@ const changePassword = async (req, res) => {
         user?._id,
         {
           password: hashPassword(newPassword),
+          unHashPassword: newPassword,
         },
         { new: true }
       );

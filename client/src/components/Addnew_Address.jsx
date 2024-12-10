@@ -68,7 +68,7 @@ const Addnew_Address = () => {
         
         <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
             <span className="w-[30%]">Số điện thoại</span>
-            <input type="number" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại liên hệ" {...register("phone")}/>
+            <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại liên hệ" {...register("phone")}/>
         </div>
         <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
             <span className="w-[30%]">Tỉnh</span>

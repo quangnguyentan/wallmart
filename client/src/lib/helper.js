@@ -81,7 +81,16 @@ import vong_tay_tram_huong from "@/assets/vong_tay_tram_huong.jpg";
 import dong_ho_do from "@/assets/dong_ho_do.jpg";
 import dong_ho_sang_trong from "@/assets/dong_ho_sang_trong.jpg";
 import dong_ho_treo_tuong from "@/assets/dong_ho_treo_tuong.jpg";
-
+import bup_be_silicon_mo_phong from "@/assets/bup_be_silicon_mo_phong.jpg";
+import do_lot_goi_cam from "@/assets/do_lot_goi_cam.jpg";
+import thiet_bi_am_thanh from "@/assets/thiet_bi_am_thanh.jpg";
+import tu_khu_trung from "@/assets/tu_khu_trung.jpg";
+import nhan_kim_cuong from "@/assets/nhan_kim_cuong.jpg";
+import nhan_vang from "@/assets/nhan_vang.jpg";
+import balenciaga from "@/assets/balenciaga.jpg";
+import prada from "@/assets/prada.jpg";
+import bao_tay from "@/assets/bao_tay.jpg";
+import khan_giay_uot from "@/assets/khan_giay_uot.jpg";
 export const listLeftCategories = [
   {
     id: 1,
@@ -664,28 +673,88 @@ export const listLeftCategories = [
       },
     ],
   },
-  // {
-  //   id: 22,
-  //   name: "Đồ chơi tình dục (sản phẩm dành cho người lớn)",
-  // },
-  // {
-  //   id: 23,
-  //   name: "Nghành thiết bị điện",
-  // },
-  // {
-  //   id: 24,
-  //   name: "Trang sức thủ công",
-  // },
-  // {
-  //   id: 25,
-  //   name: "Túi hàng hiệu",
-  // },
+  {
+    id: 22,
+    name: "Đồ chơi tình dục (sản phẩm dành cho người lớn)",
+    category: [
+      {
+        id: 1,
+        name: "Đồ lót gợi cảm",
+        thumbnail: do_lot_goi_cam,
+      },
+      {
+        id: 2,
+        name: "Búp bê silicon mô phỏng",
+        thumbnail: bup_be_silicon_mo_phong,
+      },
+    ],
+  },
+  {
+    id: 23,
+    name: "Nghành thiết bị điện",
+    category: [
+      {
+        id: 1,
+        name: "Thiết bị âm thanh",
+        thumbnail: thiet_bi_am_thanh,
+      },
+      {
+        id: 2,
+        name: "Tủ khử trùng",
+        thumbnail: tu_khu_trung,
+      },
+    ],
+  },
+  {
+    id: 24,
+    name: "Trang sức thủ công",
+    category: [
+      {
+        id: 1,
+        name: "Nhẫn kim cương",
+        thumbnail: nhan_kim_cuong,
+      },
+      {
+        id: 2,
+        name: "Nhẫn vàng",
+        thumbnail: nhan_vang,
+      },
+    ],
+  },
+  {
+    id: 25,
+    name: "Túi hàng hiệu",
+    category: [
+      {
+        id: 1,
+        name: "Balenciaga",
+        thumbnail: balenciaga,
+      },
+      {
+        id: 2,
+        name: "Prada",
+        thumbnail: prada,
+      },
+    ],
+  },
   // {
   //   id: 26,
   //   name: "Giày nữ cao cấp",
   // },
-  // {
-  //   id: 27,
-  //   name: "Sản phẩm vệ sinh",
-  // },
+  {
+    id: 26,
+    name: "Sản phẩm vệ sinh",
+    category: [
+      {
+        id: 1,
+        name: "Bao tay",
+        thumbnail: bao_tay,
+      },
+      {
+        id: 2,
+        name: "Khăn giấy ướt",
+        thumbnail: khan_giay_uot,
+      },
+    ],
+  },
 ];

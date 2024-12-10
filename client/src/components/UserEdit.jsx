@@ -44,11 +44,10 @@ function UserEdit() {
     setValue,
   } = useForm();
   const createProduct = async (data) => {
-    console.log(data?.password && data?.password)
     try {
       const formData = new FormData(); 
       formData.append("fullName", data?.title); 
-      formData.append("images", postMultipleFile?.length > 0  ? postMultipleFile : productList?.avatar); 
+      formData.append("images",  productList?.avatar ? productList?.avatar : postMultipleFile); 
       formData.append("role", values ? values : productList?.role); 
       formData.append("deposit", data?.price); 
       formData.append("creditCartOfBank", data?.creditCartOfBank); 
@@ -113,11 +112,11 @@ function UserEdit() {
               <p className="text-red-500 text-xs px-2">{errors.title.message}</p>
             )}
         </div>
-        {/* <div  className='flex gap-4 items-center  px-8 w-full'>
+        <div  className='flex gap-4 items-center  px-8 w-full'>
         <label htmlFor="photo">Ảnh người dùng:       </label>
-        <input type="file" title='Chọn ảnh' className=' cursor-pointer' id='photo'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
-        {postMultipleFile.length === 0 &&  <img src={`${pathImage}/${productList?.avatar}`} className='w-8 h-8' alt="" />  }
-        </div> */}
+        <input type="file" title='Chọn ảnh' required={productList?.avatar?.length === 0} className=' cursor-pointer' id='photo'  onChange={(e) => setPostMultipleFile(e.target.files[0])} placeholder='Chọn ảnh' accept='image/*' />
+        {postMultipleFile?.length === 0 && productList?.avatar?.length > 0 &&  <img src={`${pathImage}/${productList?.avatar}`} className='w-8 h-8' alt="" />  }
+        </div>
        <div className='px-8 py-4'>
        <Autocomplete
             disablePortal

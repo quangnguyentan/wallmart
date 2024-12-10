@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import noCart from "@/assets/noCart.png";
 import { ChevronLeft } from "lucide-react";
 import moment from "moment";
-import { apiGetAllWithDraw } from "@/services/userService";
+import { apiGetAllWithDraw, apiGetMyWithDraw } from "@/services/userService";
 import { useMediaQuery } from "@mui/material";
 const WithDrawalHistory = () => {
   const [withDraw, setWithDraw] = useState([]);
@@ -11,7 +11,7 @@ const WithDrawalHistory = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const getWithDrawalHistory = async () => {
-    const data = await apiGetAllWithDraw();
+    const data = await apiGetMyWithDraw();
     if (data.success) setWithDraw(data?.withDraw);
   };
   useEffect(() => {
