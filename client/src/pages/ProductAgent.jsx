@@ -264,7 +264,7 @@ const ProductAgent = () => {
                 }}
                 
                 pageSizeOptions={[5]}
-                checkboxSelection
+                // checkboxSelection
                 />}
                 
             </Box>

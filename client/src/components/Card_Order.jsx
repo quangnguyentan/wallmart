@@ -13,8 +13,17 @@ const Card_Order = ({hidden, type}) => {
   useEffect(() => {
     getMyOrder()
   },[])
+  const totalAmount = order &&  order?.reduce((total, order) => {
+    if (type === "wait" && order?.status === "waitPay") {
+      return total + (order?.product?.price || 0);
+    }
+    return total;
+  }, 0);
   return (
     <div className="flex flex-col gap-2">
+       {type === "wait" && <div className="flex justify-end font-semibold text-lg px-4 text-red-500">
+            <span>Tổng tiền: ${totalAmount}</span>
+         </div>}
       {order && order?.map((ord) => (
         <>
         {type === "all" &&  <>
@@ -45,10 +54,14 @@ const Card_Order = ({hidden, type}) => {
         </div>
     </div>}</>}
       {type === "wait" && ord?.status === "waitPay" &&  <>
+      
       {ord?.product && <div className="px-2 bg-white flex flex-col gap-2 py-2 cursor-pointer" key={ord?._id} onClick={() => navigate(`/order_store/${ord?._id}`)}>
-      <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs">
-          <span>Mã đơn hàng:</span>
-          <span>{ord?._id}</span>
+      <div className="flex items-center gap-2 text-balance font-medium text-gray-800 max-sm:text-xs ">
+         <div>
+            <span>Mã đơn hàng:</span>
+            <span>{ord?._id}</span>
+         </div>
+        
       </div>
       <h3 className="text-gray-600 text-lg max-sm:text-xs">{ord?.store?.inforByStore?.nameStore}</h3>
       <div className="flex justify-between gap-3 max-sm:text-xs">

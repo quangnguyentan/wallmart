@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import noCart from "@/assets/noCart.png";
 import { ChevronLeft } from "lucide-react";
 import moment from "moment";
-import { apiGetAllDeposit, apiGetAllWithDraw } from "@/services/userService";
+import { apiGetAllDeposit, apiGetAllWithDraw, apiGetMyDeposit } from "@/services/userService";
 import { useMediaQuery } from "@mui/material";
 const DepositHistory = () => {
   const [withDraw, setWithDraw] = useState([]);
@@ -11,8 +11,7 @@ const DepositHistory = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const getWithDrawalHistory = async () => {
-    const data = await apiGetAllDeposit();
-    console.log(data)
+    const data = await apiGetMyDeposit();
     if (data.success) setWithDraw(data?.deposit);
   };
   useEffect(() => {

@@ -70,7 +70,7 @@ function StoreList() {
                 className="d-none w-[30%] d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
            
                 <div className="input-group">
-                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm tên cửa hàng" 
+                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm tên hoặc ngành hoặc tên người tạo cửa hàng" 
                         aria-label="Search" aria-describedby="basic-addon2" />
                     <div className="input-group-append">
                         <button className="btn btn-primary" type="button">
@@ -127,7 +127,7 @@ function StoreList() {
                    }
                   })} */}
                   {value?.length > 0 ? productList?.map((product, index) => {
-                     if(typeof product?.inforByStore?.nameStore === "string" && typeof value === "string" && product?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase())) {
+                     if(typeof product?.inforByStore?.nameStore === "string" && typeof value === "string" && product?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase()) || product?.fullname?.toUpperCase().includes(value.toUpperCase()) || product?.industry?.toUpperCase().includes(value.toUpperCase()) || product?.phone?.toUpperCase().includes(value.toUpperCase()) || product?.address?.area?.toUpperCase().includes(value.toUpperCase())) {
                       if(product?.active === "access") {
                         return (
                           <tr key={product?.id}>

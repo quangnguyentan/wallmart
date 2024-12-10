@@ -145,7 +145,7 @@ function ProductList() {
                   {currentData?.role === "admin" && <>
                     {value?.length > 0 ?
                     productList?.map((product, index) => {
-                      if(typeof product?.title === "string" && typeof value === "string" && product?.title?.toUpperCase().includes(value.toUpperCase())) { 
+                      if(typeof product?.title === "string" && typeof value === "string" && product?.title?.toUpperCase().includes(value.toUpperCase()) || product?.industry?.toUpperCase().includes(value.toUpperCase()) || product?.category?.toUpperCase().includes(value.toUpperCase())) { 
                       return (
                         <tr key={product?.id} className="max-sm:text-xs">
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words ">{index +  1}</td>

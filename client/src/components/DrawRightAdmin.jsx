@@ -64,7 +64,7 @@ export default function DrawRightAdmin({ productItem, setProductItem }) {
     const res  = await apiOrderPaymentBot({productsInCart : isChecked, selectedAddress: selectAddress || address[0] , usersList: ids , storeId : userId})
     if(res?.success) {
       toast.success("Đặt đơn cho cửa hàng thành công")
-      navigate("/order-list")
+      navigate("/store-list")
     }
     if(res?.err === 1) {
       toast.error(res?.msg)
@@ -126,6 +126,10 @@ export default function DrawRightAdmin({ productItem, setProductItem }) {
   }
  
   const onChangeQuantity = (product, type) => {
+    console.log(ids)
+    if(product && type) {
+      setIsChecked([]) && setIsCheckedAll(true)
+    }
     const updatedProducts = products.map((item) => {
       if (item._id === product._id) {
         if (item.quantityInit >= item.product?.inventory) {
@@ -144,7 +148,7 @@ export default function DrawRightAdmin({ productItem, setProductItem }) {
       }
       return item;
     });
-  
+    
     setProducts(updatedProducts); // Cập nhật state để giao diện re-render
   };
  
@@ -217,7 +221,7 @@ export default function DrawRightAdmin({ productItem, setProductItem }) {
   useEffect(() => {
     fetchGetByUserId(userId) && getUsers()
   },[userId])
-console.log(isChecked)
+
   const DrawerList = (
    <>
      {products && productItem &&  <Box className="w-[750px] max-sm:w-[250px]"  role="presentation" onClick={(e) => {
@@ -384,7 +388,7 @@ console.log(isChecked)
                             
                             <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
                                 <span className="w-[30%]">Số điện thoại</span>
-                                <input type="number" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại liên hệ" {...register("phone")}/>
+                                <input type="text" className="w-[70%] py-2 outline-none bg-transparent" placeholder="Vui lòng nhập số điện thoại liên hệ" {...register("phone")}/>
                             </div>
                             <div className="flex items-center px-4 py-4 border-b gap-2 max-sm:text-xs">
                                 <span className="w-[30%]">Tỉnh</span>

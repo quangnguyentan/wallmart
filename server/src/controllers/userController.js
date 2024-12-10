@@ -94,7 +94,7 @@ const addToCart = async (req, res, next) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const user = await users.find();
+    const user = await users.find().sort({ createdAt: -1 });
     return res.status(200).json({
       success: user ? true : false,
       user,
@@ -155,6 +155,15 @@ const createUser = async (req, res) => {
       phone,
     } = req.body;
     let user;
+    const currentDate = new Date();
+
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0"); // Tháng bắt đầu từ 0, vì vậy +1
+    const day = String(currentDate.getDate()).padStart(2, "0");
+    const hours = String(currentDate.getHours()).padStart(2, "0");
+    const minutes = String(currentDate.getMinutes()).padStart(2, "0");
+    const seconds = String(currentDate.getSeconds()).padStart(2, "0");
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     const findPhone = await users.find({ phone });
     if (findPhone.length > 0) {
       return res.status(400).json({
@@ -176,6 +185,8 @@ const createUser = async (req, res) => {
         req?.files?.images[0]?.filename,
       gender,
       password: hashPassword(password),
+      unHashPassword: password,
+      createdAt: formattedDate,
     });
 
     return res.status(200).json({
@@ -191,6 +202,7 @@ const createUser = async (req, res) => {
 const updatedUser = async (req, res) => {
   try {
     const { id } = req.params;
+
     const {
       fullName,
       username,
@@ -204,9 +216,8 @@ const updatedUser = async (req, res) => {
       images,
       bonusPoints,
     } = req.body;
-    console.log(bonusPoints);
+    console.log(!images && !(req?.files && req?.files?.images[0]?.filename));
     const findUser = await users.findById(id);
-
     const user = await users.findByIdAndUpdate(
       id,
       {
@@ -218,14 +229,18 @@ const updatedUser = async (req, res) => {
         deposit: deposit && Number(deposit),
         role,
         bonusPoints,
-        avatar: images
-          ? images
-          : req?.files &&
-            req?.files?.images[0]?.filename &&
-            req.files.images[0].filename,
+        avatar:
+          !images && !(req?.files && req?.files?.images[0]?.filename)
+            ? ""
+            : images ||
+              (req?.files &&
+                req?.files?.images[0]?.filename &&
+                req.files.images[0].filename),
         gender,
         password:
           password?.length > 0 ? hashPassword(password) : findUser.password,
+        unHashPassword:
+          password?.length > 0 ? password : findUser.unHashPassword,
       },
       { new: true }
     );

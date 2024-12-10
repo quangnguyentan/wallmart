@@ -323,7 +323,7 @@ const onChangeValue = (e) => {
                    {currentData?.role === "admin" && <>
                     {value?.length > 0 ?
                     productList?.map((item, index) => {
-                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase())) { 
+                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase()) || store[index]?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase()) ) { 
                       const storeForItem = store ? store[index] : null; 
                       return (
                         <tr key={item?._id}>

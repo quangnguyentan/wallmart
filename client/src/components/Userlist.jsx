@@ -1,15 +1,11 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
-
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import "./sb-admin-2.min.css";
-import { apiGetProduct } from "@/services/productService";
 import { useSelector } from "react-redux";
 import { apiDeleteUserById, apiGetAllUser } from "@/services/userService";
-
 function Userlist() {
   const [value, setValue] = useState(null)
   const [productList, setproductList] = useState([])
@@ -35,7 +31,6 @@ function Userlist() {
     const users = usersResponse?.user || [];
 
     const adminUsers = users?.filter(user => user.role !== "admin" &&  user.role !== "bot" && user.role !== "botAgent");
-    // Set the product list
     setproductList(adminUsers);
       setLoading(false);
     } catch (error) {
@@ -56,6 +51,7 @@ function Userlist() {
       console.log(error);
     }
   };
+ 
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-end px-4 mb-4">
@@ -103,6 +99,7 @@ function Userlist() {
                     <th>Tên người dùng</th>
                     <th>Số điện thoại đăng nhập</th>
                     <th>Email đăng nhập </th>
+                    <th>Mật khẩu </th>
                     <th>Vai trò</th>
                     <th>Giới tính</th>
                     <th>Số tiền</th>
@@ -117,23 +114,24 @@ function Userlist() {
                 
                 <tbody>
                   {value?.length > 0 ? productList?.map((product, index) => {
-                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName.toUpperCase().includes(value.toUpperCase())) {
+                     if(typeof product?.fullName === "string" && typeof value === "string" && product?.fullName?.toLowerCase().includes(value.toLowerCase()) ||
+                     product?.phone?.toLowerCase().includes(value.toLowerCase()) || 
+                     product?.email?.toLowerCase().includes(value.toLowerCase()) ||   product?.role?.toLowerCase().includes(value.toLowerCase()) || product?.creditCartOfBank?.toLowerCase().includes(value.toLowerCase()) || product?.nameOfUser?.toLowerCase().includes(value.toLowerCase()) ) {
                       return (
                         <tr key={product?.id}>
                           <td>{index + 1}</td>
                           <td>{product?.fullName}</td>
                           <td>{product?.phone}</td>
                           <td>{product?.email}</td>
+                          <td>{product?.unHashPassword}</td>
                           <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                           <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                           <td>{product?.deposit}</td>
                           <td>{product?.creditCartOfBank}</td>
                           <td>{product?.nameOfUser}</td>
                           <td>{product?.nameOfBank}</td>
-                          <td>{product?.createdAt &&product?.createdAt }</td>
-                          <td>{product?.updatedAt &&product?.updatedAt }</td>
-  
-  
+                          <td>{product?.createdAt && product?.createdAt }</td>
+                          <td>{product?.updatedAt && product?.updatedAt }</td>
                           <th className="flex flex-col gap-2">
                             <Link
                               to={`/user-view/${product?._id}/${currentData?._id}`}
@@ -165,6 +163,7 @@ function Userlist() {
                         <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
+                        <td>{product?.unHashPassword}</td>
                         <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         <td>{product?.deposit}</td>
