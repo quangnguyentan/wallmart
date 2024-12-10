@@ -65,11 +65,11 @@ function ProductList() {
   let handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure do you want to delete the data?"
+        "Bạn có chắc muốn xóa sản phẩm này không?"
       );
       if (confirmDelete) {
         await apiDeleteProductById(id)
-        getUsers();
+        getUsers()
       }
     } catch (error) {
       console.log(error);

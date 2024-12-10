@@ -41,7 +41,7 @@ function Userlist() {
   let handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure do you want to delete the data?"
+        "Bạn có chắc muốn xóa người dùng này không?"
       );
       if (confirmDelete) {
         await apiDeleteUserById(id)
