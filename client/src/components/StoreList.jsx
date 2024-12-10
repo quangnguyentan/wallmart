@@ -26,7 +26,6 @@ function StoreList() {
   let getUsers = async () => {
     try {
       const products = await apiGetStore()
-      console.log(products)
       setproductList(products);
       setLoading(false);
     } catch (error) {

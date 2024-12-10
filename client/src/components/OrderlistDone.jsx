@@ -108,11 +108,12 @@ function OrderlistDone() {
   let handleDelete = async (id) => {
     try {
       window.confirm(
-        "Are you sure do you want to delete the data?"
+        "Bạn có chắc muốn xóa đơn hàng này không?"
       );
         await apiDeleteOrderById(id)
+        getUsers()
         toast.success("Xóa đơn hàng thành công")
-        navigate("/product-list")
+        navigate("/order-list-done")
     } catch (error) {
       console.log(error);
     }

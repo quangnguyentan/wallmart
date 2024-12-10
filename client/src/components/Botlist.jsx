@@ -30,7 +30,7 @@ function Botlist() {
   let handleDelete = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure do you want to delete the data?"
+        "Bạn có chắc muốn xóa bot này không?"
       );
       if (confirmDelete) {
         await apiDeleteUserById(id)
@@ -40,7 +40,6 @@ function Botlist() {
       console.log(error);
     }
   };
-  console.log(productList)
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-end mb-4">

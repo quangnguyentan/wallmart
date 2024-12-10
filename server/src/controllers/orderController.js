@@ -67,8 +67,7 @@ const updateOrder = async (req, res, next) => {
                   Number(findOrder.quantity),
               deposit:
                 findUser?.deposit +
-                ((Number(findProduct?.price) * 20) / 100) *
-                  Number(findOrder.quantity),
+                Number(findProduct?.price) * Number(findOrder.quantity),
             },
             { new: true }
           );
