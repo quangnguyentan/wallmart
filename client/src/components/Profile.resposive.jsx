@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { getCurrent } from "@/stores/actions/userAction";
 import { apiGetProduct } from "@/services/productService";
 import { apiGetMyStore, apiGetStore } from "@/services/storeService";
-import { pathImage } from "@/lib/helper";
+import { linkCSKH, pathImage } from "@/lib/helper";
 import { apiGetOrderById } from "@/services/orderServer";
 const Profile = () => {
   const [products, setProducts] = useState([])
@@ -258,10 +258,11 @@ const Profile = () => {
             <img src={options} alt="options" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Đánh giá của tôi</span>
           </div>
-          <div className="flex flex-col items-center gap-3 cursor-pointer"> 
+          <Link to={linkCSKH} target="_bank"  referrerPolicy="no-referrer" className="cursor-pointer">
+          <div className="flex flex-col items-center gap-3 cursor-pointer">
             <img src={cskh} alt="cskh" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">CSKH</span>
-          </div>
+          </div></Link>
           <div className="flex flex-col items-center gap-3 cursor-pointer"> 
             <img src={dangerous} alt="dangerous" className="h-11 w-11 max-sm:w-7 max-sm:h-7" />
             <span className="line-clamp-1">Khiếu nại</span>
