@@ -204,7 +204,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
           <span className="text-[11px] px-1 text-white ">Chọn hàng tốt</span>
         </div>
       </div> }
-      <div className="grid grid-cols-2 gap-2 px-4">
+      <div className="grid grid-cols-2 gap-2 px-4 h-screen overflow-y-scroll tabs-list">
  
         {/* <React.Fragment >
           {location.pathname === "/list-product" &&  allProduct?.length > 0 && allProduct?.map((item) => {
@@ -261,7 +261,7 @@ const Card_Product = ({ profile, hidden, products,agent, stores, listProduct, ca
     
  
       </div>
-      <div className="grid grid-cols-2 gap-2 px-4">
+      <div className="grid grid-cols-2 gap-2 px-4 overflow-y-scroll tabs-list">
       {products && products?.map((product) => (
     product  && (
       <div key={product._id} className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 relative">

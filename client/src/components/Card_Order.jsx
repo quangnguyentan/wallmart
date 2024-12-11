@@ -15,7 +15,7 @@ const Card_Order = ({hidden, type}) => {
   },[])
   const totalAmount = order &&  order?.reduce((total, order) => {
     if (type === "wait" && order?.status === "waitPay") {
-      return total + (order?.product?.price || 0);
+      return total + (order?.product?.price * order?.quantity || 0);
     }
     return total;
   }, 0);

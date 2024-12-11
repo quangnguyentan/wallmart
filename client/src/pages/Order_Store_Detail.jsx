@@ -111,7 +111,7 @@ const Order_Store_Detail = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params.row.product.price}</span>
+              <span className="text-xs">${params.row.product.price * params.row.quantity}</span>
             </div>
           ),
         
@@ -129,7 +129,7 @@ const Order_Store_Detail = () => {
         setOpen(false);
       };
       const handlePaymentStore = async () => {
-        const res = await apiOrderPaymentStore({ orderId : [products[0]?._id], totalPayment : products[0]?.product?.price, profitPayment : products[0]?.product?.price - products[0]?.product?.priceOld })
+        const res = await apiOrderPaymentStore({ orderId : [products[0]?._id], totalPayment : products[0]?.product?.price * products[0]?.quantity, profitPayment : products[0]?.product?.price - products[0]?.product?.priceOld })
         if(res?.success){
             toast.success("Thanh toán thành công")
             navigate("/order_store")
@@ -235,10 +235,10 @@ const Order_Store_Detail = () => {
                 
                   <div className="px-20 max-sm:px-0 flex-col gap-4 flex ">
                        <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${products[0]?.product?.price}</span>
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${products[0]?.product?.price * products[0]?.quantity}</span>
                         </div>
                         <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${products[0]?.product?.price * 20 / 100}</span>
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${products[0]?.product?.price * products[0]?.quantity  * 20 / 100}</span>
                        </div>
                     </div>
               </DialogContentText>
@@ -262,12 +262,14 @@ const Order_Store_Detail = () => {
                     style={{ width: 50, height: 50, objectFit: 'cover' }}
                   />
                   <div className="ml-4">
-                    <h4 className="font-semibold max-sm:text-xs line-clamp-2">{product?.product?.title}</h4>
-                    <p className="text-sm text-gray-600">Thể loại: {product?.product?.category}</p>
-                    <p className="text-sm text-gray-600">Số lượng: {product?.quantity}</p>
-                    <p className="text-sm text-gray-600">Giá: ${product?.product?.price}</p>
-                    <p className="text-sm text-gray-600">Ngày: {moment(product?.createdAt).format('L')}</p>
+                    <div className="py-2 border-b-[1px]">
+                      <h4 className="font-semibold max-sm:text-xs line-clamp-2">{product?.product?.title}</h4>
+                      <p className="text-sm text-gray-600">Thể loại: {product?.product?.category}</p> <p className="text-sm text-gray-600">Ngày: {moment(product?.createdAt).format('L')}</p>
+                      <p className="text-sm text-gray-600">Số lượng: {product?.quantity}</p>
+                      <p className="text-sm text-gray-600">Giá: ${product?.product?.price}</p>
+                    </div>
 
+                    <p className="text-sm text-black font-semibold py-1">Toàn bộ: ${product?.product?.price * product?.quantity}</p>
                   </div>
                 </div>
               ))}
