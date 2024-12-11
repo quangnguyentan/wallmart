@@ -9,10 +9,11 @@ import ArrowUpwardOutlinedIcon from "@mui/icons-material/ArrowUpwardOutlined";
 import { useState, useEffect } from "react";
 import Card_Product from "./Card_Product";
 import { apiGetProduct } from "@/services/productService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiGetMyStore, apiGetStore, apiGetstoreById } from "@/services/storeService";
 import { getCurrent } from "@/stores/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import { linkCSKH } from "@/lib/helper";
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
@@ -111,12 +112,14 @@ const HomePage = () => {
             Điểm tích lũy
           </span>
         </div>
+        <Link to={linkCSKH} target="_bank"  referrerPolicy="no-referrer" className="cursor-pointer">
         <div className="flex flex-col items-center justify-center max-sm:gap-1 gap-2">
           <div className="w-16 max-sm:w-10 max-sm:h-10 h-16 border flex items-center justify-center rounded-2xl cursor-pointer">
             <img src={cskh} alt="cskh" className="w-12 h-12 max-sm:h-7 max-sm:w-7" />
           </div>
           <span className="text-[17px] max-sm:text-xs font-normal">CSKH</span>
         </div>
+        </Link>
       </div>
       <div>
         <img src={banner_home} alt="banner_home" />

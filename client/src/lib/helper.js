@@ -1,5 +1,7 @@
 // export const pathImage = "http://localhost:8000/images";
 export const pathImage = "https://sv.wallmatt88.com/images";
+export const linkCSKH =
+  "https://tawk.to/chat/67598790af5bfec1dbda52db/1ieqrk2kp";
 import shoes from "@/assets/shoes.jpg";
 import clothes from "@/assets/clothes.jpg";
 import shoes_casual from "@/assets/shoes_casual.jpg";
