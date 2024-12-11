@@ -1,5 +1,5 @@
 import noCart from "@/assets/noCart.png"
-import { listLeftCategories, pathImage } from "@/lib/helper"
+import { listCategory, listLeftCategories, pathImage } from "@/lib/helper"
 import hr from "@/assets/hr.png"
 import { getCurrent } from "@/stores/actions/userAction"
 import { useMediaQuery } from "@mui/material"
@@ -46,7 +46,7 @@ const RegisterStore = () => {
 
   const getCategoriesForSelectedName = (selectedName) => {
     
-    const selectedCategoryData = listLeftCategories.find(item => item.name === selectedName);
+    const selectedCategoryData = listCategory.find(item => item.name === selectedName);
     return selectedCategoryData ? selectedCategoryData.category : [];
   };
 
@@ -127,7 +127,7 @@ const RegisterStore = () => {
      <div className="px-2">
       <Autocomplete
             disablePortal
-            options={listLeftCategories.map((option) => option.name)}
+            options={listCategory?.map((option) => option.name)}
             className="w-full h-[40px] outline-none"
             value={value}
             onChange={(event, newValue) => {

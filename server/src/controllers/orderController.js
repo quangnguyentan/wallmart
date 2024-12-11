@@ -40,6 +40,7 @@ const updateOrder = async (req, res, next) => {
   const { id } = req.params;
   const { stress, phone, province, houseNumber, city, revicerName, status } =
     req.body;
+  console.log(status);
   try {
     const findOrder = await Order.findById(id);
     if (findOrder) {
@@ -67,7 +68,10 @@ const updateOrder = async (req, res, next) => {
                   Number(findOrder.quantity),
               deposit:
                 findUser?.deposit +
-                Number(findProduct?.price) * Number(findOrder.quantity),
+                (Number(findProduct?.price) * Number(findOrder.quantity) +
+                  Number(findProduct?.price) *
+                    0.2 *
+                    Number(findOrder.quantity)),
             },
             { new: true }
           );

@@ -133,7 +133,7 @@ const Home = () => {
             <div className="bg-[#0277BD] rounded-lg flex items-center justify-between px-8 max-sm:px-4 h-40 max-sm:h-24"  >
                <div className="flex flex-col gap-2 text-white">
                 <span className="font-medium max-sm:text-[10px]">Tổng lợi nhuận</span>
-                <span className="text-3xl font-semibold max-sm:text-sm">${currentData?.profit || 0}</span>
+                <span className="text-3xl font-semibold max-sm:text-sm">${currentData?.profit?.toFixed(2) || 0}</span>
                </div>
                 {fileSvgStar}
             </div>
