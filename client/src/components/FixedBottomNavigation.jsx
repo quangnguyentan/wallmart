@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import HomePage from "./Home.responsive";
 import Profile from "./Profile.resposive";
-
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
@@ -14,9 +14,10 @@ import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import Classify from "./Classify";
 import Cart from "./Cart";
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 export default function FixedBottomNavigation() {
   const isMobile = useMediaQuery("(max-width:600px)");
-
+  const navigate = useNavigate()
   const messageExamples = [
     {
       page: <HomePage />,
@@ -25,13 +26,15 @@ export default function FixedBottomNavigation() {
       page: <Classify />,
     },
     {
-      page: <Cart />,
     },
     {
       page: <Profile />,
     },
   ];
   if (!localStorage.getItem("page")) {
+    localStorage.setItem("page", 0);
+  }
+  if(Number(localStorage.getItem("page")) === 2) {
     localStorage.setItem("page", 0);
   }
   const page = localStorage.getItem("page");
@@ -132,14 +135,15 @@ export default function FixedBottomNavigation() {
                   color: "black",
                 }}
               >
-                Giỏ hàng
+               Cửa hàng
               </span>
             }
             sx={{
               fontWeight: 600,
             }}
+            onClick={() => navigate("/home")}
             icon={
-              <ShoppingCartOutlinedIcon
+              <StorefrontIcon
                 sx={{
                   fontSize: `${isMobile ? "20px" : "30px"}`,
                   "&:focus": {

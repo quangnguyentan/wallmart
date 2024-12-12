@@ -397,20 +397,20 @@ const CreateNewStore = async (req, res, next) => {
       service,
       idYourself,
       emailYourself,
-      identification: {
-        front:
-          req?.files &&
-          req?.files?.front[0]?.filename &&
-          req.files?.front[0].filename,
-        backside:
-          req?.files &&
-          req?.files?.back[0]?.filename &&
-          req.files.back[0].filename,
-        yourFace:
-          req?.files &&
-          req?.files?.yourFace[0]?.filename &&
-          req.files.yourFace[0].filename,
-      },
+      // identification: {
+      //   front:
+      //     req?.files &&
+      //     req?.files?.front[0]?.filename &&
+      //     req.files?.front[0].filename,
+      //   backside:
+      //     req?.files &&
+      //     req?.files?.back[0]?.filename &&
+      //     req.files.back[0].filename,
+      //   yourFace:
+      //     req?.files &&
+      //     req?.files?.yourFace[0]?.filename &&
+      //     req.files.yourFace[0].filename,
+      // },
       inforByStore: {
         nameStore: nameStore,
         descriptionStore: descriptionStore,

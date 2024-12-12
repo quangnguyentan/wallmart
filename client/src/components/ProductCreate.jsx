@@ -185,8 +185,8 @@ function ProductCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Giá tiền bán hàng</label>
-        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền bán hàng lớn hơn giá tiền kho (Lợi nhuận sẽ tính bằng giá tiền bán hàng - giá kho)' {...register("price", {
+        <label htmlFor="photo">Giá bán</label>
+        <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá bán' {...register("price", {
                   required: "Giá tiền bán hàng là bắt buộc",
                   validate: (value) => {
                     if (value < 0 ) {
@@ -199,7 +199,7 @@ function ProductCreate() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Giá tiền kho</label>
+        <label htmlFor="photo">Giá kho</label>
         <input type="number" className='w-full py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập giá tiền kho' {...register("priceOld", {
                   required: "Giá tiền kho là bắt buộc",
                   validate: (value) => {

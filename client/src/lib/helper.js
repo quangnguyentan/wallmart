@@ -1,7 +1,7 @@
 // export const pathImage = "http://localhost:8000/images";
 export const pathImage = "https://sv.wallmatt88.com/images";
 export const linkCSKH =
-  "https://tawk.to/chat/67598790af5bfec1dbda52db/1ieqrk2kp";
+  "https://go.crisp.chat/chat/embed/?website_id=cb2c928a-d691-4e80-9022-a3a7588a2f51";
 import shoes from "@/assets/shoes.jpg";
 import clothes from "@/assets/clothes.jpg";
 import shoes_casual from "@/assets/shoes_casual.jpg";

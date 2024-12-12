@@ -8,7 +8,7 @@ const {
   deleteStore,
   GetProductByShop,
   addToCart,
-  processPayment
+  processPayment,
 } = require("../controllers/storeController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 const multer = require("multer");
@@ -42,9 +42,9 @@ router.post(
   [verifyToken],
   upload.fields([
     { name: "images", maxCount: 1 },
-    { name: "front", maxCount: 1 },
-    { name: "back", maxCount: 1 },
-    { name: "yourFace", maxCount: 1 },
+    // { name: "front", maxCount: 1 },
+    // { name: "back", maxCount: 1 },
+    // { name: "yourFace", maxCount: 1 },
   ]),
   CreateNewStore
 );

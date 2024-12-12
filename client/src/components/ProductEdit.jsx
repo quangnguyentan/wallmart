@@ -186,13 +186,13 @@ function ProductEdit() {
             )}
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Giá tiền sau khi giảm giá</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá tiền sau khi giảm giá (vd : 30000$)' {...register("price", )} />
+        <label htmlFor="photo">Giá bán</label>
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá bán' {...register("price", )} />
         
         </div>
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
-        <label htmlFor="photo">Giá tiền mặc định</label>
-        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá tiền mặc định (vd:50000$)' {...register("priceOld", {
+        <label htmlFor="photo">Giá kho</label>
+        <input type="number" className='w-full py-2 placeholder:px-2 rounded-lg shadow-sm bg-white outline-none px-2' placeholder='Nhập giá kho' {...register("priceOld", {
                   validate: (value) => {
                     if (value < 0 ) {
                       return "Vui lòng nhập số tiền lớn hơn hoặc bằng 0";
