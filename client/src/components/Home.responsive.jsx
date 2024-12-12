@@ -13,12 +13,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiGetMyStore, apiGetStore, apiGetstoreById } from "@/services/storeService";
 import { getCurrent } from "@/stores/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { linkCSKH } from "@/lib/helper";
+// import { linkCSKH } from "@/lib/helper";
 const HomePage = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
   const [stores, setStores] = useState([])
-  
+  const linkCSKH = "https://go.crisp.chat/chat/embed/?website_id=cb2c928a-d691-4e80-9022-a3a7588a2f51"
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch()
   const navigate = useNavigate()

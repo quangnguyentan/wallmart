@@ -73,9 +73,8 @@ const Profile = () => {
     <div className="w-full bg-gray-50 h-screen">
       <div className="bg-blue-600 opacity-80 w-full h-56 max-sm:h-36 flex items-center gap-2 px-2 justify-between   ">
         <div className="flex items-center gap-2">
-        
+        <Link to="/login" className="flex items-center gap-2">
           {currentData?.avatar ? <img className=" rounded-full w-20 h-20 max-sm:w-10 max-sm:h-10" src={`${pathImage}/${currentData?.avatar}`} alt="" /> :  <AccountCircleIcon sx={{ fontSize: `${isMobile ? "45px" : "80px"}` }} className="text-gray-300 cursor-pointer" />}
-      <Link to="/login" >
           {currentData && currentData?.role === "user" || currentData?.role === "agent" || currentData && currentData?.role === "bot" || currentData?.role === "botAgent" ? 
             <div className="flex flex-col gap-2">
               <span className="text-2xl text-white cursor-pointer hover:text-gray-200 max-sm:text-xs">{currentData && currentData?.fullName}</span>

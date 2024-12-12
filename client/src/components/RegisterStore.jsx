@@ -7,20 +7,13 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { replace, useLocation, useNavigate } from "react-router-dom"
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { apiAddToCart } from "@/services/userService"
 import toast from "react-hot-toast"
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import { apiCreateOrder, apiGetOrder, apiGetOrderById } from "@/services/orderServer"
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import Switch from '@mui/material/Switch';
+
 import { useForm } from "react-hook-form"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { apiCreatestore, apiGetMyStore } from "@/services/storeService"
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const RegisterStore = () => {
   const navigate = useNavigate()
   const {
@@ -58,7 +51,7 @@ const RegisterStore = () => {
     }
   };
   const createStore = async (data) => {
-    if(!imageStore || !fontId || !backId || !yourFace ){
+    if(!imageStore  ){
       toast.error("Vui lòng chọn đủ ảnh")
       return
     }
@@ -77,9 +70,9 @@ const RegisterStore = () => {
       formData.append("nameStore",  data?.nameStore); 
       formData.append("service", checked); 
       formData.append("descriptionStore", data?.descriptionStore); 
-      formData.append("front", fontId); 
-      formData.append("back", backId); 
-      formData.append("yourFace", yourFace); 
+      // formData.append("front", fontId); 
+      // formData.append("back", backId); 
+      // formData.append("yourFace", yourFace); 
       formData.append("emailYourself", data?.emailYourself); 
       formData.append("area", data?.area); 
       formData.append("street",  data?.street)
@@ -185,10 +178,10 @@ const RegisterStore = () => {
             <input type="text" className="w-full py-2 outline-none bg-transparent" placeholder="Vui lòng nhập email" {...register("emailYourself")} required/>
         </div>
      
-        <div className="w-full h-12 bg-[#eee] py-2">
+        {/* <div className="w-full h-12 bg-[#eee] py-2">
         <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Giấy tờ tùy thân</span>
-      </div> 
-     <div className="flex items-center gap-2 w-full justify-between px-8">
+      </div>  */}
+     {/* <div className="flex items-center gap-2 w-full justify-between px-8">
      <div className="w-[30%] flex flex-col gap-2 items-center max-sm:text-xs ">
           <AddOutlinedIcon sx={{ fontSize : `${isMobile ? "15px" : "35px"}` }}/>
           <label htmlFor="fileFront" className="text-center">{fontId?.name ? `${fontId?.name}` : "Mặt trước căn cước công dân"}</label>
@@ -206,7 +199,7 @@ const RegisterStore = () => {
           <label htmlFor="fileFace" aria-required className="text-center">{yourFace?.name ? `${yourFace?.name}` : "Ảnh chân dung"}</label>
           <input type="file"  accept="image/*" name="uploadfile" id="fileFace" style={{visibility:"hidden"}} onChange={(e) => (setYourFace(e.target.files[0]))}/>
       </div>
-     </div>
+     </div> */}
      <div className="w-full h-12 bg-[#eee] ">
         <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Thông tin chứng nhận</span>
       </div> 

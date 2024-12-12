@@ -1,29 +1,29 @@
-import product_test from "@/assets/product_test.jpg";
-import product_test1 from "@/assets/product_test1.jpg";
-import loading from "@/assets/loading.gif";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { listLeftCategories, pathImage } from "@/lib/helper";
-import { apiAddToCartByStore, apiGetMyStore, apiGetstoreById } from "@/services/storeService";
+import { pathImage } from "@/lib/helper";
+import {  apiGetstoreById } from "@/services/storeService";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { useMediaQuery } from "@mui/material";
-import DrawRight from "@/components/DrawRight";
 import DrawRightAdmin from "@/components/DrawRightAdmin";
-import { apiGetAllUser } from "@/services/userService";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 const BookProductFromStore = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
   const [stores, setStores] = useState(null)
-  const isMobile = useMediaQuery("(max-width:600px)");
   const [product, setProduct] = useState([])
   const { id, userId } = useParams()
-  
+  const [value, setValue] = useState(null)
   useEffect(() => {
     getProducts()
   }, []);
+  useEffect(() => {
+    if(value?.length > 0) {
+      getProducts();
+    }
+    }, [value]);
 
+    const onChangeValue = (e) => {
+        setValue(e.target.value)
+    }
   let getProducts = async () => {
     try {
       const products = await apiGetstoreById(id)
@@ -53,24 +53,24 @@ const BookProductFromStore = () => {
       toast.success("Đã thêm sản phẩm vào giỏ hàng");
     }
   };
-  const fetchAddToCart = async(product) => {
-   try {
-    const res = await apiAddToCartByStore({
-      quantity : 1,
-      product : product?._id,
-      status : "not_paid"
-    })
-    if(res?.success) {
-      getUsers()
-      toast.success("Thêm giỏ hàng thành công")
-    }else{
-      toast.error(res?.msg)
-    }
-   } catch (error) {
-    console.log(error)
-   }
+  // const fetchAddToCart = async(product) => {
+  //  try {
+  //   const res = await apiAddToCartByStore({
+  //     quantity : 1,
+  //     product : product?._id,
+  //     status : "not_paid"
+  //   })
+  //   if(res?.success) {
+  //     getUsers()
+  //     toast.success("Thêm giỏ hàng thành công")
+  //   }else{
+  //     toast.error(res?.msg)
+  //   }
+  //  } catch (error) {
+  //   console.log(error)
+  //  }
   
-  }
+  // }
 
   // Hàm điều khiển khi click vào sản phẩm
   
@@ -92,10 +92,85 @@ const BookProductFromStore = () => {
       <div className="w-full justify-end flex px-4 py-2">
       <DrawRightAdmin productItem={product} setProductItem={setProduct}   userId={userId}/>
       </div>
-      <div className="grid grid-cols-5 gap-2 px-4">
-      {stores?.cart &&
-        stores?.cart?.map((item) => (
-          item.status === "not_paid" ? (
+    <div className="flex flex-col gap-4">
+     <form
+                    className="d-none w-[30%] d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
+               
+                    <div className="input-group">
+                        <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small" placeholder="Tìm kiếm sản phẩm" 
+                            aria-label="Search" aria-describedby="basic-addon2" />
+                        <div className="input-group-append">
+                            <button className="btn btn-primary" type="button">
+                                <FontAwesomeIcon icon={faSearch} />
+                            </button>
+                        </div>
+                    </div>
+                </form>
+    <div className="grid grid-cols-5 gap-2 px-4">
+      {value?.length > 0 ? stores?.cart &&
+        stores?.cart?.map((item) => {
+          if(
+            (typeof item?.product?.title === "string" && 
+              typeof value === "string" &&
+              item?.product?.title.toLowerCase().includes(value.toLowerCase())) ||
+            (typeof item?.product?.price === "number" && 
+              item?.product?.price.toString() === value)
+          ) {
+          if(item.status === "not_paid") {
+            return  (
+              <Link
+                state={item}
+                // to={`/detail-product/${item?.product?._id}`}
+                key={item._id}
+              >
+                <div className="w-full h-full bg-white cursor-pointer flex flex-col gap-2 shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                  <img
+                    src={`${pathImage}/${item?.product?.photos?.[0]}`}
+                    alt="product_test"
+                    className="h-[256px] max-sm:h-[180px] w-full object-cover rounded-lg"
+                  />
+                  <div className="flex flex-col gap-2 px-2">
+                    <span className="line-clamp-2 break-words font-medium text-[18px] max-sm:text-sm text-gray-800">
+                      {item?.product?.title}
+                    </span>
+                  <div className="flex items-center justify-between px-2">
+                  <span className="text-[#ed5435] font-semibold text-2xl max-sm:text-base">
+                      ${item?.product?.price}
+                    </span>
+                    <div className="px-2 py-4 max-sm:py-2 " >
+                      <button
+                          className="button"
+                          onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          onAddToCart(item)
+                          // setTimeout(() => {
+                          //   window.location.reload();
+                          // }, 1000)
+                          }}
+                      >
+                          <span>Thêm vào giỏ</span>
+                          <div className="cart">
+                          <svg viewBox="0 0 36 26">
+                              <polyline points="1 2.5 6 2.5 10 18.5 25.5 18.5 28.5 7.5 7.5 7.5"></polyline>
+                              <polyline points="15 13.5 17 15.5 22 10.5"></polyline>
+                          </svg>
+                          </div>
+                      </button>
+                  </div>
+                  </div>
+                  </div>
+                </div>
+              </Link>
+            )
+          } 
+
+        }
+        return null;
+      }) : stores?.cart &&
+      stores?.cart?.map((item) => {
+        if(item.status === "not_paid") {
+          return  (
             <Link
               state={item}
               // to={`/detail-product/${item?.product?._id}`}
@@ -140,10 +215,12 @@ const BookProductFromStore = () => {
                 </div>
               </div>
             </Link>
-          ) : null
-        )
-        )}
+          )
+        } 
+      return null;
+    })}
       </div>
+    </div>
       
      
     </div>
