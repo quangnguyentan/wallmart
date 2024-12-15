@@ -259,13 +259,25 @@ const DepositUser = async (req, res) => {
     let data;
     let createDeposit;
     const { id } = req.params;
-    const { deposit, reason } = req.body;
-    if (!deposit) throw new Error("Vui lòng nhập số tiền");
+    const { deposit, reason, depositMinutes } = req.body;
+    if (!deposit && !depositMinutes)
+      throw new Error("Vui lòng nhập số tiền muốn nạp hoặc muốn trừ ");
+    if (deposit && depositMinutes) {
+      throw new Error("Vui lòng chỉ có thể nạp tiền hoặc trừ tiền");
+    }
     const user = await users.findById(id);
+    const updatedDeposit = Number(deposit)
+      ? user.deposit + Number(deposit)
+      : user.deposit - Number(depositMinutes);
+
     if (user) {
-      data = await users.findByIdAndUpdate(id, {
-        deposit: user?.deposit + Number(deposit),
-      });
+      data = await users.findByIdAndUpdate(
+        id,
+        {
+          deposit: updatedDeposit,
+        },
+        { new: true }
+      );
       createDeposit = await Deposit.create({
         money: Number(deposit),
         reason: reason,

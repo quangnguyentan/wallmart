@@ -22,6 +22,7 @@ const UpdateBank = () => {
     });
   const params = useParams();
   const { currentData } = useSelector((state) => state.user);
+  console.log(currentData)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -36,6 +37,7 @@ const UpdateBank = () => {
         creditCartOfBank: values?.creditCartOfBank,
         nameOfUser: values?.nameOfUser,
         nameOfBank: values?.nameOfBank,
+        images : currentData?.avatar
       });
       console.log(data);
       if (data.success) {
