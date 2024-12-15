@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { apiGetOrderById, apiGetOrderByIdOrder, apiOrderPaymentStore } from "@/services/orderServer";
 import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import { useSelector } from "react-redux";
 const fileSvgWithDraw = <svg id="Group_22725" className="max-sm:w-6 max-sm:h-6" data-name="Group 22725" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
 <path id="Path_108" d="M24,28.5A1.538,1.538,0,0,1,25.5,30v6a1.5,1.5,0,0,1-3,0V30A1.538,1.538,0,0,1,24,28.5" fill="#2E294E"></path>
 <path id="Path_109" d="M36,21H33V43.5A1.538,1.538,0,0,1,31.5,45h-15A1.538,1.538,0,0,1,15,43.5V21H12V43.5A4.481,4.481,0,0,0,16.5,48h15A4.481,4.481,0,0,0,36,43.5Z" fill="#2E294E"></path>
@@ -38,6 +39,8 @@ const Order_Store_Detail = () => {
     const [open, setOpen] = React.useState(false);
     const navigate = useNavigate()
     const isMobile = useMediaQuery("(max-width:600px)");
+    const { currentData } = useSelector((state) => state.user);
+
     const { id } = useParams()
     const columns = [
         { 
@@ -161,7 +164,7 @@ const Order_Store_Detail = () => {
     <div className="flex flex-col gap-4">
         <h3 className="text-black font-semibold max-sm:text-sm">Chi tiết đơn hàng</h3>
         <div className="grid grid-cols-4 gap-8 max-sm:grid-cols-1 ">
-            <div className="px-6 py-6 items-center justify-center border h-64 max-sm:h-34 flex rounded-lg hover:shadow-lg">
+            <div className="px-6 py-6 items-center justify-center border max-sm:h-34 flex rounded-lg hover:shadow-lg">
                     <div className="flex flex-col gap-4 max-sm:gap-4">
                         <span className="text-black font-semibold max-sm:text-xs">Thanh toán cho nhà kho</span>
                         <button onClick={() => {
@@ -238,14 +241,21 @@ const Order_Store_Detail = () => {
                             <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${products[0]?.product?.price * products[0]?.quantity}</span>
                         </div>
                         <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${products[0]?.product?.price * products[0]?.quantity  * 20 / 100}</span>
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${(products[0]?.product?.price * products[0]?.quantity  * 20 / 100).toFixed(1)}</span>
                        </div>
                     </div>
               </DialogContentText>
               </DialogContent>
               <DialogActions>
               <Button onClick={handleClose}>Hủy bỏ</Button>
-              <Button onClick={handlePaymentStore} autoFocus>
+              <Button onClick={() => {
+                 if(currentData?.deposit >= (products[0]?.product?.price * products[0]?.quantity)) {
+                  handlePaymentStore()
+                  }else{
+                    toast.error("Bạn không đủ tiền để thanh toán")
+                  }
+              }
+              } autoFocus>
                   Thanh toán
               </Button>
               </DialogActions>

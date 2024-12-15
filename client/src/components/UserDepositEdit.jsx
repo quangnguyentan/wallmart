@@ -41,11 +41,11 @@ function UserDepositEdit() {
     try {
       
       setLoading(true);
-      const res = await apiUpdatedDesposit(id, { deposit : data?.title, reason : reson}); 
+      const res = await apiUpdatedDesposit(id, { deposit : data?.title, depositMinutes : data?.price, reason : reson}); 
       console.log(res)
       setLoading(false);
       if (res?.success) {
-        toast.success("Nạp tiền thành công");
+        toast.success("Cập nhật thành công");
         navigate("/deposit-user-list")
        
       } else {
@@ -66,17 +66,15 @@ function UserDepositEdit() {
         <span>Số tiền còn lại: {productList?.deposit}</span>
 
       </div>
-      <div className='flex flex-col items-center justify-center'>
+      <div className='flex flex-col items-center justify-center gap-4'>
       <div  className='flex flex-col gap-4 justify-between px-8 w-full'>
       <label htmlFor="photo " className='mx-auto text-xl font-semibold'>Nạp tiền</label>
-      <input type="number" className='w-[50%] mx-auto py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên số tiền muốn nạp' {...register("title", {
-                required: "Trường này là bắt buộc",
-              })} />
-     <div className='flex items-center justify-center'>
-     {errors.title && (
-            <p className="text-red-500 text-xs ">{errors.title.message}</p>
-          )}
-     </div>
+      <input type="number" className='w-[50%] mx-auto py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên số tiền muốn nạp' {...register("title")} />
+     
+      </div>
+      <div  className='flex flex-col gap-4 justify-between px-8 w-full'>
+      <input type="number" className='w-[50%] mx-auto py-2  px-2 rounded-lg shadow-sm bg-white outline-none' placeholder='Nhập tên số tiền muốn trừ' {...register("price")} />
+     
       </div>
       <div className="flex gap-2 px-8 w-full">
                               

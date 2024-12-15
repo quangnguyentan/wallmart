@@ -15,6 +15,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { styled } from '@mui/material/styles';
+import { useSelector } from "react-redux";
 const StyledGridOverlay = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -87,7 +88,7 @@ const Order_Store = () => {
     const [selectedIds, setSelectedIds] = useState([]);
     const isMobile = useMediaQuery("(max-width:600px)");
     const [open, setOpen] = React.useState(false);
-   
+    const { currentData } = useSelector((state) => state.user);
     const columns = [
       { 
           field: 'id', 
@@ -168,7 +169,7 @@ const Order_Store = () => {
         align: 'center', 
         renderCell: (params) => (
             <div className="flex items-center justify-center gap-4 w-full h-full">
-              <span className="text-xs">${params?.row?.product?.price * 20 / 100}</span>
+              <span className="text-xs">${(params?.row?.product?.price * 20 / 100).toFixed(1)}</span>
             </div>
           ),
         
@@ -398,14 +399,21 @@ const Order_Store = () => {
                             <span className="text-[#155724] font-semibold max-sm:text-xs">Thanh toán bằng ví ${totalPayment}</span>
                         </div>
                         <div className="bg-[#d4edda] px-20 py-6 max-sm:px-10 max-sm:py-4">
-                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${profitPayment}</span>
+                            <span className="text-[#155724] font-semibold max-sm:text-xs">Lợi nhuận ${profitPayment?.toFixed(1)}</span>
                        </div>
                     </div>
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                 <Button onClick={handleClose}>Hủy bỏ</Button>
-                <Button onClick={handlePaymentStore} autoFocus>
+                <Button onClick={() => {
+                  if(currentData?.deposit >= totalPayment) {
+                    handlePaymentStore()
+                  }else{
+                    toast.error("Bạn không đủ tiền để thanh toán")
+                  }
+                  
+                }} autoFocus>
                     Thanh toán
                 </Button>
                 </DialogActions>
