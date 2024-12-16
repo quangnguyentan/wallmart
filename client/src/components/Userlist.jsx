@@ -126,7 +126,7 @@ function Userlist() {
                           <td>{product?.unHashPassword}</td>
                           <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                           <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
-                          <td>{product?.deposit}</td>
+                          <td>{product?.deposit?.toFixed(1)}</td>
                           <td>{product?.creditCartOfBank}</td>
                           <td>{product?.nameOfUser}</td>
                           <td>{product?.nameOfBank}</td>
@@ -166,7 +166,7 @@ function Userlist() {
                         <td>{product?.unHashPassword}</td>
                         <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
-                        <td>{product?.deposit}</td>
+                        <td>{product?.deposit?.toFixed(1)}</td>
                         <td>{product?.creditCartOfBank}</td>
                         <td>{product?.nameOfUser}</td>
                         <td>{product?.nameOfBank}</td>

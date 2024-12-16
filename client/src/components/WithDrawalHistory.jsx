@@ -57,7 +57,7 @@ const WithDrawalHistory = () => {
                       <span className="text-lg max-sm:text-xs font-semibold text-gray-500">
                         Số tiền
                       </span>
-                      <span className="text-lg max-sm:text-xs font-bold">{el?.money}</span>
+                      <span className="text-lg max-sm:text-xs font-bold">{Number(el?.money).toFixed(1)}</span>
                     </div>
                     <div className="flex flex-col gap-2">
                       <span className="text-lg max-sm:text-xs font-semibold text-gray-500">

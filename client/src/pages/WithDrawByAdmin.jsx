@@ -112,7 +112,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                                   Số tiền hiện có
                                 </span>
                                 <span className="text-lg font-bold">
-                                  {el?.user?.deposit}
+                                  {el?.user?.deposit?.toFixed(1)}
                                 </span>
                               </div>
                               <div className="flex flex-col gap-2">
@@ -120,7 +120,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                                   Số tiền muốn rút
                                 </span>
                                 <span className="text-lg font-bold">
-                                  {el?.money}
+                                  {Number(el?.money)?.toFixed(1)}
                                 </span>
                               </div>
                               <div className="flex flex-col gap-2">
@@ -215,7 +215,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                                     Số tiền hiện có
                                   </span>
                                   <span className="text-lg font-bold">
-                                    {el?.user?.deposit}
+                                    {el?.user?.deposit?.toFixed(1)}
                                   </span>
                                 </div>
                                 <div className="flex flex-col gap-2">
@@ -223,7 +223,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
                                     Số tiền muốn rút
                                   </span>
                                   <span className="text-lg font-bold">
-                                    {el?.money}
+                                    {Number(el?.money)?.toFixed(1)}
                                   </span>
                                 </div>
                                 <div className="flex flex-col gap-2">

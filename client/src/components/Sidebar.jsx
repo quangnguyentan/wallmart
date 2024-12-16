@@ -1,4 +1,4 @@
-import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome, faDiceOne, faAdjust, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { faFaceLaughWink,faMoneyBills , faUsers, faReorder, faProcedures, faMoneyBill, faShop, faMoneyBillTransfer, faPerson, faBookBible, faHome, faDiceOne, faAdjust, faArrowRightToBracket, faKey } from '@fortawesome/free-solid-svg-icons'
 import Box from '@mui/material/Box';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
@@ -151,6 +151,12 @@ function Sidebar() {
                 <Link className="nav-link" to="/store-list">
                     <FontAwesomeIcon icon={faBookBible} style={{ marginRight: "0.5rem" }}/>
                     <span className='max-sm:text-xs'>Đặt đơn ảo</span>
+                </Link>
+                </li>
+                <li className="nav-item active">
+                <Link className="nav-link" to="/change-password">
+                    <FontAwesomeIcon icon={faKey} style={{ marginRight: "0.5rem" }}/>
+                    <span className='max-sm:text-xs'>Đổi mật khẩu</span>
                 </Link>
                 </li>
             </>}
