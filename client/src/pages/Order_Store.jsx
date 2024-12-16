@@ -203,6 +203,20 @@ const Order_Store = () => {
         
       },
       { 
+        field: 'createdAt', 
+        headerName: 'Thời gian đặt hàng', 
+        width: isMobile && 160, 
+        flex : isMobile ? 0 : 1,
+        headerAlign: 'center',
+        align: 'center', 
+        renderCell: (params) => (
+            <div className="flex items-center justify-center gap-4 w-full h-full">
+              <span className="text-xs"> {moment(params?.row?.createdAt).format("DD-MM-YYYY HH:mm:ss")}</span>
+            </div>
+          ),
+        
+      },
+      { 
           field: 'orderStatus', 
           headerName: 'Tình trạng đơn hàng', 
           width: isMobile && 160, 

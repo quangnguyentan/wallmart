@@ -190,6 +190,8 @@ function App() {
                 <Route path={path.TRANSFORM_HISTORY} element={<TransformHistory />} />
                 <Route path={path.BOOK_PRODUCT} element={<BookProductFromStore />} />
                 <Route path={path.ORDER_CART} element={<Order_Cart />} />
+                <Route path={path.CHANGE_PASSWORD} element={<PasswordChange />} />
+
 
               </Route> : 
            <>

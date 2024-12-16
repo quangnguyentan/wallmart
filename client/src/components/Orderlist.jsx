@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { pathImage } from "@/lib/helper";
 import {  faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
 
 
 const list_status = [
@@ -170,6 +171,7 @@ function Orderlist() {
                   <tr>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Số thứ tự</th>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên đơn hàng</th>
+                  <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Thời gian đặt đơn</th>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Ảnh sản phẩm</th>
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên cửa hàng</th>
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên khách hàng</th>
@@ -189,6 +191,7 @@ function Orderlist() {
                         <tr key={product?._id}>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis  max-sm:whitespace-nowrap max-sm:break-words">{index + 1}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.title}</td>
+                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.createdAt}</td>
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price}$</td>
 
                           <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.quantity}</td>
@@ -238,6 +241,13 @@ function Orderlist() {
                             <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                               <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
                                {item?.product?.title}
+                             </div>
+                            </td>
+                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                              <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
+                              {moment(item?.product?.createdAt).format(
+                                                            "DD-MM-YYYY HH:mm:ss"
+                            )}
                              </div>
                             </td>
                             <td className="max-sm:text-[10px]   max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
@@ -329,6 +339,13 @@ function Orderlist() {
                       <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
                         <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
                          {item?.product?.title}
+                       </div>
+                      </td>
+                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                        <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
+                           {moment(item?.product?.createdAt).format(
+                                                            "DD-MM-YYYY HH:mm:ss"
+                            )}
                        </div>
                       </td>
                       <td className="max-sm:text-[10px]   max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">

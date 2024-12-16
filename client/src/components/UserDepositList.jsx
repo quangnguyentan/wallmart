@@ -107,7 +107,7 @@ function UserDepositList() {
                           <td>{product?.fullName}</td>
                           <td>{product?.phone}</td>
                           <td>{product?.email}</td>
-                          <td>{product?.deposit}</td>
+                          <td>{product?.deposit?.toFixed(1)}</td>
                           <td>{product?.role}</td>
                           <th className="flex flex-col gap-2">
                             <Link
@@ -139,7 +139,7 @@ function UserDepositList() {
                         <td>{product?.fullName}</td>
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
-                        <td>{product?.deposit}</td>
+                        <td>{product?.deposit?.toFixed(1)}</td>
                         <td>{product?.role}</td>
                         <th className="flex flex-col gap-2">
                           <Link

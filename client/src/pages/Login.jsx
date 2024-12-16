@@ -40,7 +40,7 @@ const Login = () => {
         localStorage.setItem("page", 0)
       }
     } 
-  }, [isLoggedIn, token]);
+  }, [isLoggedIn, token, navigate]);
     const onLogin = async (data) => {
       try {
           const rs = await apiLoginSuccess(data);

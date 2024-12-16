@@ -64,11 +64,10 @@ const PasswordChange = () => {
          newPassword:data?.newPassword,
          rePassword : data?.rePassword
       })
-      console.log(res)
        if(res?.success) {
         toast.success("Cập nhật mật khẩu thành công")
         localStorage.setItem("page", 0)
-        navigate("/")
+        navigate("/product-list")
        }
     } catch (error) {
       console.error(error);
@@ -79,15 +78,15 @@ const PasswordChange = () => {
  
  
   return (
-    <div className=' flex flex-col gap-4 bg-white h-screen w-full overflow-y-scroll overflow-x-hidden pb-28  scrollbar-hide shadow-sm'>
-      <div className="flex items-center w-full max-sm:gap-28 gap-48 ">
+    <div className={currentData?.role !== "admin" ? 'flex flex-col gap-4 bg-white h-screen w-full overflow-y-scroll overflow-x-hidden pb-28 scrollbar-hide shadow-sm' : 'flex flex-col gap-4 bg-white h-screen w-full mx-auto overflow-y-scroll overflow-x-hidden pb-28 scrollbar-hide shadow-sm'}>
+      {currentData?.role !== "admin" && <div className="flex items-center w-full max-sm:gap-28 gap-48 ">
       <KeyboardArrowLeftIcon
              sx={{ fontSize  : `${isMobile ? "30px" : "40px"}`, cursor : "pointer"}}
             
             onClick={() => window.history.back()}
         />
       <h3 className="text-center text-gray-600 py-2">Đổi mật khẩu</h3>
-      </div>
+      </div>}
        
        <form onSubmit={handleSubmit(EditUser)} >
        <div className="flex flex-col gap-4">
@@ -95,7 +94,7 @@ const PasswordChange = () => {
    
        
         <div className="w-full h-12 bg-[#eee] py-2">
-        <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Điền thông tin</span>
+        <span className="text-lg font-semibold px-2 text-black max-sm:text-sm">Điền mật khẩu</span>
       </div> 
         <div className="flex flex-col px-4 py-4 max-sm:py-1 border-b gap-2 max-sm:text-xs">
             <label htmlFor="name"  className=" ">Mật khẩu cũ</label>
@@ -129,12 +128,12 @@ const PasswordChange = () => {
         />
       </div> */}
         
-     </div>
+        </div>
       
     
        </div>
        <div className="py-8">
-       <button className="px-8 py-4  max-sm:text-xs w-full rounded-full bg-red-500 text-white"  type="submit">Cập nhật mật khẩu</button>
+       <button className={`${currentData?.role !== "admin" ? "px-8 py-4  max-sm:text-xs w-full rounded-full bg-red-500 text-white" : "px-8 py-4  max-sm:text-xs w-[50%] mx-auto flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600  text-white"}`}  type="submit">Đổi mật khẩu</button>
        </div>
        </form>  
      
