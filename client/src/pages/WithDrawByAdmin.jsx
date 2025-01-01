@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
     const [value, setValue] = useState(null)
     const onChangeValue = (e) => {
       setValue(e.target.value)
-  }
+    }
   
     const getWithDrawalHistory = async () => {
       const data = await apiGetAllWithDraw();

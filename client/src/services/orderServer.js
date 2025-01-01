@@ -1,11 +1,25 @@
 import axiosConfig from "../axios";
 
-export const apiGetOrder = () =>
+export const apiGetOrder = ({ page, limit, search }) =>
   new Promise(async (resolve, reject) => {
     try {
+      const url = `/order/?page=${page}&limit=${limit}`;
       const response = await axiosConfig({
         method: "GET",
-        url: "/order/",
+        url: url,
+      });
+      resolve(response);
+    } catch (error) {
+      console.log("Failed to get product", error);
+    }
+  });
+export const apiGetOrderSuccess = ({ page, limit, search }) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const url = `/order/success/?page=${page}&limit=${limit}`;
+      const response = await axiosConfig({
+        method: "GET",
+        url: url,
       });
       resolve(response);
     } catch (error) {
