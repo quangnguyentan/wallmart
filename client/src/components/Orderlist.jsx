@@ -1,173 +1,96 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import "./sb-admin-2.min.css";
-import { apiDeleteOrderById, apiGetOrder, apiGetOrderByIdOrder, apiGetOrderByShop, apiUpdateOrder } from "@/services/orderServer";
+import { Link, useNavigate } from "react-router-dom";
+import { apiGetOrder } from "@/services/orderServer"; // Adjust the API service
 import toast from 'react-hot-toast';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import { useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
-import { pathImage } from "@/lib/helper";
-import {  faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
+import { pathImage } from "@/lib/helper";
 
-
-const list_status = [
-  {
-    id : 1,
-    name : "Chưa thanh toán"
-  },
-  {
-    id : 2,
-    name : "Đợi giao hàng"
-  },
-  {
-    id : 3,
-    name : "Đang giao hàng"
-  },
-  {
-    id : 4,
-    name : "Giao hàng thành công"
-  },
-  {
-    id : 5,
-    name : "Đơn hàng bị hủy"
-  },
-]
-function Orderlist() {
-  const [productList, setproductList] = useState([])
+function OrderList() {
+  const [productList, setProductList] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const navigate = useNavigate()
-  const { currentData } = useSelector((state) => state.user);
+  const [page, setPage] = useState(1); // Track current page
+  const [totalPages, setTotalPages] = useState(1); // Track total pages
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [store, setStore] = useState("")
- 
-  const [value, setValue] = useState(null)
+  const navigate = useNavigate();
 
-  // const updateOrder = async (data) => {
-  //   console.log(data)
-  //   try {
-  //     const formData = new FormData(); 
-  //     setLoading(true);
-  //     // const res = await apiUpdateOrder(id, {status : values ? values && values === "Đợi giao hàng" ? "waitDelivery"  : values === "Đang giao hàng"  ? "delivering"  : values === "Giao hàng thành công"  ?  "successfull" : values === "Chưa thanh toán" ? "waitPay" : "canceled" : order?.status }); 
-  //     // if(res) {
-  //     //   setLoading(false);
-  //     //   toast.success("Đăng kí thành công");
-  //     //   navigate("/order-list")
-  //     // }
-  //   } catch (error) {
-  //     console.error(error);
-  //     setLoading(false);
-  //     toast.error("Đã xảy ra lỗi, vui lòng thử lại sau");
-  //   }
-  // };
- 
+  const fetchOrders = async (page = 1) => {
+    setLoading(true);
+    try {
+      const res = await apiGetOrder({ page, limit: 10 });
+      setProductList(res.orders);
+      setTotalPages(res.totalPages); 
+      setStore(res?.stores)
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error loading orders!");
+      setLoading(false);
+    }
+  };
 
-  
- 
-  let getUsers = async () => {
-    try {
-      if(currentData?.role === "agent"){
-        const user = await apiGetOrderByShop()
-        const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
-        setproductList(filterOrderUser);
-        setLoading(false);
-      }else{
-        const store = await apiGetOrder()
-        setproductList(store?.orders);
-        setStore(store?.stores);
-        setLoading(false);
-      }
-    
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  let fetchApi = async () => {
-    try {
-      if(currentData?.role === "agent"){
-        const user = await apiGetOrderByShop()
-        const filterOrderUser = user?.filter((res) => res?.user?.role === "user")
-        setproductList(filterOrderUser);
-        setLoading(false);
-      }else{
-        const store = await apiGetOrder()
-        setproductList(store?.orders);
-        setStore(store?.stores);
-        setLoading(false);
-      }
-    
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  let handleDelete = async (id) => {
-    try {
-      window.confirm(
-        "Bạn có chắc muốn xóa đơn hàng này không?"
-      );
-        await apiDeleteOrderById(id)
-        getUsers()
-        toast.success("Xóa đơn hàng thành công")
-        navigate("/order-list")
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-      if(value?.length > 0) {
-        fetchApi();
-      }
-  }, [value]);
+    fetchOrders(page);
+  }, [page]);
+
   useEffect(() => {
-    getUsers()
-  }, [])
- 
-  const onChangeValue = (e) => {
-      setValue(e.target.value)
-  }
+    if (searchQuery.trim().length > 0) {
+      fetchOrders(page);  // Re-fetch orders when the search query changes
+    }
+  }, [page, searchQuery]);
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage); // Update page number
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value); // Update search query
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setPage(1); 
+    fetchOrders(1); 
+  };
+  const filteredOrders = productList.filter((item, index) => {
+    const storeForItem = store[index] ? store[index].inforByStore?.nameStore : "";
+    return (
+      item?.product?.title?.toUpperCase().includes(searchQuery.toUpperCase()) ||
+      storeForItem?.toUpperCase().includes(searchQuery.toUpperCase())
+    );
+  });
+  console.log(searchQuery)
   return (
-    <>
-      <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        {/* <h1 className="h3 mb-0 text-gray-800 text-2xl">Đơn mua sản phẩm của shop</h1> */}
-        {/* <Link
-          to={`/create-product/${currentData?._id}`}
-          className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-        >
-          <FontAwesomeIcon icon={faUser} className="creatinguser mr-2" />
-          Create User
-        </Link> */}
-      </div>
-      {/* <!-- DataTables --> */}
-      <div className="card shadow mb-4">
-        <div className="card-header py-3 flex items-center justify-center gap-8">
-          <h6 className="m-0 font-weight-bold text-primary max-sm:text-sm">Đơn hàng</h6>
-          <form
-                className="w-[30%] max-sm:w-full d-sm-inline-block border form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search relative">
-           
-                <div className="input-group">
-                    <input value={value} onChange={onChangeValue} type="text" className="form-control bg-light border-0 small max-sm:placeholder:text-xs" placeholder="Tìm kiếm sản phẩm hoặc cửa hàng" 
-                        aria-label="Search" aria-describedby="basic-addon2" />
-                    <div className="input-group-append">
-                        <button className="btn btn-primary" type="button">
-                            <FontAwesomeIcon icon={faSearch} />
-                        </button>
-                    </div>
-                </div>
-            </form>
+    <div className="">
+      <div className="card">
+        {/* Search bar */}
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold">Order List</h2>
+          <form onSubmit={handleSearchSubmit} className="flex space-x-2">
+            <input
+              type="text"
+              placeholder="Search orders..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="p-2 border rounded"
+            />
+            <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+              Search
+            </button>
+          </form>
         </div>
-        <div className="card-body">
-          {isLoading ? (
-            <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif" />
-          ) : (
-            <div className="table-responsive overflow-y-scroll custom-table">
-              <table
-                className="table table-bordered"
-                id="dataTable"
-                width="100%"
-                cellSpacing="0"
-              >
-                <thead>
+
+        {isLoading ? (
+          <div className="flex justify-center items-center">
+            <img src="https://media.giphy.com/media/ZO9b1ntYVJmjZlsWlm/giphy.gif" alt="Loading" />
+          </div>
+        ) : (
+          <>
+            <div className="table-responsive overflow-x-auto custom-table shadow-2xl">
+              <table className="table table-bordered w-full text-sm">
+              <thead>
                   <tr>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Số thứ tự</th>
                   <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Tên đơn hàng</th>
@@ -183,257 +106,86 @@ function Orderlist() {
                     <th className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Hành động</th>
                   </tr>
                 </thead>
-                
                 <tbody>
-                  {currentData?.role === "agent" && productList?.map((product, index) => {
-                    if(product?.user?.role === "user"){
+                  {filteredOrders.length > 0 ? (
+                    filteredOrders.map((item, index) => {
+                      const storeForItem = store[index] ? store[index].inforByStore?.nameStore : "Không có cửa hàng";
                       return (
-                        <tr key={product?._id}>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden text-center max-sm:text-ellipsis  max-sm:whitespace-nowrap max-sm:break-words">{index + 1}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.title}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.createdAt}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price}$</td>
-
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.quantity}</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product?.product?.price * product?.quantity}$</td>
-                          <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{product &&  product?.status === "waitDelivery" ? "Đợi giao hàng" : product?.status === "delivering" ? "Đang giao hàng" : product?.status === "successfull" ? "Giao hàng thành công"  :  product?.status === "waitPay" ? "Chưa thanh toán"  : "Đơn hàng bị hủy"}</td>
-                          <th className="flex flex-col gap-2">
-                          
-                            <Link
-                              to={`/order-view/${product?._id}`}
-                              className="btn btn-primary btn-sm mr-1"
-                            >
-                              <span className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Xem chi tiết</span>
-                            
-                            </Link>
-                            <Link
-                              to={`/order-edit/${product?._id}`}
-                              className="btn btn-info btn-sm mr-1"
-                            >
-                                 <span className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">{currentData?.role === "agent" ? "Cập nhật trạng thái đơn hàng" : "Chỉnh sửa"}</span>
-                            
-                            
-                            </Link>
-                            <button
-                              onClick={() => handleDelete(product?._id)}
-                              className="btn btn-danger btn-sm mr-1"
-                            >
-                              <span className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">Xóa</span>
-                            </button>
-                          </th>
-                        </tr>
-                      ); 
-                    }
-                  })}
-                  {currentData?.role === "admin" && <>
-                    {value?.length > 0 ?
-                    productList?.map((item, index) => {
-                      if(typeof item?.product?.title === "string" && typeof value === "string" && item?.product?.title?.toUpperCase().includes(value.toUpperCase()) || store[index]?.inforByStore?.nameStore?.toUpperCase().includes(value.toUpperCase())) { 
-                      const storeForItem = store ? store[index] : null; 
-                        return (
-                          <tr key={item?._id}>
-                            {/* Tên sản phẩm */}
-                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
+                        <tr key={item._id}>
+                          <td className="p-2">{(page - 1) * 10 + index + 1}</td>
+                          <td className="p-2">{item?.product?.title}</td>
+                          <td className="p-2">{moment(item?.createdAt).format("DD-MM-YYYY HH:mm:ss")}</td>
+                          <td className="p-2"><img src={`${pathImage}/${item?.product?.photos[0]}`} className="w-12 h-12" alt="product" /></td>
+                          <td className="p-2">{storeForItem}</td>
+                          <td className="p-2">{item?.user?.fullName}</td>
+                          <td className="p-2">{item?.product?.price}$</td>
+                          <td className="p-2">{item?.quantity}</td>
+                          <td className="p-2">{item?.quantity * item?.product?.price}$</td>
+                          <td className="p-2">
                             <div className="flex items-center justify-center py-10">
-                            {index + 1}
-                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
-                               {item?.product?.title}
-                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
-                              {moment(item?.product?.createdAt).format(
-                                                            "DD-MM-YYYY HH:mm:ss"
-                            )}
-                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px]   max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                            <div className="flex items-center justify-center py-10">
-                            <img src={`${pathImage}/${item?.product?.photos[0]}`}  className="w-8 h-8" alt="photos" />
+                              {item?.status === "waitDelivery" && (
+                                <span className="px-2 py-1 text-white bg-amber-900 font-semibold text-sm">Đợi giao hàng</span>
+                              )}
+                              {item?.status === "delivering" && (
+                                <span className="px-2 py-1 text-white bg-yellow-400 font-semibold text-sm">Đang giao hàng</span>
+                              )}
+                              {item?.status === "successfull" && (
+                                <span className="px-2 py-1 text-white bg-green-500 font-semibold text-sm">Giao hàng thành công</span>
+                              )}
+                              {item?.status === "waitPay" && (
+                                <span className="px-2 py-1 text-white bg-pink-600 font-semibold text-sm">Chưa thanh toán</span>
+                              )}
+                              {item?.status === "cancelled" && (
+                                <span className="px-2 py-1 text-white bg-red-600 font-semibold text-sm">Đơn hàng bị hủy</span>
+                              )}
                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                             <div className="flex items-center justify-center py-10">
-                             {storeForItem ? storeForItem?.inforByStore?.nameStore : "Không có cửa hàng"}
-                             </div>
-                            </td>
-      
-                            <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              <div className="flex items-center justify-center py-10">
-                              {item?.user?.fullName}
-                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                            
-                              <div className="flex items-center justify-center py-10">
-                              {item?.product?.price}$
-                             </div>
-                            </td>
-                            {/* Trạng thái */}
-                           
-                            {/* Hành động */}
-                            
-                            <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                              <div className="flex items-center justify-center py-10">
-                              {item?.quantity}
-      
-                             </div>
-                            </td>
-                            <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                            
-                              <div className="flex items-center justify-center py-10">
-                              {item?.quantity * item?.product?.price}$
-      
-                             </div>
-                            </td>
-                            
-                            <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                       <div className="flex items-center justify-center py-10">
-                       {item &&  item?.status === "waitDelivery" ?<span className="px-2 py-1  text-white bg-amber-900 font-semibold text-sm">Đợi giao hàng</span> : item?.status === "delivering" ? <span className="px-2 py-1  text-white bg-yellow-400 font-semibold text-sm">Đang giao hàng</span> : item?.status === "successfull" ? <span className="px-2 py-1  text-white bg-green-500 font-semibold text-sm">Giao hàng thành công</span>  :  item?.status === "waitPay" ? <span className="px-2 py-1  text-white bg-pink-600 font-semibold text-sm">Chưa thanh toán</span>  :  <span className="px-2 py-1  text-white bg-red-600 font-semibold text-sm">Đơn hàng bị hủy</span>}
-                       </div>
-                            </td>
-                            <td>
-                            <div className="flex items-center justify-center">
-                            <div className="flex flex-col gap-2">
-                                <Link
-                                  to={`/order-view/${item?._id}`}
-                                  state={item}
-                                  className="btn btn-primary btn-sm"
-                                >
-                                  Xem chi tiết
-                                </Link>
-                                <Link
-                                  to={`/order-edit/${item?._id}`}
-                                  className="btn btn-info btn-sm"
-                                >
-                                  Cập nhật đơn hàng
-                                </Link>
-                                <button
-                                  onClick={() => handleDelete(item?._id)}
-                                  className="btn btn-danger btn-sm"
-                                >
-                                  Xóa
-                                </button>
-                              </div>
-      
-                             </div>
-                             
-                            </td>
-                          </tr>
-                        );
-                    } 
+                          </td>
+                          <td className="p-2 flex flex-col gap-2">
+                            <Link to={`/order-view/${item?._id}`} className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600 mr-2">
+                              Xem chi tiết
+                            </Link>
+                            <Link to={`/order-edit/${item?._id}`} className="btn btn-info btn-sm p-1 mr-2">
+                              Cập nhật
+                            </Link>
+                            <button className="bg-red-500 text-white p-1 rounded hover:bg-red-600">
+                              Xóa
+                            </button>
+                          </td>
+                        </tr>
+                      );
                     })
-                 :   productList?.map((item, index) => {  
-                  const storeForItem = store ? store[index] : null; 
-                  return (
-                    <tr key={item?._id}>
-                      {/* Tên sản phẩm */}
-                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                      <div className="flex items-center justify-center py-10">
-                      {index + 1}
-                       </div>
-                      </td>
-                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                        <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
-                         {item?.product?.title}
-                       </div>
-                      </td>
-                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                        <div className="flex items-center line-clamp-1 w-80 justify-center py-10">
-                           {moment(item?.product?.createdAt).format(
-                                                            "DD-MM-YYYY HH:mm:ss"
-                            )}
-                       </div>
-                      </td>
-                      <td className="max-sm:text-[10px]   max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                      <div className="flex items-center justify-center py-10">
-                      <img src={`${pathImage}/${item?.product?.photos[0]}`}  className="w-8 h-8" alt="photos" />
-                      </div>
-                      </td>
-                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                       <div className="flex items-center justify-center py-10">
-                       {storeForItem ? storeForItem?.inforByStore?.nameStore : "Không có cửa hàng"}
-                       </div>
-                      </td>
-
-                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                        <div className="flex items-center justify-center py-10">
-                        {item?.user?.fullName}
-                       </div>
-                      </td>
-                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                      
-                        <div className="flex items-center justify-center py-10">
-                        {item?.product?.price}$
-                       </div>
-                      </td>
-                      {/* Trạng thái */}
-                     
-                      {/* Hành động */}
-                      
-                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                        <div className="flex items-center justify-center py-10">
-                        {item?.quantity}
-
-                       </div>
-                      </td>
-                      <td className="max-sm:text-[10px]  max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                      
-                        <div className="flex items-center justify-center py-10">
-                        {item?.quantity * item?.product?.price}$
-
-                       </div>
-                      </td>
-                      
-                      <td className="max-sm:text-[10px] max-sm:overflow-hidden max-sm:text-ellipsis max-sm:whitespace-nowrap max-sm:break-words">
-                 <div className="flex items-center justify-center py-10">
-                 {item &&  item?.status === "waitDelivery" ?<span className="px-2 py-1  text-white bg-amber-900 font-semibold text-sm">Đợi giao hàng</span> : item?.status === "delivering" ? <span className="px-2 py-1  text-white bg-yellow-400 font-semibold text-sm">Đang giao hàng</span> : item?.status === "successfull" ? <span className="px-2 py-1  text-white bg-green-500 font-semibold text-sm">Giao hàng thành công</span>  :  item?.status === "waitPay" ? <span className="px-2 py-1  text-white bg-pink-600 font-semibold text-sm">Chưa thanh toán</span>  :  <span className="px-2 py-1  text-white bg-red-600 font-semibold text-sm">Đơn hàng bị hủy</span>}
-                 </div>
-                      </td>
-                      <td>
-                      <div className="flex items-center justify-center">
-                      <div className="flex flex-col gap-2">
-                          <Link
-                            to={`/order-view/${item?._id}`}
-                            state={item}
-                            className="btn btn-primary btn-sm"
-                          >
-                            Xem chi tiết
-                          </Link>
-                          <Link
-                            to={`/order-edit/${item?._id}`}
-                            className="btn btn-info btn-sm"
-                          >
-                            Cập nhật đơn hàng
-                          </Link>
-                          <button
-                            onClick={() => handleDelete(item?._id)}
-                            className="btn btn-danger btn-sm"
-                          >
-                            Xóa
-                          </button>
-                        </div>
-
-                       </div>
-                       
-                      </td>
+                  ) : (
+                    <tr>
+                      <td colSpan="11" className="text-center p-4">Không có đơn hàng phù hợp với tìm kiếm</td>
                     </tr>
-                  );
-                })}
-                  </>}
-                 
-
+                  )}
                 </tbody>
               </table>
             </div>
-          )}
-        </div>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-between items-center mt-4 px-4 pb-10">
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className="bg-blue-500 text-white p-2 rounded cursor-pointer disabled:opacity-50"
+              >
+                Trang trước
+              </button>
+              <span>Page {page} of {totalPages}</span>
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className="bg-blue-500 text-white p-2 rounded cursor-pointer disabled:opacity-50"
+              >
+                Trang tiếp
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
-export default Orderlist;
+export default OrderList;

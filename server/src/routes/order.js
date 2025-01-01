@@ -9,12 +9,15 @@ const {
   deleteOrder,
   processPaymentBot,
   processPaymentStore,
+  ListSuccess,
 } = require("../controllers/orderController");
 const { verifyToken, isAdmin } = require("../middlewares/verifyToken");
 
 const router = require("express").Router();
 router.post("/", [verifyToken], Create);
 router.get("/", [verifyToken], List);
+router.get("/", [verifyToken], List);
+router.get("/success", [verifyToken], ListSuccess);
 router.delete("/delete/:id", [verifyToken], deleteOrder);
 
 router.get("/myOrder", [verifyToken], GetMyOrders);
