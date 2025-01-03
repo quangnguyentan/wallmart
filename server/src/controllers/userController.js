@@ -215,6 +215,7 @@ const updatedUser = async (req, res) => {
       password,
       images,
       bonusPoints,
+      isBlocked,
     } = req.body;
     console.log(!images && !(req?.files && req?.files?.images[0]?.filename));
     const findUser = await users.findById(id);
@@ -228,6 +229,7 @@ const updatedUser = async (req, res) => {
         creditCartOfBank,
         deposit: deposit && Number(deposit),
         role,
+        isBlocked,
         bonusPoints,
         avatar:
           !images && !(req?.files && req?.files?.images[0]?.filename)

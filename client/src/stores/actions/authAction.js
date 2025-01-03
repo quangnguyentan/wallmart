@@ -3,7 +3,6 @@ import actionType from "./actionType";
 export const loginSuccessAction = (data) => async (dispatch) => {
   try {
     let response = apiLoginSuccess(data);
-    console.log(response);
     response.then(function (result) {
       if (result.accessToken) {
         dispatch({
@@ -13,14 +12,14 @@ export const loginSuccessAction = (data) => async (dispatch) => {
       } else {
         dispatch({
           type: actionType.LOGIN_SUCCESS,
-          data: null,
+          token: null,
         });
       }
     });
   } catch (error) {
     dispatch({
       type: actionType.LOGIN_SUCCESS,
-      data: null,
+      token: null,
       msg: error,
     });
   }

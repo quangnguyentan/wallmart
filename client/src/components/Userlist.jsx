@@ -100,6 +100,7 @@ function Userlist() {
                     <th>Số điện thoại đăng nhập</th>
                     <th>Email đăng nhập </th>
                     <th>Mật khẩu </th>
+                    <th>Khóa tài khoản</th>
                     <th>Vai trò</th>
                     <th>Giới tính</th>
                     <th>Số tiền</th>
@@ -124,6 +125,10 @@ function Userlist() {
                           <td>{product?.phone}</td>
                           <td>{product?.email}</td>
                           <td>{product?.unHashPassword}</td>
+                          <td>{product?.isBlocked === true ? <p className="text-red-500">
+                            Tài khoản bị khóa
+                          </p> : <p className="text-green-500">Tài khoản đang hoạt động</p>}</td>
+
                           <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                           <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                           <td>{product?.deposit?.toFixed(1)}</td>
@@ -164,6 +169,9 @@ function Userlist() {
                         <td>{product?.phone}</td>
                         <td>{product?.email}</td>
                         <td>{product?.unHashPassword}</td>
+                        <td>{product?.isBlocked === true ? <p className="text-red-500">
+                            Tài khoản bị khóa
+                          </p> : <p className="text-green-500">Tài khoản đang hoạt động</p>}</td>
                         <td>{product?.role} {`(${product?.role === "agent" ? "Người bán hàng" : product?.role === "user" ? "Khách hàng" : "Quản trị viên"})`}</td>
                         <td>{product?.gender === "male" ? "Nam" : product?.gender === "female" ? "Nữ" : "Khác"}</td>
                         <td>{product?.deposit?.toFixed(1)}</td>

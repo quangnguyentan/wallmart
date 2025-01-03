@@ -6,6 +6,10 @@ import toast from 'react-hot-toast';
 import { apiGetUserById, apiUpdatedUser } from '@/services/userService';
 import { Autocomplete, TextField } from '@mui/material';
 import { pathImage } from '@/lib/helper';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 const list_role = [
   {
     id : 1,
@@ -28,13 +32,27 @@ const list_role = [
     name : "botAgent"
   },
 ]
+const list_block = [
+  {
+    id : 1,
+    name : "Khóa tài khoản"
+  },
+  {
+    id : 2,
+    name : "Mở khóa tài khoản"
+  },
+]
 function UserEdit() {
   const [values, setValues] = useState("");
+  const [block, setBlock] = useState("")
   const [isLoading, setLoading] = useState(false);
   const [postMultipleFile, setPostMultipleFile] = useState([])
   const [productList, setproductList] = useState(null)
   const navigate = useNavigate();
-
+  const [age, setAge] = useState('');
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
   const { id } = useParams()
   const {
     register,
@@ -43,6 +61,7 @@ function UserEdit() {
     formState: { errors },
     setValue,
   } = useForm();
+
   const createProduct = async (data) => {
     try {
       const formData = new FormData(); 
@@ -55,8 +74,15 @@ function UserEdit() {
       formData.append("nameOfUser", data?.nameOfUser); 
       formData.append("password", data?.password && data?.password); 
       formData.append("bonusPoints", data?.bonusPoints); 
-
-      
+      if(block?.length > 0) {
+        if(block === "Khóa tài khoản") {
+          formData.append("isBlocked", true); 
+        }else{
+          formData.append("isBlocked", false); 
+        }
+      }else{
+        formData.append("isBlocked", productList?.isBlocked);
+      }
       setLoading(true);
       const res = await apiUpdatedUser(id, formData); 
       console.log(res)
@@ -155,6 +181,40 @@ function UserEdit() {
         {errors.price && (
               <p className="text-red-500 text-xs px-2">{errors.price.message}</p>
             )}
+        </div> */}
+
+<div className='px-8 py-4'>
+       <Autocomplete
+            disablePortal
+                              options={list_block?.map((option) => option.name)}
+                              // defaultValue={setValue("title", order && order?.status === "waitDelivery" ? "Đợi giao hàng" : order?.status === "delivering" ? "Đang giao hàng" : order?.status === "successfull" ? "Giao hàng thành công"  :  "Đơn hàng bị hủy")}
+                            
+                              className="w-full h-[40px] outline-none border-none"
+                              value={productList && productList?.isBlocked === true ? "Tài khoản bị khóa" : "Tài khoản đang hoạt động"}
+                             
+                              onChange={(event, newValue) => {
+                                setBlock(newValue);
+                              }}
+            renderInput={(params) => <TextField {...params} label="Trạng thái tài khoản" />}
+        />
+       </div>
+        {/* <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
+        <label htmlFor="photo">Số tài khoản</label>
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Trạng thái tài khoản</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={age}
+              label="Vai trò"
+              onChange={handleChange}
+
+            >
+              <MenuItem value={"Khóa tài khoản"}>Khóa tài khoản</MenuItem>
+              <MenuItem value={"Mở khóa tài khoản"}>Mở khóa tài khoản</MenuItem>
+            </Select>
+          </FormControl>
+       
         </div> */}
         <div  className='flex flex-col gap-2 justify-between px-8 w-full'>
         <label htmlFor="photo">Số tài khoản</label>
