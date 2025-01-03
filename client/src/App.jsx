@@ -8,7 +8,7 @@ import Search from "./pages/Search";
 import Detail_product from "./pages/Detail_product";
 import List_product from "./pages/List_product";
 import Login from "./pages/Login";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Setting from "./pages/Setting";
 import Store from "./pages/Store";
 import Store_detail from "./pages/Store_detail";
@@ -19,7 +19,7 @@ import UserCreate from "./components/UserCreate";
 import UserView from "./components/UserView";
 import UserEdit from "./components/UserEdit";
 import { getCurrent } from "./stores/actions/userAction";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProductList from "./components/ProductList";
 import ProductCreate from "./components/ProductCreate";
@@ -73,6 +73,7 @@ import OrderCreateDone from "./components/OrderCreateDone";
 import OrderViewDone from "./components/OrderViewDone";
 import OrderEditDone from "./components/OrderEditDone";
 import StoreHouseDetail from "./pages/StoreHouseDetail";
+import { logout } from "./stores/actions/authAction";
 function App() {
   const isMobile = useMediaQuery("(max-width:600px)");
   const [loading, setLoading] = useState(false);
@@ -80,16 +81,26 @@ function App() {
   const { isLoggedIn, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { currentData } = useSelector((state) => state.user);
-   useEffect(() => {
-    if (isLoggedIn && token) {
-      setLoading(true);
-      setTimeout(() => {
-        dispatch(getCurrent());
-        setLoading(false);
-      }, 500);
-     
-    } 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isLoggedIn && token) {
+        setLoading(true)
+        setTimeout(() => {
+          dispatch(getCurrent());
+          setLoading(false);
+        }, 1000);
+      } 
+    }
+    fetchData();
   }, [isLoggedIn, token, dispatch]);
+  useEffect(() => {
+    if (currentData && currentData?.isBlocked) {
+      dispatch(logout());
+      navigate("/login",{ state: { showAlert: true } });
+    }
+  }, [currentData, dispatch, navigate]);
+  
+ 
   function clearIndexedDB() {
     // Kiểm tra xem trình duyệt có hỗ trợ IndexedDB không
     if (!window.indexedDB) {

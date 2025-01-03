@@ -25,6 +25,7 @@ import { apiGetProduct } from "@/services/productService";
 import { apiGetMyStore, apiGetStore } from "@/services/storeService";
 import { linkCSKH, pathImage } from "@/lib/helper";
 import { apiGetOrderById } from "@/services/orderServer";
+import { logout } from "@/stores/actions/authAction";
 const Profile = () => {
   const [products, setProducts] = useState([])
   const [store, setStore] = useState("")
@@ -57,7 +58,8 @@ const Profile = () => {
     if(isLoggedIn && token) {
       getMyStore() && getOrder()
     }
-  },[isLoggedIn, token])
+    
+  },[isLoggedIn, token, dispatch])
   useEffect(() => {
     if (isLoggedIn && token) {
       setLoading(true);
