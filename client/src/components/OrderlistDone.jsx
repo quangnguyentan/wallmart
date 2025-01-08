@@ -42,17 +42,21 @@ function OrderlistDone() {
   const [totalPages, setTotalPages] = useState(1); // Track total pages
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [store, setStore] = useState("")
-
   const navigate = useNavigate();
-
+  const [allOrders, setAllOrders] = useState([]); // Tất cả đơn hàng
+  const [filteredOrders, setFilteredOrders] = useState([]); // Đơn hàng đã lọc
+  const [allOdersProduct, setAllOdersProduct] = useState([])
+  const [allStore, setAllStore] = useState([])
   const fetchOrders = async (page = 1) => {
     setLoading(true);
     try {
-      const res = await apiGetOrderSuccess({ page, limit: 10 });
-      console.log(res)
-      setProductList(res.orders1);
-      setStore(res?.stores1)
-      setTotalPages(res.totalPages); // Set total pages for pagination
+      const limit = 10; // Giới hạn cố định
+      const res = await apiGetOrderSuccess({ page, limit });
+      setAllOrders((prevOrders) => [...prevOrders, ...res?.orders]); 
+      setStore(res?.stores)
+      setAllStore(res?.allStores)
+      setAllOdersProduct(res?.allOrders)
+      setTotalPages(res.totalPages);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -60,50 +64,54 @@ function OrderlistDone() {
       setLoading(false);
     }
   };
-
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
-      setPage(newPage); // Update page number
+      setPage(newPage); 
     }
   };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value); // Update search query
+  console.log(allStore)
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      const filtered = allOdersProduct?.filter((item) => {
+        const storeName = allStore?.find(s => s?.userId === item?.store)?.inforByStore?.nameStore || "";
+        return (
+          storeName?.trim() === searchQuery?.trim()
+        );
+      });
+      console.log(filtered)
+      setFilteredOrders(filtered);
+    } else {
+      setFilteredOrders(allOrders);
+    }
   };
+ 
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setPage(1); 
-    fetchOrders(1); 
-  };
+  // const handleSearchSubmit = (e) => {
+  //   e.preventDefault();
+  //   setPage(1); 
+  //   fetchOrders(1); 
+  // };
   useEffect(() => {
-    fetchOrders(page);
+    fetchOrders(page);  // Re-fetch orders when the search query changes
   }, [page]);
-
   useEffect(() => {
-    if (searchQuery.trim().length > 0) {
-      fetchOrders(page);  // Re-fetch orders when the search query changes
-    }
-  }, [page, searchQuery]);
-  const filteredOrders = productList.filter((item, index) => {
-    const storeForItem = store[index] ? store[index].inforByStore?.nameStore : "";
-    return (
-      item?.product?.title?.toUpperCase().includes(searchQuery.toUpperCase()) ||
-      storeForItem?.toUpperCase().includes(searchQuery.toUpperCase())
-    );
-  });
+    handleSearch();  // Apply search filter whenever searchQuery changes
+  }, [searchQuery, allOdersProduct, allOrders]);
   return (
     <div className="">
           <div className="card">
             {/* Search bar */}
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Order List</h2>
-              <form onSubmit={handleSearchSubmit} className="flex space-x-2">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                handleSearch();
+              }} className="flex space-x-2">
                 <input
                   type="text"
                   placeholder="Search orders..."
                   value={searchQuery}
-                  onChange={handleSearchChange}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="p-2 border rounded"
                 />
                 <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
@@ -137,9 +145,9 @@ function OrderlistDone() {
                       </tr>
                     </thead>
                     <tbody>
-                                      {filteredOrders.length > 0 ? (
+                                      {filteredOrders?.length > 0 ? (
                                         filteredOrders.map((item, index) => {
-                                          const storeForItem = store[index] ? store[index].inforByStore?.nameStore : "Không có cửa hàng";
+                                          const storeForItem = allStore?.find(s => s?.userId === item?.store)?.inforByStore?.nameStore || "Không có cửa hàng";
                                           return (
                                             <tr key={item._id}>
                                               <td className="p-2">{(page - 1) * 10 + index + 1}</td>

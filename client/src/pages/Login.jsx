@@ -14,11 +14,14 @@ import toast from "react-hot-toast";
 import { apiLoginSuccess, apiRegister } from "@/services/authService";
 import { loginSuccessAction } from "@/stores/actions/authAction";
 import { useDispatch, useSelector } from "react-redux";
+import {  Eye, EyeOff } from "lucide-react";
+
 import { useForm } from "react-hook-form";
 const Login = () => {
     const [activeTab, setActiveTab] = useState('phone');
     const [isLogin, setIsLogin] = useState(true)
     const isMobile = useMediaQuery("(max-width:600px)");
+    const [hiddenPassword, setHiddenPassword] = useState(true);
     const location = useLocation();
     const showAlert = location.state?.showAlert || false;
     const [alert, setAlert] = useState(false);
@@ -143,18 +146,46 @@ const Login = () => {
         {errors.phone && (
               <p className="text-red-500 text-xs px-2">{errors.phone.message}</p>
             )}
-       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
+       {/* <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                   validate: (value) => {
                     if (value.length < 5 ) {
                       return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
                     }
                   },
-                })}/>
-        {errors.password && (
-              <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
-            )}
-       </div>
+                })}/> */}
+                 <div className="relative flex items-center">
+                    <input
+                      type={hiddenPassword ? "password" : "text"}
+                      placeholder="Vui lòng nhập mật khẩu"
+                      {...register("password", {
+                        required: "Mật khẩu là bắt buộc",
+                        validate: (value) => {
+                          if (value.length < 5 ) {
+                            return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
+                          }
+                        },
+                      })}
+                      className="h-12 px-4  shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto"
+                    />
+                    {hiddenPassword ? (
+                      <Eye
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    ) : (
+                      <EyeOff
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    )}
+                  </div>
+                  {/* errors will return when field validation fails  */}
+                  
+                  {errors.password && (
+                        <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
+                      )}
+                </div>
        {/* <div className="flex flex-col gap-2">
        <div className="flex gap-2 items-center max-sm:text-xs max-sm:gap-1">
             <input type="radio" className="w-4 h-4 max-sm:w-2 max-sm:h-2 cursor-pointer" {...register("radio", {
@@ -204,18 +235,36 @@ const Login = () => {
          {errors.email && (
               <p className="text-red-500 text-xs px-2">{errors.email.message}</p>
             )}
-       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
-                  required: "Mật khẩu là bắt buộc",
-                  validate: (value) => {
-                    if (value.length < 5 ) {
-                      return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
-                    }
-                  },
-                })}/>
-       {errors.password && (
-              <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
-            )}
-       </div>
+          <div className="relative flex items-center">
+                    <input
+                      type={hiddenPassword ? "password" : "text"}
+                      placeholder="Vui lòng nhập mật khẩu"
+                      {...register("password", {
+                        required: "Mật khẩu là bắt buộc",
+                        validate: (value) => {
+                          if (value.length < 5 ) {
+                            return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
+                          }
+                        },
+                      })}
+                      className="h-12 px-4  shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto"
+                    />
+                    {hiddenPassword ? (
+                      <Eye
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    ) : (
+                      <EyeOff
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    )}
+                  </div>
+          {errors.password && (
+                  <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
+                )}
+          </div>
        {/* <div className="flex flex-col gap-2">
        <div className="flex gap-2 items-center max-sm:text-xs max-sm:gap-1">
             <input type="radio" className="w-4 h-4 max-sm:w-2 max-sm:h-2 cursor-pointer"   {...register("radio", {
@@ -289,14 +338,32 @@ const Login = () => {
         {errors.phone && (
               <p className="text-red-500 text-xs px-2">{errors.phone.message}</p>
             )}
-       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
-                  required: "Mật khẩu là bắt buộc",
-                  validate: (value) => {
-                    if (value.length < 5 ) {
-                      return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
-                    }
-                  },
-                })}/>
+       <div className="relative flex items-center">
+                    <input
+                      type={hiddenPassword ? "password" : "text"}
+                      placeholder="Vui lòng nhập mật khẩu"
+                      {...register("password", {
+                        required: "Mật khẩu là bắt buộc",
+                        validate: (value) => {
+                          if (value.length < 5 ) {
+                            return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
+                          }
+                        },
+                      })}
+                      className="h-12 px-4  shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto"
+                    />
+                    {hiddenPassword ? (
+                      <Eye
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    ) : (
+                      <EyeOff
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    )}
+                  </div>
         {errors.password && (
               <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
             )}
@@ -345,14 +412,32 @@ const Login = () => {
          {errors.email && (
               <p className="text-red-500 text-xs px-2">{errors.email.message}</p>
             )}
-       <input type="password" className="h-12 px-4 shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto" placeholder="Vui lòng nhập mật khẩu"  {...register("password", {
-                  required: "Mật khẩu là bắt buộc",
-                  validate: (value) => {
-                    if (value.length < 5 ) {
-                      return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
-                    }
-                  },
-                })}/>
+       <div className="relative flex items-center">
+                    <input
+                      type={hiddenPassword ? "password" : "text"}
+                      placeholder="Vui lòng nhập mật khẩu"
+                      {...register("password", {
+                        required: "Mật khẩu là bắt buộc",
+                        validate: (value) => {
+                          if (value.length < 5 ) {
+                            return "Vui lòng điền mật khẩu lớn hơn 4 kí tự";
+                          }
+                        },
+                      })}
+                      className="h-12 px-4  shadow-sm outline-none font-medium placeholder:text-gray-white max-sm:placeholder:text-xs w-[90%] mx-auto"
+                    />
+                    {hiddenPassword ? (
+                      <Eye
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    ) : (
+                      <EyeOff
+                        onClick={() => setHiddenPassword(!hiddenPassword)}
+                        className="absolute top-3.5 right-8 max-sm:top-[18px] max-sm:w-4 text-gray-400 cursor-pointer"
+                      />
+                    )}
+                  </div>
        {errors.password && (
               <p className="text-red-500 text-xs px-2">{errors.password.message}</p>
             )}
