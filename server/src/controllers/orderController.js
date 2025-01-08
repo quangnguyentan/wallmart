@@ -144,73 +144,14 @@ const updateOrder = async (req, res, next) => {
 
 const List = async (req, res, next) => {
   try {
-    // Get page and limit from the request query, with default values
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
-
-    const skip = (page - 1) * limit; // Skip previous pages' worth of data
-
-    const orders = await Order.find()
-      .populate([
-        {
-          path: "product",
-          select:
-            "title price priceOld photos color size createdAt inventory updatedAt category industry",
-        },
-        { path: "user", select: "role fullName" },
-      ])
-      .sort({ createdAt: -1 })
-      .skip(skip) // Apply skip for pagination
-      .limit(limit); // Limit the number of results returned
-
-    const filterStatus1 = orders.filter(
-      (order) => order?.status !== "successfull" && order?.status !== "canceled"
-    );
-    const filterStatus2 = orders.filter(
-      (order) => order?.status === "successfull" || order?.status === "canceled"
-    );
-    console.log(filterStatus2);
-    const stores = [];
-    const stores1 = [];
-
-    // Fetch stores for each order in the filtered results
-    for (const order of filterStatus1) {
-      const store = await Store.find({ userId: order?.store?._id.toString() });
-      stores.push(store[0]); // Add each store to the array
-    }
-    for (const order of filterStatus2) {
-      const store = await Store.find({ userId: order?.store?._id.toString() });
-      stores1.push(store[0]); // Add each store to the array
-    }
-
-    // Get the total number of orders for pagination information
-    const totalOrders = await Order.countDocuments();
-
-    // Return paginated results
-    res.json({
-      orders: filterStatus1,
-      stores,
-      orders1: filterStatus2,
-      stores1,
-      totalOrders, // Send the total number of orders for client-side pagination
-      totalPages: Math.ceil(totalOrders / limit), // Calculate the total number of pages
-      currentPage: page, // Return the current page
-    });
-  } catch (e) {
-    next(e);
-  }
-};
-const ListSuccess = async (req, res, next) => {
-  try {
-    // Get page and limit from the request query, with default values
-    const page = parseInt(req.query.page) || 1; // Default to page 1
-    const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
     const skip = (page - 1) * limit;
 
-    // Get orders with status 'successfull' or 'canceled'
+    // Truy vấn đơn hàng
     const orders = await Order.find({
-      status: { $in: ["successfull", "canceled"] }, // Filter orders by multiple statuses
+      status: { $in: ["waitPay", "waitDelivery", "delivering"] },
     })
       .populate([
         {
@@ -220,25 +161,91 @@ const ListSuccess = async (req, res, next) => {
         },
         { path: "user", select: "role fullName" },
       ])
-      .sort({ createdAt: -1 }); // Sort by created date descending
+      .sort({ createdAt: -1 });
 
-    const totalOrders = orders.length; // Total number of 'successfull' or 'canceled' orders
-    const paginatedOrders = orders.slice(skip, skip + limit); // Apply pagination
+    const totalOrders = orders.length;
+    const paginatedOrders = orders.slice(skip, skip + limit);
 
-    // Get the store data for each order
-    const stores1 = [];
-    for (const order of paginatedOrders) {
-      const store = await Store.find({ userId: order?.store?._id.toString() });
-      stores1.push(store[0]); // Add each store to the array
-    }
+    // Lấy danh sách `userId` từ tất cả các đơn hàng
+    const userIds = orders
+      .map((order) => order?.store?._id?.toString()) // Lấy `storeId` từ `order`
+      .filter((id) => id); // Loại bỏ giá trị `undefined` hoặc null
 
-    // Return paginated results
+    // Loại bỏ các `userId` trùng lặp
+    const uniqueUserIds = [...new Set(userIds)];
+
+    // Truy vấn tất cả các `store` với `userId` duy nhất
+    const allStores = await Store.find({
+      userId: { $in: uniqueUserIds },
+    }).select("inforByStore.nameStore userId");
+    // Lấy thông tin cửa hàng liên quan đến đơn hàng hiện tại (phân trang)
+    const paginatedStores = await Store.find({
+      userId: { $in: uniqueUserIds.slice(skip, skip + limit) },
+    }).select("inforByStore.nameStore userId");
+
     res.json({
-      orders1: paginatedOrders,
-      stores1,
-      totalOrders, // Send the total number of 'successfull' or 'canceled' orders for client-side pagination
-      totalPages: Math.ceil(totalOrders / limit), // Calculate the total number of pages
-      currentPage: page, // Return the current page
+      orders: paginatedOrders,
+      totalOrders,
+      allOrders: orders,
+      stores: paginatedStores,
+      allStores, // Trả về tất cả các cửa hàng (không trùng lặp)
+      totalPages: Math.ceil(totalOrders / limit),
+      currentPage: page,
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+const ListSuccess = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    // Truy vấn đơn hàng
+    const orders = await Order.find({
+      status: { $in: ["successfull", "canceled"] },
+    })
+      .populate([
+        {
+          path: "product",
+          select:
+            "title price priceOld photos color size createdAt inventory updatedAt category industry",
+        },
+        { path: "user", select: "role fullName" },
+      ])
+      .sort({ createdAt: -1 });
+
+    const totalOrders = orders.length;
+    const paginatedOrders = orders.slice(skip, skip + limit);
+
+    // Lấy danh sách `userId` từ tất cả các đơn hàng
+    const userIds = orders
+      .map((order) => order?.store?._id?.toString()) // Lấy `storeId` từ `order`
+      .filter((id) => id); // Loại bỏ giá trị `undefined` hoặc null
+
+    // Loại bỏ các `userId` trùng lặp
+    const uniqueUserIds = [...new Set(userIds)];
+
+    // Truy vấn tất cả các `store` với `userId` duy nhất
+    const allStores = await Store.find({
+      userId: { $in: uniqueUserIds },
+    }).select("inforByStore.nameStore userId");
+    // Lấy thông tin cửa hàng liên quan đến đơn hàng hiện tại (phân trang)
+    const paginatedStores = await Store.find({
+      userId: { $in: uniqueUserIds.slice(skip, skip + limit) },
+    }).select("inforByStore.nameStore userId");
+
+    res.json({
+      orders: paginatedOrders,
+      totalOrders,
+      allOrders: orders,
+      stores: paginatedStores,
+      allStores, // Trả về tất cả các cửa hàng (không trùng lặp)
+      totalPages: Math.ceil(totalOrders / limit),
+      currentPage: page,
     });
   } catch (e) {
     next(e);
